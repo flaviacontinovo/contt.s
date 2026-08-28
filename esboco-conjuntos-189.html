@@ -1,0 +1,387 @@
+<title>Conjuntos por 189</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,500;1,600&family=Outfit:wght@300;400;500;600;700;800&display=swap">
+
+<style>
+:root{
+  --paper:#f7f6f3;
+  --surface:#fff;
+  --surface-2:#efece6;
+  --ink:#14120f;
+  --ink-2:#4b463f;
+  --muted:#7d776d;
+  --line:#e3dfd7;
+  --line-soft:#eeebe4;
+  --gold:#c9a24b;
+  --gold-deep:#8a6d2e;
+  --gold-soft:#f7f0df;
+  --ok:#3f6b4a;
+  --ok-soft:#e7efe8;
+  --warn:#8a4a3f;
+  --warn-soft:#f6e8e5;
+  --shadow:0 1px 2px rgba(20,18,15,.05),0 10px 30px rgba(20,18,15,.07);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#131211;--surface:#1c1a18;--surface-2:#252220;
+    --ink:#f3f1ec;--ink-2:#cac5bc;--muted:#948d82;
+    --line:#332f2b;--line-soft:#2a2724;
+    --gold:#dcb668;--gold-deep:#e0c489;--gold-soft:#2e2617;
+    --ok:#90c19d;--ok-soft:#1e2a21;--warn:#d79a8c;--warn-soft:#2c1e1b;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#131211;--surface:#1c1a18;--surface-2:#252220;
+  --ink:#f3f1ec;--ink-2:#cac5bc;--muted:#948d82;
+  --line:#332f2b;--line-soft:#2a2724;
+  --gold:#dcb668;--gold-deep:#e0c489;--gold-soft:#2e2617;
+  --ok:#90c19d;--ok-soft:#1e2a21;--warn:#d79a8c;--warn-soft:#2c1e1b;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:'Outfit',-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+.serif-it{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:500;}
+.wrap{max-width:1120px;margin:0 auto;padding:56px 24px 96px;}
+.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted);font-weight:600;margin:0 0 18px;}
+h1{font-size:clamp(36px,6vw,58px);line-height:1.03;margin:0 0 16px;font-weight:600;letter-spacing:-.025em;text-wrap:balance;}
+h1 .serif-it{font-weight:500;letter-spacing:0;}
+.lede{font-size:18px;color:var(--ink-2);max-width:64ch;margin:0;}
+.head{border-bottom:1px solid var(--line);padding-bottom:36px;margin-bottom:44px;}
+h2{font-size:13px;text-transform:uppercase;letter-spacing:.16em;font-weight:600;color:var(--muted);
+  margin:0 0 22px;display:flex;align-items:center;gap:14px;}
+h2::after{content:"";flex:1;height:1px;background:var(--line);}
+.block{margin-bottom:64px;}
+
+/* estado atual */
+.status{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;}
+.st{background:var(--surface);border:1px solid var(--line);border-radius:5px;padding:18px 20px;box-shadow:var(--shadow);}
+.st__k{font-size:10.5px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);font-weight:600;margin-bottom:8px;}
+.st__v{font-size:15px;font-weight:600;line-height:1.35;margin-bottom:6px;}
+.st__d{font-size:13.5px;color:var(--ink-2);line-height:1.5;}
+.pill{display:inline-block;font-size:10px;text-transform:uppercase;letter-spacing:.12em;font-weight:700;
+  padding:4px 9px;border-radius:2px;margin-bottom:9px;}
+.pill--ok{background:var(--ok-soft);color:var(--ok);}
+.pill--warn{background:var(--warn-soft);color:var(--warn);}
+
+/* opções */
+.opt{background:var(--surface);border:1px solid var(--line);border-radius:6px;margin-bottom:22px;
+  overflow:hidden;box-shadow:var(--shadow);}
+.opt__head{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;padding:20px 24px;border-bottom:1px solid var(--line-soft);}
+.opt__letter{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:32px;line-height:1;color:var(--gold);flex:none;}
+.opt__id{flex:1;min-width:230px;}
+.opt__id h3{font-size:19px;font-weight:600;margin:0;letter-spacing:-.01em;}
+.opt__id p{margin:3px 0 0;font-size:13.5px;color:var(--muted);}
+.badge{font-size:10.5px;text-transform:uppercase;letter-spacing:.12em;font-weight:700;padding:5px 10px;border-radius:2px;flex:none;}
+.badge--rec{background:var(--ok-soft);color:var(--ok);}
+.badge--alt{background:var(--surface-2);color:var(--muted);}
+.stage{padding:26px;background:var(--surface-2);overflow-x:auto;}
+.why{padding:20px 24px;display:grid;grid-template-columns:1fr 1fr;gap:20px;border-top:1px solid var(--line-soft);}
+@media(max-width:760px){.why{grid-template-columns:1fr;}}
+.why dt{font-size:10.5px;text-transform:uppercase;letter-spacing:.13em;color:var(--muted);font-weight:600;margin-bottom:5px;}
+.why dd{margin:0;font-size:14px;color:var(--ink-2);line-height:1.55;}
+
+/* ===== MOCK DA LOJA ===== */
+.mock{background:#fff;color:#111;border:1px solid #dcd8d0;border-radius:4px;overflow:hidden;min-width:320px;}
+.mock__bar{height:26px;background:#f0eeea;border-bottom:1px solid #e3dfd8;display:flex;align-items:center;gap:5px;padding:0 9px;}
+.mock__dot{width:7px;height:7px;border-radius:50%;background:#cdc8c0;}
+.mock__url{margin-left:8px;font-size:10px;color:#8a857d;font-family:ui-monospace,Menlo,monospace;}
+.s-announce{background:#111;color:#fff;padding:8px;text-align:center;font-size:10.5px;}
+.s-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #eee9e2;gap:14px;}
+.s-logo{font-weight:800;font-size:13px;letter-spacing:.1em;flex:none;}
+.s-nav{display:flex;gap:13px;font-size:10.5px;color:#6f6a62;flex-wrap:wrap;}
+.s-nav .on{color:#111;font-weight:600;}
+.s-nav .promo{color:#8a6d2e;font-weight:700;border-bottom:2px solid #c9a24b;padding-bottom:2px;}
+.s-nav .promo-tag{background:#c9a24b;color:#fff;font-weight:700;padding:3px 7px;border-radius:2px;}
+.ph{background:linear-gradient(155deg,#e9e5de,#cdc7bd);border-radius:2px;}
+.cap{font-size:10.5px;color:#8a857d;text-align:center;margin-top:7px;line-height:1.35;}
+
+/* A — editorial */
+.aA{display:grid;grid-template-columns:1.05fr .95fr;min-height:330px;}
+@media(max-width:720px){.aA{grid-template-columns:1fr;}}
+.aA__img{position:relative;background:linear-gradient(160deg,#ded8cf,#b9b2a7);min-height:300px;}
+.aA__seal{position:absolute;top:18px;left:18px;background:#111;color:#fff;font-size:9.5px;font-weight:700;
+  letter-spacing:.16em;text-transform:uppercase;padding:7px 11px;}
+.aA__txt{padding:38px 34px;display:flex;flex-direction:column;justify-content:center;background:#fbfaf7;}
+.aA__eyebrow{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:#8a6d2e;font-weight:700;margin-bottom:14px;}
+.aA__ttl{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(30px,4.6vw,46px);line-height:1.02;
+  margin:0 0 6px;font-weight:600;color:#141210;}
+.aA__ttl em{font-style:italic;}
+.aA__price{display:flex;align-items:baseline;gap:8px;margin:16px 0 10px;}
+.aA__cur{font-size:15px;font-weight:600;color:#8a6d2e;}
+.aA__num{font-size:clamp(52px,9vw,82px);line-height:.86;font-weight:800;letter-spacing:-.045em;color:#141210;
+  font-variant-numeric:tabular-nums;}
+.aA__sub{font-size:12.5px;color:#5f5a53;line-height:1.5;max-width:34ch;}
+.aA__cta{display:inline-block;margin-top:20px;background:#111;color:#fff;padding:13px 28px;font-size:11.5px;
+  font-weight:700;letter-spacing:.14em;text-transform:uppercase;align-self:flex-start;}
+.aA__thumbs{display:flex;gap:7px;margin-top:22px;}
+.aA__thumbs .ph{width:44px;height:56px;}
+
+/* B — banner preto */
+.aB{background:#111;color:#fff;padding:44px 34px;text-align:center;position:relative;overflow:hidden;}
+.aB__rule{font-size:9.5px;letter-spacing:.34em;text-transform:uppercase;color:#c9a24b;font-weight:700;margin-bottom:20px;}
+.aB__num{font-size:clamp(78px,17vw,164px);line-height:.8;font-weight:800;letter-spacing:-.06em;
+  font-variant-numeric:tabular-nums;background:linear-gradient(180deg,#fff 40%,#c9a24b);
+  -webkit-background-clip:text;background-clip:text;color:transparent;}
+.aB__cur{font-size:clamp(16px,2.5vw,24px);vertical-align:super;font-weight:600;color:#c9a24b;
+  -webkit-text-fill-color:#c9a24b;}
+.aB__ttl{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:clamp(21px,3.4vw,32px);
+  margin:14px 0 8px;font-weight:500;}
+.aB__sub{font-size:12.5px;color:#b9b3a8;max-width:46ch;margin:0 auto;line-height:1.55;}
+.aB__cta{display:inline-block;margin-top:24px;background:#c9a24b;color:#111;padding:13px 30px;font-size:11.5px;
+  font-weight:800;letter-spacing:.14em;text-transform:uppercase;}
+.aB__strip{display:flex;gap:8px;justify-content:center;margin-top:26px;}
+.aB__strip .ph{width:58px;height:74px;background:linear-gradient(155deg,#3a3630,#22201d);}
+
+/* C — grade */
+.aC{background:#fbfaf7;padding:30px 24px;}
+.aC__head{text-align:center;margin-bottom:24px;}
+.aC__kicker{font-size:9.5px;letter-spacing:.28em;text-transform:uppercase;color:#8a6d2e;font-weight:700;}
+.aC__ttl{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(24px,3.6vw,34px);margin:9px 0 0;font-weight:600;}
+.aC__ttl em{font-style:italic;}
+.aC__grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+@media(max-width:760px){.aC__grid{grid-template-columns:repeat(2,1fr);}}
+.card{background:#fff;}
+.card__im{position:relative;aspect-ratio:4/5;}
+.card__im .ph{width:100%;height:100%;}
+.card__seal{position:absolute;top:9px;right:9px;background:#c9a24b;color:#fff;font-size:9.5px;font-weight:800;
+  letter-spacing:.05em;padding:5px 8px;border-radius:2px;}
+.card__nm{font-size:11.5px;margin-top:10px;line-height:1.35;color:#3b3833;}
+.card__pr{display:flex;align-items:baseline;gap:7px;margin-top:5px;}
+.card__old{font-size:11px;color:#9a958d;text-decoration:line-through;}
+.card__new{font-size:15px;font-weight:800;color:#141210;}
+.aC__cta{display:block;text-align:center;margin:24px auto 0;background:#111;color:#fff;padding:13px 30px;
+  font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;width:max-content;}
+
+/* recomendação */
+.rec{background:var(--surface);border:1px solid var(--ink);border-radius:6px;padding:28px;}
+.rec h3{font-size:22px;margin:0 0 8px;font-weight:600;letter-spacing:-.01em;}
+.rec>p{color:var(--ink-2);margin:0 0 22px;max-width:64ch;font-size:15px;}
+.rec ol{margin:0;padding:0;list-style:none;counter-reset:r;display:grid;gap:14px;}
+.rec li{counter-increment:r;display:grid;grid-template-columns:26px 1fr;gap:14px;align-items:start;
+  font-size:14.5px;color:var(--ink-2);}
+.rec li::before{content:counter(r);font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;
+  font-size:20px;color:var(--gold);line-height:1.2;}
+.rec li b{color:var(--ink);font-weight:600;}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:5px;background:var(--surface);}
+table{border-collapse:collapse;width:100%;font-size:13.5px;min-width:460px;}
+th,td{text-align:left;padding:11px 16px;border-bottom:1px solid var(--line-soft);}
+th{font-size:10.5px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:600;}
+td:last-child,th:last-child{text-align:right;font-variant-numeric:tabular-nums;}
+tr:last-child td{border-bottom:none;}
+footer{margin-top:56px;padding-top:24px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted);}
+</style>
+
+<div class="wrap">
+
+  <header class="head">
+    <p class="eyebrow">contt.s fitness · esboço interno</p>
+    <h1>conjuntos por <span class="serif-it">189</span></h1>
+    <p class="lede">A aba no menu e três desenhos para a faixa da home. Nada foi publicado — é para escolhermos o formato antes de mexer no site.</p>
+  </header>
+
+  <section class="block">
+    <h2>como está hoje no painel</h2>
+    <div class="status">
+      <div class="st">
+        <span class="pill pill--ok">já existe</span>
+        <div class="st__v">A coleção está criada</div>
+        <p class="st__d">“Conjuntos R$ 189”, com descrição pronta e ordenada por mais vendidos. O endereço já funciona: <b>/collections/conjuntos-189</b>.</p>
+      </div>
+      <div class="st">
+        <span class="pill pill--warn">falta</span>
+        <div class="st__v">Ela está com 0 produtos</div>
+        <p class="st__d">É uma coleção <b>automática</b>: entra sozinho todo produto com a etiqueta <b>Conjunto 189</b>. Hoje nenhum produto tem essa etiqueta.</p>
+      </div>
+      <div class="st">
+        <span class="pill pill--warn">falta</span>
+        <div class="st__v">Nenhum conjunto custa 189</div>
+        <p class="st__d">O mais próximo é R$ 188; depois vêm quatro a R$ 199. Precisamos definir quais entram na promoção e baixar o preço.</p>
+      </div>
+      <div class="st">
+        <span class="pill pill--warn">falta</span>
+        <div class="st__v">A coleção não tem foto</div>
+        <p class="st__d">Sem imagem própria, ela aparece sem capa em qualquer lugar que mostre foto de coleção.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>a aba no menu do site</h2>
+    <div class="opt">
+      <div class="opt__head">
+        <span class="opt__letter">1</span>
+        <div class="opt__id">
+          <h3>logo depois de “Conjuntos”, em destaque dourado</h3>
+          <p>Menu principal · 9 itens no total</p>
+        </div>
+        <span class="badge badge--rec">recomendado</span>
+      </div>
+      <div class="stage">
+        <div class="mock">
+          <div class="mock__bar"><span class="mock__dot"></span><span class="mock__dot"></span><span class="mock__dot"></span><span class="mock__url">conttsfitness.com.br</span></div>
+          <div class="s-announce">⚠️ envios a partir de 10/09 — estamos em congresso internacional</div>
+          <div class="s-header">
+            <span class="s-logo">CONTT.s</span>
+            <span class="s-nav">
+              <span>Início</span><span>Leggings</span><span>Top e Cropped</span>
+              <span class="on">Conjuntos</span>
+              <span class="promo">Conjuntos R$189</span>
+              <span>Macacões</span><span>Shorts</span><span>Lançamentos</span><span>Mais Vendidos</span>
+            </span>
+          </div>
+          <div style="padding:16px"><div class="ph" style="height:70px"></div></div>
+        </div>
+        <p class="cap">Vizinho de “Conjuntos”, quem procura conjunto vê o preço promocional no mesmo olhar.</p>
+      </div>
+      <dl class="why">
+        <div><dt>por que assim</dt><dd>O menu já tem 8 itens e fica apertado no celular. Colar a aba nova em “Conjuntos” agrupa o assunto em vez de espalhar, e o sublinhado dourado dá destaque sem gritar.</dd></div>
+        <div><dt>alternativa</dt><dd>Uma etiqueta dourada cheia, no fim do menu, tipo <b>OFERTA</b>. Chama mais atenção, mas rouba o olhar de “Lançamentos” e “Mais Vendidos” e pesa mais no celular.</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>a faixa na home — três desenhos</h2>
+
+    <article class="opt">
+      <div class="opt__head">
+        <span class="opt__letter">A</span>
+        <div class="opt__id">
+          <h3>Editorial: foto grande e o preço enorme ao lado</h3>
+          <p>Largura total · altura de meia tela</p>
+        </div>
+        <span class="badge badge--rec">recomendado</span>
+      </div>
+      <div class="stage">
+        <div class="mock">
+          <div class="aA">
+            <div class="aA__img"><span class="aA__seal">estoque limitado</span></div>
+            <div class="aA__txt">
+              <div class="aA__eyebrow">conjunto completo</div>
+              <div class="aA__ttl">legging <em>e</em> top<br>por um preço só</div>
+              <div class="aA__price"><span class="aA__cur">R$</span><span class="aA__num">189</span></div>
+              <p class="aA__sub">Alta compressão, toque macio, modelagem empina bumbum. Tamanhos P, M e G — estoque limitado por cor.</p>
+              <span class="aA__cta">ver conjuntos</span>
+              <div class="aA__thumbs"><span class="ph"></span><span class="ph"></span><span class="ph"></span><span class="ph"></span></div>
+            </div>
+          </div>
+        </div>
+        <p class="cap">No celular a foto fica em cima e o texto embaixo, sem perder o tamanho do número.</p>
+      </div>
+      <dl class="why">
+        <div><dt>a favor</dt><dd>É o que mais parece com o resto do site: foto grande, serifada em itálico, tudo em minúsculas. O “189” vira a imagem da promoção sem precisar de banner colorido.</dd></div>
+        <div><dt>o que exige</dt><dd>Uma foto boa e vertical de conjunto. Sem foto de qualidade, essa opção perde a graça — é ela que sustenta metade do bloco.</dd></div>
+      </dl>
+    </article>
+
+    <article class="opt">
+      <div class="opt__head">
+        <span class="opt__letter">B</span>
+        <div class="opt__id">
+          <h3>Faixa preta com o número gigante</h3>
+          <p>Largura total · fundo escuro, corta a página</p>
+        </div>
+        <span class="badge badge--alt">mais chamativo</span>
+      </div>
+      <div class="stage">
+        <div class="mock">
+          <div class="aB">
+            <div class="aB__rule">conjuntos · edição limitada</div>
+            <div class="aB__num"><span class="aB__cur">R$</span>189</div>
+            <div class="aB__ttl">legging + top, o conjunto completo</div>
+            <p class="aB__sub">Alta compressão e caimento que não marca. Tamanhos P, M e G, estoque limitado por cor.</p>
+            <div><span class="aB__cta">quero o meu</span></div>
+            <div class="aB__strip"><span class="ph"></span><span class="ph"></span><span class="ph"></span><span class="ph"></span><span class="ph"></span></div>
+          </div>
+        </div>
+        <p class="cap">O fundo preto interrompe a home clara e faz a promoção “pular” na rolagem.</p>
+      </div>
+      <dl class="why">
+        <div><dt>a favor</dt><dd>É a mais impossível de ignorar, e não depende de foto — funciona só com tipografia. Boa se as fotos dos conjuntos ainda não estiverem prontas.</dd></div>
+        <div><dt>contra</dt><dd>Grita mais que o resto do site. Vira uma faixa de liquidação — o que funciona para vender rápido, mas destoa do tom da marca se ficar no ar muito tempo.</dd></div>
+      </dl>
+    </article>
+
+    <article class="opt">
+      <div class="opt__head">
+        <span class="opt__letter">C</span>
+        <div class="opt__id">
+          <h3>Vitrine: quatro conjuntos com o selo do preço</h3>
+          <p>Largura total · mostra o produto, não só o preço</p>
+        </div>
+        <span class="badge badge--alt">mais direto</span>
+      </div>
+      <div class="stage">
+        <div class="mock">
+          <div class="aC">
+            <div class="aC__head">
+              <div class="aC__kicker">conjuntos por r$ 189</div>
+              <h3 class="aC__ttl">leve os dois, <em>pague um preço</em></h3>
+            </div>
+            <div class="aC__grid">
+              <div class="card"><div class="card__im"><span class="ph"></span><span class="card__seal">R$189</span></div>
+                <div class="card__nm">Conjunto short empina bumbum pink e top</div>
+                <div class="card__pr"><span class="card__old">R$ 219</span><span class="card__new">R$ 189</span></div></div>
+              <div class="card"><div class="card__im"><span class="ph"></span><span class="card__seal">R$189</span></div>
+                <div class="card__nm">Conjunto short empina bumbum brocado azul</div>
+                <div class="card__pr"><span class="card__old">R$ 199</span><span class="card__new">R$ 189</span></div></div>
+              <div class="card"><div class="card__im"><span class="ph"></span><span class="card__seal">R$189</span></div>
+                <div class="card__nm">Conjunto short empina bumbum map e top</div>
+                <div class="card__pr"><span class="card__old">R$ 199</span><span class="card__new">R$ 189</span></div></div>
+              <div class="card"><div class="card__im"><span class="ph"></span><span class="card__seal">R$189</span></div>
+                <div class="card__nm">Conjunto short basic preto e top</div>
+                <div class="card__pr"><span class="card__old">R$ 208</span><span class="card__new">R$ 189</span></div></div>
+            </div>
+            <span class="aC__cta">ver todos os conjuntos por 189</span>
+          </div>
+        </div>
+        <p class="cap">Produtos reais da loja, com o preço de hoje riscado. São exemplos — quem entra na promoção é você quem decide.</p>
+      </div>
+      <dl class="why">
+        <div><dt>a favor</dt><dd>Mostra o que a cliente leva, e o preço riscado prova que é promoção de verdade. Costuma converter melhor que banner.</dd></div>
+        <div><dt>contra</dt><dd>Ocupa menos espaço visual — não é uma faixa “bem grande”, é uma vitrine. E o preço riscado só aparece se registrarmos o preço antigo como “preço comparativo”.</dd></div>
+      </dl>
+    </article>
+  </section>
+
+  <section class="block">
+    <h2>onde entra na home</h2>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>ordem</th><th>seção de hoje</th><th>o que muda</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Hero (banner principal)</td><td>—</td></tr>
+          <tr><td><b>2</b></td><td><b>a faixa de conjuntos por 189</b></td><td><b>entra aqui</b></td></tr>
+          <tr><td>3</td><td>Compre por categorias</td><td>desce uma posição</td></tr>
+          <tr><td>4</td><td>Destaques</td><td>desce uma posição</td></tr>
+          <tr><td>5…</td><td>Faixa de texto, benefícios, novidades, looks, depoimentos, blog, newsletter</td><td>descem uma posição</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:14px;color:var(--ink-2);margin:16px 0 0;max-width:64ch;">Logo abaixo do banner principal é a posição mais forte da página: a promoção aparece antes de a cliente escolher categoria. Se preferir não empurrar as categorias para baixo, a segunda melhor posição é a 4, no lugar dos “Destaques”.</p>
+  </section>
+
+  <section class="block">
+    <h2>o que eu recomendo</h2>
+    <div class="rec">
+      <h3>Aba dourada no menu + faixa A logo abaixo do banner</h3>
+      <p>A opção A é a que vende sem quebrar o visual da loja: o número gigante faz o trabalho de banner, mas com a mesma tipografia e o mesmo tom do resto do site. A faixa preta fica guardada para quando quisermos apertar o passo — queima de estoque, última semana da promoção.</p>
+      <ol>
+        <li><b>Escolher os conjuntos</b> — os 12 que hoje custam entre R$ 188 e R$ 219 são os candidatos naturais; abaixo disso a margem some, acima o desconto fica grande demais.</li>
+        <li><b>Colocar o preço em R$ 189</b> e registrar o preço antigo como comparativo, para o riscado aparecer.</li>
+        <li><b>Etiquetar cada um com <code>Conjunto 189</code></b> — é o que faz a coleção se montar sozinha. Sem a etiqueta, a página continua vazia.</li>
+        <li><b>Dar uma foto de capa à coleção</b>, para ela não aparecer sem imagem.</li>
+        <li><b>Publicar a aba e a faixa</b> — no tema, com o mesmo cuidado do aviso de envio: branch primeiro, depois o ar.</li>
+      </ol>
+      <p style="margin:22px 0 0;font-size:14px;">Os passos 1 a 4 são no painel da Shopify e posso fazer todos, se você me disser quais conjuntos entram. O passo 5 é no tema.</p>
+    </div>
+  </section>
+
+  <footer>
+    Esboço para decisão — nada publicado. Escolhida a opção, eu monto a seção no tema e aplico as mudanças do painel.
+  </footer>
+</div>
