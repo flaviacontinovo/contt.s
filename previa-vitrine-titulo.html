@@ -1,0 +1,90 @@
+<title>Vitrine Legging + Top</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@1,500;1,600&display=swap">
+
+<div class="pv-top">
+  <span class="pv-tag">pr&eacute;via com o css real da se&ccedil;&atilde;o</span>
+  <span class="pv-note">t&iacute;tulo novo &middot; as fotos aparecem como blocos cinza s&oacute; aqui na pr&eacute;via</span>
+</div>
+
+<section class="pvit">
+  <div class="container">
+    <div class="pvit__head">
+      <p class="pvit__kicker">conjuntos por r$ 189</p>
+      <h2 class="pvit__ttl">LEGGING <span class="pvit__plus">+</span> TOP</h2>
+      <p class="pvit__support">poliamida premium &middot; ZERO TRANSPAR&Ecirc;NCIA</p>
+    </div>
+    <div class="pvit__grid pvit__grid--few">
+      <a class="pvit__card" href="#">
+        <div class="pvit__im"><span class="pv-ph"></span><span class="pvit__seal">R$189</span></div>
+        <div class="pvit__nm">Conjunto Shine Legging + Top Off White</div>
+        <div class="pvit__pr"><span class="pvit__new">R$ 189,00</span></div>
+      </a>
+      <a class="pvit__card" href="#">
+        <div class="pvit__im"><span class="pv-ph"></span><span class="pvit__seal">R$189</span></div>
+        <div class="pvit__nm">Conjunto Shine Legging + Top Matcha</div>
+        <div class="pvit__pr"><span class="pvit__new">R$ 189,00</span></div>
+      </a>
+    </div>
+    <a class="pvit__cta" href="#">ver todos os conjuntos por 189</a>
+  </div>
+</section>
+
+<style>
+
+    /* celular primeiro: 2 colunas, porque é a primeira seção da home */
+    .pvit{background:#fbfaf7;padding:30px 0 34px;}
+    .pvit__head{text-align:center;margin-bottom:22px;}
+    .pvit__kicker{margin:0;font-size:9.5px;line-height:1.5;letter-spacing:.26em;text-transform:uppercase;
+      color:#8a6d2e;font-weight:700;}
+    /* título com ênfase: maiúsculas, encorpado, com o "+" em dourado */
+    .pvit__ttl{margin:10px 0 0;font-family:'Outfit',system-ui,-apple-system,sans-serif;font-weight:800;
+      font-size:clamp(27px,8vw,46px);line-height:1.02;letter-spacing:.01em;text-transform:uppercase;
+      color:#141210;text-wrap:balance;}
+    .pvit__ttl .pvit__plus{color:#c9a24b;font-weight:800;margin:0 .06em;}
+    .pvit__ttl .serif-it{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:500;
+      text-transform:none;letter-spacing:0;}
+    .pvit__support{margin:10px auto 0;max-width:38ch;font-size:11px;line-height:1.5;letter-spacing:.13em;
+      text-transform:uppercase;font-weight:600;color:#8a6d2e;}
+    .pvit__grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px 12px;}
+    .pvit__grid--one{grid-template-columns:minmax(0,260px);justify-content:center;}
+    .pvit__card{display:block;text-decoration:none;color:inherit;background:#fff;}
+    /* 2/3 é a proporção das fotos de produto da loja — moldura igual à foto não corta nada */
+    .pvit__im{position:relative;aspect-ratio:2/3;overflow:hidden;background:#efece6;border-radius:3px;}
+    .pvit__im img,.pvit__im svg{width:100%;height:100%;object-fit:cover;object-position:center top;
+      display:block;transition:transform .5s ease;}
+    .pvit__card:hover .pvit__im img{transform:scale(1.04);}
+    .pvit__seal{position:absolute;top:8px;right:8px;background:#c9a24b;color:#fff;font-size:10px;
+      font-weight:800;letter-spacing:.03em;padding:5px 8px;border-radius:2px;line-height:1;}
+    .pvit__nm{margin-top:9px;font-size:11.5px;line-height:1.35;color:#3b3833;}
+    .pvit__pr{display:flex;align-items:baseline;gap:7px;margin-top:5px;flex-wrap:wrap;}
+    .pvit__new{font-size:15px;font-weight:800;color:#141210;}
+    .pvit__empty{grid-column:1/-1;text-align:center;color:#8a857d;font-size:13px;margin:0;}
+    .pvit__cta{display:block;width:100%;max-width:340px;margin:24px auto 0;background:#111;color:#fff;
+      text-align:center;padding:15px 24px;font-size:11.5px;font-weight:700;letter-spacing:.14em;
+      text-transform:uppercase;text-decoration:none;border-radius:2px;transition:background .15s ease;}
+    .pvit__cta:hover{background:#c9a24b;}
+    .pvit__cta:focus-visible{outline:2px solid #111;outline-offset:3px;}
+
+    @media(min-width:760px){
+      .pvit{padding:52px 0 56px;}
+      .pvit__head{margin-bottom:30px;}
+      .pvit__kicker{font-size:10.5px;letter-spacing:.3em;}
+      .pvit__grid{grid-template-columns:repeat(4,1fr);gap:16px;}
+      .pvit__grid--few,.pvit__grid--one{grid-template-columns:repeat(auto-fit,minmax(200px,260px));justify-content:center;}
+      .pvit__nm{font-size:12.5px;margin-top:11px;}
+      .pvit__cta{width:auto;display:inline-block;margin-top:30px;padding:14px 34px;}
+      .pvit .container{text-align:center;}
+      .pvit__grid{text-align:left;}
+    }
+  
+</style>
+<style>
+.pv-top{display:flex;flex-wrap:wrap;align-items:baseline;gap:12px;padding:14px 20px;background:#111;color:#fff;}
+.pv-tag{font-size:11px;text-transform:uppercase;letter-spacing:.16em;font-weight:700;}
+.pv-note{font-size:12px;opacity:.72;}
+.container{max-width:1180px;margin:0 auto;padding:0 18px;}
+.pv-ph{display:block;width:100%;height:100%;background:linear-gradient(150deg,#e6e2db,#cfc9c0);}
+.pvit__im{display:block;}
+</style>
