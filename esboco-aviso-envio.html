@@ -1,0 +1,657 @@
+<title>Aviso de Envio · Congresso</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Outfit:wght@300;400;500;600;700&display=swap">
+
+<style>
+:root{
+  --paper:#f6f5f2;
+  --surface:#ffffff;
+  --surface-2:#efedE8;
+  --ink:#131211;
+  --ink-2:#4a4744;
+  --muted:#807b73;
+  --line:#e0ddd6;
+  --line-soft:#eceae4;
+  --amber:#9a7d3f;
+  --amber-soft:#f4ecd9;
+  --amber-line:#dfc78e;
+  --ok:#3f6b4a;
+  --ok-soft:#e6efe7;
+  --no:#8a4a3f;
+  --no-soft:#f5e7e4;
+  --shadow:0 1px 2px rgba(19,18,17,.05),0 8px 24px rgba(19,18,17,.06);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#131211;
+    --surface:#1b1a18;
+    --surface-2:#232120;
+    --ink:#f2f0ec;
+    --ink-2:#c9c5be;
+    --muted:#948e85;
+    --line:#332f2c;
+    --line-soft:#2a2725;
+    --amber:#d7b46a;
+    --amber-soft:#2c2415;
+    --amber-line:#5d4c26;
+    --ok:#8fc09c;
+    --ok-soft:#1e2a21;
+    --no:#d69a8c;
+    --no-soft:#2c1e1b;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#131211;
+  --surface:#1b1a18;
+  --surface-2:#232120;
+  --ink:#f2f0ec;
+  --ink-2:#c9c5be;
+  --muted:#948e85;
+  --line:#332f2c;
+  --line-soft:#2a2725;
+  --amber:#d7b46a;
+  --amber-soft:#2c2415;
+  --amber-line:#5d4c26;
+  --ok:#8fc09c;
+  --ok-soft:#1e2a21;
+  --no:#d69a8c;
+  --no-soft:#2c1e1b;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+}
+
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Outfit',-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  font-size:16px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+.serif-it{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:500;}
+.wrap{max-width:1080px;margin:0 auto;padding:56px 24px 96px;}
+.eyebrow{
+  font-size:11px;text-transform:uppercase;letter-spacing:.18em;
+  color:var(--muted);font-weight:600;margin:0 0 18px;
+}
+
+/* ---------- header ---------- */
+.head{border-bottom:1px solid var(--line);padding-bottom:36px;margin-bottom:48px;}
+h1{
+  font-size:clamp(34px,5.5vw,54px);line-height:1.05;margin:0 0 16px;
+  font-weight:600;letter-spacing:-.02em;text-wrap:balance;
+}
+h1 .serif-it{font-weight:500;letter-spacing:0;}
+.lede{font-size:18px;color:var(--ink-2);max-width:62ch;margin:0;}
+.head-meta{
+  display:flex;flex-wrap:wrap;gap:10px;margin-top:24px;
+}
+.chip{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:12px;letter-spacing:.02em;padding:6px 12px;border-radius:999px;
+  border:1px solid var(--line);background:var(--surface);color:var(--ink-2);
+}
+.chip b{font-weight:600;color:var(--ink);}
+
+/* ---------- section titles ---------- */
+h2{
+  font-size:13px;text-transform:uppercase;letter-spacing:.16em;font-weight:600;
+  color:var(--muted);margin:0 0 20px;
+  display:flex;align-items:center;gap:14px;
+}
+h2::after{content:"";flex:1;height:1px;background:var(--line);}
+.block{margin-bottom:64px;}
+
+/* ---------- o aviso (source of truth) ---------- */
+.copy-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;}
+@media (max-width:820px){.copy-grid{grid-template-columns:1fr;}}
+.copy-card{
+  background:var(--surface);border:1px solid var(--line);border-radius:4px;
+  padding:22px;box-shadow:var(--shadow);
+}
+.copy-card h3{
+  font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);
+  font-weight:600;margin:0 0 4px;
+}
+.copy-card .note{font-size:13px;color:var(--muted);margin:0 0 16px;}
+
+/* ---------- componente do aviso (o que vai no site) ---------- */
+.aviso{
+  background:var(--amber-soft);
+  border:1px solid var(--amber-line);
+  border-left:3px solid var(--amber);
+  border-radius:3px;
+  padding:16px 18px;
+  display:flex;gap:14px;align-items:flex-start;
+  text-align:left;
+}
+.aviso__ic{
+  flex:none;width:22px;height:22px;margin-top:1px;
+  display:grid;place-items:center;font-size:15px;line-height:1;
+}
+.aviso__ttl{
+  font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--ink);margin:0 0 8px;
+}
+.aviso p{margin:0 0 9px;font-size:14px;line-height:1.55;color:var(--ink-2);}
+.aviso p:last-child{margin-bottom:0;}
+.aviso b{color:var(--ink);font-weight:600;}
+.aviso__sign{
+  font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;
+  color:var(--amber);margin-top:12px;
+}
+.aviso--compact{padding:12px 14px;}
+.aviso--compact p{font-size:13px;}
+
+/* ---------- placements ---------- */
+.place{
+  background:var(--surface);border:1px solid var(--line);border-radius:5px;
+  margin-bottom:20px;overflow:hidden;box-shadow:var(--shadow);
+}
+.place__head{
+  display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;
+  padding:20px 24px;border-bottom:1px solid var(--line-soft);
+}
+.place__num{
+  font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;
+  font-size:30px;line-height:1;color:var(--amber);flex:none;
+  font-variant-numeric:tabular-nums;
+}
+.place__id{flex:1;min-width:220px;}
+.place__id h3{font-size:19px;font-weight:600;margin:0;letter-spacing:-.01em;}
+.place__file{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:11.5px;color:var(--muted);margin-top:3px;display:block;
+}
+.badge{
+  font-size:10.5px;text-transform:uppercase;letter-spacing:.12em;font-weight:600;
+  padding:5px 10px;border-radius:2px;flex:none;
+}
+.badge--rec{background:var(--ok-soft);color:var(--ok);}
+.badge--opt{background:var(--surface-2);color:var(--muted);}
+.badge--no{background:var(--no-soft);color:var(--no);}
+
+.place__body{display:grid;grid-template-columns:1.35fr .95fr;gap:0;}
+@media (max-width:880px){.place__body{grid-template-columns:1fr;}}
+.mockwrap{padding:24px;background:var(--surface-2);overflow-x:auto;}
+.notes{padding:24px;border-left:1px solid var(--line-soft);}
+@media (max-width:880px){.notes{border-left:none;border-top:1px solid var(--line-soft);}}
+.notes dt{
+  font-size:10.5px;text-transform:uppercase;letter-spacing:.13em;
+  color:var(--muted);font-weight:600;margin-bottom:5px;
+}
+.notes dd{margin:0 0 16px;font-size:14px;color:var(--ink-2);line-height:1.55;}
+.notes dd:last-child{margin-bottom:0;}
+
+/* ---------- store mock chrome ---------- */
+.mock{
+  background:#fff;color:#111;border:1px solid #ddd9d2;border-radius:4px;
+  overflow:hidden;font-size:13px;min-width:300px;
+}
+.mock__bar{
+  height:26px;background:#f0eeea;border-bottom:1px solid #e3dfd8;
+  display:flex;align-items:center;gap:5px;padding:0 9px;
+}
+.mock__dot{width:7px;height:7px;border-radius:50%;background:#cdc8c0;}
+.mock__url{
+  margin-left:8px;font-size:10px;color:#8a857d;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+.mock__pad{padding:14px;}
+/* store bits */
+.s-announce{background:#111;color:#fff;padding:9px 12px;text-align:center;font-size:11.5px;}
+.s-announce--aviso{background:var(--amber);color:#fff;font-weight:600;letter-spacing:.01em;}
+.s-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 14px;border-bottom:1px solid #eee9e2;
+}
+.s-logo{font-weight:700;font-size:13px;letter-spacing:.06em;}
+.s-nav{display:flex;gap:12px;font-size:10.5px;color:#7d7870;}
+.s-hero{height:82px;background:linear-gradient(135deg,#e8e4dd,#d9d4cb);}
+.s-row{display:flex;gap:12px;}
+.s-thumb{
+  width:74px;height:92px;flex:none;border-radius:2px;
+  background:linear-gradient(150deg,#e6e2db,#cfc9c0);
+}
+.s-thumb--sm{width:44px;height:56px;}
+.s-name{font-weight:600;font-size:12.5px;margin-bottom:3px;}
+.s-meta{font-size:11px;color:#8a857d;}
+.s-price{font-weight:700;font-size:14px;margin:6px 0 2px;}
+.s-sizes{display:flex;gap:5px;margin:10px 0;}
+.s-size{
+  width:26px;height:26px;border:1px solid #ddd8d0;border-radius:2px;
+  display:grid;place-items:center;font-size:10px;color:#5f5b55;
+}
+.s-size.on{border-color:#111;color:#111;font-weight:600;}
+.s-btn{
+  background:#111;color:#fff;text-align:center;padding:11px;border-radius:2px;
+  font-size:12px;font-weight:600;letter-spacing:.02em;
+}
+.s-btn--wa{background:#25a04a;margin-top:7px;}
+.s-btn--ghost{background:#fff;color:#111;border:1px solid #ddd8d0;font-weight:500;}
+.s-field{
+  border:1px solid #e3dfd8;border-radius:2px;padding:9px 10px;
+  font-size:11px;color:#9a958d;margin-top:10px;
+}
+.s-line{display:flex;justify-content:space-between;font-size:12px;padding:4px 0;color:#4a4744;}
+.s-line b{color:#111;}
+.s-total{
+  display:flex;justify-content:space-between;font-size:15px;font-weight:700;
+  padding:10px 0 4px;border-top:1px solid #eee9e2;margin-top:6px;
+}
+.s-hr{height:1px;background:#eee9e2;margin:12px 0;}
+.s-label{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:#8a857d;margin-bottom:7px;}
+.s-freeship{
+  background:#f4f2ee;border-radius:2px;padding:9px 11px;font-size:11px;color:#4a4744;
+}
+.s-freeship__bar{height:4px;background:#e0dbd3;border-radius:2px;margin-top:6px;position:relative;}
+.s-freeship__bar span{position:absolute;inset:0 38% 0 0;background:#111;border-radius:2px;}
+.s-drawer{
+  border-left:1px solid #ddd9d2;background:#fff;width:100%;
+}
+.s-drawer__head{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:12px 14px;border-bottom:1px solid #eee9e2;font-weight:600;font-size:12.5px;
+}
+.s-checkout{background:#fff;}
+.s-ck-head{padding:12px 14px;border-bottom:1px solid #eee9e2;font-weight:700;font-size:12px;letter-spacing:.06em;}
+.s-ck-step{font-size:11px;color:#8a857d;padding:9px 14px;border-bottom:1px solid #f2efe9;}
+.s-ship-opt{
+  display:flex;justify-content:space-between;align-items:flex-start;gap:10px;
+  border:1px solid #ddd8d0;border-radius:2px;padding:10px;margin-top:8px;font-size:11.5px;
+}
+.s-ship-opt.on{border-color:#111;}
+.s-ship-opt small{display:block;color:#8a857d;font-size:10.5px;margin-top:2px;}
+.mock-note{
+  font-size:11px;color:var(--muted);margin-top:10px;font-style:italic;
+}
+.arrowtag{
+  display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:600;
+  text-transform:uppercase;letter-spacing:.1em;color:var(--amber);margin-bottom:7px;
+}
+
+/* ---------- recommendation ---------- */
+.rec{
+  background:var(--surface);border:1px solid var(--ink);border-radius:5px;padding:28px;
+}
+.rec h3{font-size:22px;margin:0 0 6px;font-weight:600;letter-spacing:-.01em;}
+.rec > p{color:var(--ink-2);margin:0 0 22px;max-width:62ch;font-size:15px;}
+.rec ol{margin:0;padding:0;list-style:none;counter-reset:r;display:grid;gap:14px;}
+.rec li{
+  counter-increment:r;display:grid;grid-template-columns:26px 1fr;gap:14px;
+  align-items:start;font-size:14.5px;color:var(--ink-2);
+}
+.rec li::before{
+  content:counter(r);
+  font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:20px;
+  color:var(--amber);line-height:1.2;
+}
+.rec li b{color:var(--ink);font-weight:600;}
+
+/* ---------- code ---------- */
+details.code{
+  margin-top:14px;border:1px solid var(--line);border-radius:4px;background:var(--surface);
+}
+details.code summary{
+  cursor:pointer;padding:12px 16px;font-size:12px;font-weight:600;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--muted);
+}
+details.code summary:focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
+details.code[open] summary{border-bottom:1px solid var(--line-soft);}
+pre{
+  margin:0;padding:16px;overflow-x:auto;font-size:12px;line-height:1.6;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--ink-2);
+}
+.removal{
+  margin-top:20px;padding:20px 24px;border:1px dashed var(--line);border-radius:4px;
+  background:var(--surface);
+}
+.removal h3{font-size:15px;margin:0 0 10px;font-weight:600;}
+.removal ul{margin:0;padding-left:20px;font-size:14px;color:var(--ink-2);}
+.removal li{margin-bottom:6px;}
+footer{
+  margin-top:56px;padding-top:24px;border-top:1px solid var(--line);
+  font-size:12.5px;color:var(--muted);
+}
+</style>
+
+<div class="wrap">
+
+  <header class="head">
+    <p class="eyebrow">contt.s fitness · esboço interno</p>
+    <h1>onde entra o <span class="serif-it">aviso de envio</span></h1>
+    <p class="lede">Seis pontos possíveis do caminho de compra, do topo do site até o e-mail de confirmação. Cada um está desenhado como ficaria de verdade no tema, para escolhermos a posição antes de publicar.</p>
+    <div class="head-meta">
+      <span class="chip">período: <b>28/ago → 10/set</b></span>
+      <span class="chip">loja: <b>conttsfitness.com.br</b></span>
+      <span class="chip">plano: <b>Shopify Basic</b></span>
+      <span class="chip"><b>temporário</b> — sai depois do congresso</span>
+    </div>
+  </header>
+
+  <section class="block">
+    <h2>o texto</h2>
+    <div class="copy-grid">
+      <div class="copy-card">
+        <h3>versão completa</h3>
+        <p class="note">Para sacola, página de produto e e-mail — onde há espaço para ler.</p>
+        <div class="aviso">
+          <span class="aviso__ic" aria-hidden="true">⚠️</span>
+          <div>
+            <p class="aviso__ttl">Aviso importante sobre os envios</p>
+            <p>Estaremos participando de um <b>Congresso Internacional</b> e, por isso, os pedidos realizados <b>a partir do dia 28 de agosto</b> terão o envio realizado <b>a partir do dia 10 de setembro</b>.</p>
+            <p>Você pode realizar sua compra normalmente. Pedimos apenas que esteja ciente desse prazo especial de postagem antes de finalizar o seu pedido.</p>
+            <p>Agradecemos a compreensão e o carinho! 💖</p>
+            <p class="aviso__sign">CONTT.s FITNESS</p>
+          </div>
+        </div>
+      </div>
+      <div class="copy-card">
+        <h3>versão curta</h3>
+        <p class="note">Para a barra do topo e o rodapé da sacola lateral, que só cabem uma linha. Em minúsculas, como o resto do site.</p>
+        <div class="aviso aviso--compact">
+          <span class="aviso__ic" aria-hidden="true">⚠️</span>
+          <div>
+            <p>pedidos feitos <b>a partir de 28/08</b> serão postados <b>a partir de 10/09</b> — estaremos em congresso internacional</p>
+          </div>
+        </div>
+        <p class="mock-note">Uma linha ainda mais curta, para a barra preta do topo: “envios a partir de 10/09 — estamos em congresso internacional”.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>os seis pontos, na ordem da compra</h2>
+
+    <!-- 1 -->
+    <article class="place">
+      <div class="place__head">
+        <span class="place__num">1</span>
+        <div class="place__id">
+          <h3>barra de anúncios, no topo de todas as páginas</h3>
+          <code class="place__file">sections/announcement-bar.liquid</code>
+        </div>
+        <span class="badge badge--rec">recomendado</span>
+      </div>
+      <div class="place__body">
+        <div class="mockwrap">
+          <div class="mock">
+            <div class="mock__bar"><span class="mock__dot"></span><span class="mock__dot"></span><span class="mock__dot"></span><span class="mock__url">conttsfitness.com.br</span></div>
+            <div class="s-announce s-announce--aviso">⚠️ envios a partir de 10/09 — estamos em congresso internacional</div>
+            <div class="s-header">
+              <span class="s-logo">CONTT.s</span>
+              <span class="s-nav"><span>novidades</span><span>legging</span><span>tops</span><span>sacola</span></span>
+            </div>
+            <div class="s-hero"></div>
+            <div class="mock__pad s-row">
+              <div class="s-thumb"></div><div class="s-thumb"></div><div class="s-thumb"></div>
+            </div>
+          </div>
+          <p class="mock-note">A barra já gira 4 mensagens (frete grátis, cupom, parcelamento). O aviso entra como mais um slide — ou fica fixo sozinho, se quisermos peso máximo.</p>
+        </div>
+        <dl class="notes">
+          <dt>por que aqui</dt>
+          <dd>É o primeiro elemento da página, aparece em todo o site e não depende de a cliente chegar à sacola. Zero risco de alguém comprar sem ter visto.</dd>
+          <dt>atenção</dt>
+          <dd>Cabe só uma linha. Sozinha, ela avisa mas não explica — por isso deve vir acompanhada de um dos pontos abaixo, onde o texto completo cabe.</dd>
+          <dt>como se faz</dt>
+          <dd>Direto no editor de temas: <b>Barra de anúncios → adicionar mensagem</b>. Não precisa mexer em código, e sai com um clique depois.</dd>
+        </dl>
+      </div>
+    </article>
+
+    <!-- 2 -->
+    <article class="place">
+      <div class="place__head">
+        <span class="place__num">2</span>
+        <div class="place__id">
+          <h3>página do produto, logo abaixo do botão comprar</h3>
+          <code class="place__file">sections/main-product.liquid</code>
+        </div>
+        <span class="badge badge--rec">recomendado</span>
+      </div>
+      <div class="place__body">
+        <div class="mockwrap">
+          <div class="mock" style="max-width:340px">
+            <div class="mock__bar"><span class="mock__dot"></span><span class="mock__dot"></span><span class="mock__dot"></span><span class="mock__url">/products/legging-college</span></div>
+            <div class="mock__pad">
+              <div class="s-name">legging empina bumbum college</div>
+              <div class="s-price">R$ 199,00</div>
+              <div class="s-meta">6x de R$ 33,16 sem juros</div>
+              <div class="s-label" style="margin-top:12px">tamanho</div>
+              <div class="s-sizes"><span class="s-size">pp</span><span class="s-size on">p</span><span class="s-size">m</span><span class="s-size">g</span></div>
+              <div class="s-btn">comprar</div>
+              <div class="s-btn s-btn--wa">finalizar compra pelo whatsapp</div>
+              <div style="margin-top:12px">
+                <span class="arrowtag">↓ aviso entra aqui</span>
+                <div class="aviso aviso--compact">
+                  <span class="aviso__ic" aria-hidden="true">⚠️</span>
+                  <div>
+                    <p class="aviso__ttl" style="margin-bottom:6px">Envios do congresso</p>
+                    <p>pedidos feitos <b>a partir de 28/08</b> serão postados <b>a partir de 10/09</b>.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="s-label" style="margin-top:14px">frete e prazo</div>
+              <div class="s-field">CEP</div>
+            </div>
+          </div>
+        </div>
+        <dl class="notes">
+          <dt>por que aqui</dt>
+          <dd>É onde a cliente decide. O aviso encosta no botão “comprar” e no cálculo de frete — exatamente o momento em que ela está pensando em prazo.</dd>
+          <dt>atenção</dt>
+          <dd>Fica logo abaixo do botão, nunca acima: acima empurra o preço e o tamanho para baixo e derruba a conversão no celular.</dd>
+          <dt>como se faz</dt>
+          <dd>Uma linha no tema, antes do bloco <code>frete e prazo</code>. O aviso já herda o estilo do bloco de frete que está ali.</dd>
+        </dl>
+      </div>
+    </article>
+
+    <!-- 3 -->
+    <article class="place">
+      <div class="place__head">
+        <span class="place__num">3</span>
+        <div class="place__id">
+          <h3>sacola lateral, acima de finalizar compra</h3>
+          <code class="place__file">snippets/site-overlays.liquid</code>
+        </div>
+        <span class="badge badge--rec">recomendado</span>
+      </div>
+      <div class="place__body">
+        <div class="mockwrap">
+          <div class="mock s-drawer" style="max-width:300px">
+            <div class="s-drawer__head"><span>minha sacola</span><span style="color:#9a958d">×</span></div>
+            <div class="mock__pad">
+              <div class="s-row" style="margin-bottom:12px">
+                <div class="s-thumb s-thumb--sm"></div>
+                <div><div class="s-name">short empina bumbum</div><div class="s-meta">rosa claro · p</div><div class="s-meta">1x R$ 139,00</div></div>
+              </div>
+              <div class="s-freeship">faltam <b>R$ 60,00</b> para o frete grátis<div class="s-freeship__bar"><span></span></div></div>
+              <div class="s-hr"></div>
+              <span class="arrowtag">↓ aviso entra aqui</span>
+              <div class="aviso aviso--compact">
+                <span class="aviso__ic" aria-hidden="true">⚠️</span>
+                <div><p>envio dos pedidos <b>a partir de 10/09</b> — congresso internacional</p></div>
+              </div>
+              <div class="s-total"><span>subtotal</span><span>R$ 139,00</span></div>
+              <div class="s-btn" style="margin-top:10px">finalizar compra</div>
+              <div class="s-btn s-btn--ghost" style="margin-top:7px">continuar comprando</div>
+            </div>
+          </div>
+        </div>
+        <dl class="notes">
+          <dt>por que aqui</dt>
+          <dd>A sacola lateral é por onde a maioria vai para o pagamento. O aviso fica colado no botão que leva ao checkout — o último ponto que ainda é nosso.</dd>
+          <dt>atenção</dt>
+          <dd>O rodapé da sacola é curto: só a versão de uma linha cabe sem empurrar o botão para fora da tela no celular.</dd>
+          <dt>como se faz</dt>
+          <dd>No rodapé do minicart, logo antes do bloco de subtotal.</dd>
+        </dl>
+      </div>
+    </article>
+
+    <!-- 4 -->
+    <article class="place">
+      <div class="place__head">
+        <span class="place__num">4</span>
+        <div class="place__id">
+          <h3>página da sacola, acima da lista de produtos</h3>
+          <code class="place__file">templates/cart.liquid</code>
+        </div>
+        <span class="badge badge--rec">recomendado · texto completo</span>
+      </div>
+      <div class="place__body">
+        <div class="mockwrap">
+          <div class="mock" style="max-width:520px">
+            <div class="mock__bar"><span class="mock__dot"></span><span class="mock__dot"></span><span class="mock__dot"></span><span class="mock__url">/cart</span></div>
+            <div class="mock__pad">
+              <div style="font-size:11px;color:#9a958d;margin-bottom:6px">início &gt; minha sacola</div>
+              <div style="font-size:20px;font-weight:600;margin-bottom:4px">minha <span class="serif-it">sacola</span></div>
+              <div style="font-size:11px;color:#8a857d;margin-bottom:12px"><b>1. sacola</b> › 2. identificação › 3. pagamento</div>
+              <div class="s-freeship" style="margin-bottom:12px">faltam <b>R$ 60,00</b> para o <b>frete grátis</b><div class="s-freeship__bar"><span></span></div></div>
+              <span class="arrowtag">↓ aviso entra aqui, texto completo</span>
+              <div class="aviso">
+                <span class="aviso__ic" aria-hidden="true">⚠️</span>
+                <div>
+                  <p class="aviso__ttl">Aviso importante sobre os envios</p>
+                  <p>Estaremos participando de um <b>Congresso Internacional</b> e, por isso, os pedidos realizados <b>a partir do dia 28 de agosto</b> terão o envio realizado <b>a partir do dia 10 de setembro</b>.</p>
+                  <p>Você pode comprar normalmente — pedimos só que esteja ciente desse prazo antes de finalizar. Agradecemos a compreensão e o carinho! 💖</p>
+                </div>
+              </div>
+              <div class="s-hr"></div>
+              <div class="s-row">
+                <div class="s-thumb s-thumb--sm"></div>
+                <div style="flex:1"><div class="s-name">short empina bumbum rosa claro</div><div class="s-meta">p · 1 unidade</div></div>
+                <div style="font-weight:700;font-size:12.5px">R$ 139,00</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <dl class="notes">
+          <dt>por que aqui</dt>
+          <dd>É a única tela do caminho onde o texto inteiro cabe confortavelmente, ainda antes do pagamento. Fica junto da barra de frete grátis, que a cliente já lê com atenção.</dd>
+          <dt>atenção</dt>
+          <dd>Abaixo da barra de frete grátis, não acima: aquela barra é o que faz a cliente aumentar o pedido, e ela deve continuar sendo a primeira coisa vista.</dd>
+          <dt>como se faz</dt>
+          <dd>Um bloco no topo da sacola, dentro do trecho que só aparece quando há produtos.</dd>
+        </dl>
+      </div>
+    </article>
+
+    <!-- 5 -->
+    <article class="place">
+      <div class="place__head">
+        <span class="place__num">5</span>
+        <div class="place__id">
+          <h3>dentro do checkout da Shopify</h3>
+          <code class="place__file">fora do tema — painel da Shopify</code>
+        </div>
+        <span class="badge badge--no">banner não dá no Basic</span>
+      </div>
+      <div class="place__body">
+        <div class="mockwrap">
+          <div class="mock s-checkout" style="max-width:360px">
+            <div class="mock__bar"><span class="mock__dot"></span><span class="mock__dot"></span><span class="mock__dot"></span><span class="mock__url">checkout.shopify.com</span></div>
+            <div class="s-ck-head">CONTT.s FITNESS</div>
+            <div class="s-ck-step">contato · entrega · <b style="color:#111">forma de envio</b> · pagamento</div>
+            <div class="mock__pad">
+              <div class="s-label">forma de envio</div>
+              <span class="arrowtag">↓ o que dá para mudar aqui</span>
+              <div class="s-ship-opt on">
+                <span>PAC — postagem a partir de 10/09 <small>estamos em congresso internacional</small></span>
+                <b>R$ 24,90</b>
+              </div>
+              <div class="s-ship-opt">
+                <span>SEDEX — postagem a partir de 10/09 <small>estamos em congresso internacional</small></span>
+                <b>R$ 39,90</b>
+              </div>
+              <div class="s-btn" style="margin-top:12px">continuar para pagamento</div>
+            </div>
+          </div>
+          <p class="mock-note">O checkout em si é da Shopify e, no plano Basic, não aceita banner nosso sem instalar um app. Mas o <b>nome de cada forma de envio</b> é editável — e ele aparece bem na hora de escolher o frete.</p>
+        </div>
+        <dl class="notes">
+          <dt>por que aqui</dt>
+          <dd>É o único jeito de o aviso aparecer dentro do checkout sem app e sem plano Plus — e é o segundo mais forte, porque ninguém passa do frete sem ler o nome dele.</dd>
+          <dt>atenção</dt>
+          <dd>Mexe nas tarifas de envio de verdade, no painel da Shopify. Se esquecermos de voltar o nome depois do congresso, o aviso fica lá para sempre — é o ponto que mais exige lembrete de remoção.</dd>
+          <dt>como se faz</dt>
+          <dd>Configurações → Envio e entrega → renomear cada tarifa. Nada de código, e volta ao normal em dois minutos.</dd>
+        </dl>
+      </div>
+    </article>
+
+    <!-- 6 -->
+    <article class="place">
+      <div class="place__head">
+        <span class="place__num">6</span>
+        <div class="place__id">
+          <h3>e-mail de confirmação do pedido</h3>
+          <code class="place__file">Shopify → notificações</code>
+        </div>
+        <span class="badge badge--opt">opcional</span>
+      </div>
+      <div class="place__body">
+        <div class="mockwrap">
+          <div class="mock" style="max-width:340px">
+            <div class="mock__bar"><span class="mock__dot"></span><span class="mock__dot"></span><span class="mock__dot"></span><span class="mock__url">e-mail · pedido confirmado</span></div>
+            <div class="mock__pad">
+              <div style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#8a857d">pedido #1042</div>
+              <div style="font-size:17px;font-weight:600;margin:4px 0 10px">obrigada pela sua compra!</div>
+              <div class="aviso aviso--compact">
+                <span class="aviso__ic" aria-hidden="true">⚠️</span>
+                <div><p>seu pedido será postado <b>a partir de 10/09</b>, quando voltarmos do congresso internacional. avisamos assim que ele sair. 💖</p></div>
+              </div>
+              <div class="s-hr"></div>
+              <div class="s-line"><span>short empina bumbum · p</span><b>R$ 139,00</b></div>
+              <div class="s-total"><span>total</span><span>R$ 139,00</span></div>
+            </div>
+          </div>
+        </div>
+        <dl class="notes">
+          <dt>por que aqui</dt>
+          <dd>Não evita a dúvida antes da compra, mas evita a mensagem no WhatsApp depois — “meu pedido já saiu?”. É o que mais reduz atendimento nessas duas semanas.</dd>
+          <dt>atenção</dt>
+          <dd>Chega depois do pagamento. Só serve como reforço, nunca como o único lugar do aviso.</dd>
+          <dt>como se faz</dt>
+          <dd>Configurações → Notificações → Confirmação de pedido.</dd>
+        </dl>
+      </div>
+    </article>
+  </section>
+
+  <section class="block">
+    <h2>o que eu recomendo</h2>
+    <div class="rec">
+      <h3>Três lugares, um texto em cada tamanho</h3>
+      <p>O aviso completo não cabe em todo lugar, e repetir o texto inteiro quatro vezes cansa. A combinação abaixo cobre o caminho todo sem poluir: a cliente vê a versão curta cedo, lê a completa na sacola e recebe o lembrete no e-mail.</p>
+      <ol>
+        <li><b>Barra do topo</b> — uma linha, em todo o site. Ninguém navega sem ver.</li>
+        <li><b>Página da sacola</b> — o texto completo, logo abaixo da barra de frete grátis. É onde ela lê antes de pagar.</li>
+        <li><b>Sacola lateral</b> — uma linha acima de “finalizar compra”, para quem vai direto pelo minicart e nunca abre a página da sacola.</li>
+      </ol>
+      <p style="margin:22px 0 0;font-size:14px;">Se quisermos ir mais longe: o ponto <b>5</b> (nome da forma de envio) é o único que entra dentro do checkout no plano Basic, e o <b>6</b> (e-mail) é o que mais poupa atendimento. Os dois são independentes do tema — dá para ligar e desligar no painel.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>como sai depois do congresso</h2>
+    <div class="removal">
+      <h3>Tudo foi pensado para sair rápido, sem cirurgia no tema</h3>
+      <ul>
+        <li>O aviso fica num único arquivo do tema, chamado de fora nos pontos escolhidos — apagar as chamadas remove tudo.</li>
+        <li>As datas ficam num só lugar, no topo do arquivo: dá para prorrogar sem procurar texto espalhado.</li>
+        <li>Barra do topo e e-mail saem pelo painel da Shopify, sem código.</li>
+        <li>Se usarmos o ponto 5, anotar: <b>voltar os nomes das tarifas de envio</b> — é o único que não some sozinho.</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>
+    Esboço para decisão — nada foi publicado na loja ainda. Escolhido o lugar, aplico e mando o link para conferir no site de verdade.
+  </footer>
+</div>

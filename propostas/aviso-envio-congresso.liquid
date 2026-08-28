@@ -1,0 +1,46 @@
+{%- comment -%}
+  AVISO TEMPORÁRIO DE ENVIO — Congresso Internacional (28/08 → 10/09)
+  Rascunho: ainda NÃO aplicado ao tema contts-shopify-theme.
+
+  Uso:
+    {% render 'aviso-envio-congresso' %}                  → texto completo (página da sacola)
+    {% render 'aviso-envio-congresso', modo: 'curto' %}   → uma linha (sacola lateral, página de produto)
+
+  Para tirar depois do congresso: apagar as chamadas {% render %} e este arquivo.
+  Para prorrogar: mudar só as duas datas abaixo.
+{%- endcomment -%}
+
+{%- assign data_inicio = '28 de agosto' -%}
+{%- assign data_envio  = '10 de setembro' -%}
+{%- assign data_envio_curta = '10/09' -%}
+{%- assign data_inicio_curta = '28/08' -%}
+
+<div class="aviso-envio{% if modo == 'curto' %} aviso-envio--curto{% endif %}" role="status">
+  <span class="aviso-envio__ic" aria-hidden="true">⚠️</span>
+  <div class="aviso-envio__txt">
+    {%- if modo == 'curto' -%}
+      <p>pedidos feitos <b>a partir de {{ data_inicio_curta }}</b> serão postados <b>a partir de {{ data_envio_curta }}</b> — estaremos em congresso internacional</p>
+    {%- else -%}
+      <p class="aviso-envio__ttl">aviso importante sobre os envios</p>
+      <p>Estaremos participando de um <b>Congresso Internacional</b> e, por isso, os pedidos realizados <b>a partir do dia {{ data_inicio }}</b> terão o envio realizado <b>a partir do dia {{ data_envio }}</b>.</p>
+      <p>Você pode realizar sua compra normalmente. Pedimos apenas que esteja ciente desse prazo especial de postagem antes de finalizar o seu pedido.</p>
+      <p>Agradecemos a compreensão e o carinho! 💖</p>
+      <p class="aviso-envio__sign">CONTT.s FITNESS</p>
+    {%- endif -%}
+  </div>
+</div>
+
+{%- unless aviso_envio_css -%}
+  {%- assign aviso_envio_css = true -%}
+  <style>
+    .aviso-envio{display:flex;gap:12px;align-items:flex-start;background:#f4ecd9;border:1px solid #dfc78e;border-left:3px solid #9a7d3f;border-radius:3px;padding:14px 16px;margin:16px 0;}
+    .aviso-envio__ic{flex:none;font-size:15px;line-height:1.4;}
+    .aviso-envio p{margin:0 0 8px;font-size:14px;line-height:1.55;color:#4a4744;}
+    .aviso-envio p:last-child{margin-bottom:0;}
+    .aviso-envio b{color:#111;font-weight:600;}
+    .aviso-envio__ttl{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#111;}
+    .aviso-envio__sign{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:#9a7d3f;margin-top:10px;}
+    .aviso-envio--curto{padding:11px 13px;margin:12px 0;}
+    .aviso-envio--curto p{font-size:13px;}
+  </style>
+{%- endunless -%}
