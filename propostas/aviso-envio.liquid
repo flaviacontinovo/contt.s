@@ -1,0 +1,22 @@
+{%- comment -%}
+  AVISO TEMPORÁRIO DE ENVIO — Congresso Internacional.
+  CSS .aviso-envio em site.css (seção produto.html).
+  Uso: {% render 'aviso-envio' %} — hoje só na página de produto, acima do bloco "frete e prazo".
+
+  Para prorrogar: mude apenas as duas datas abaixo.
+  Para remover depois do congresso: apague o {% render 'aviso-envio' %} de
+  sections/main-product.liquid, este arquivo e o bloco .aviso-envio do site.css.
+{%- endcomment -%}
+
+{%- assign aviso_data_pedido = '28/08' -%}
+{%- assign aviso_data_envio = '10/09' -%}
+
+<div class="aviso-envio" role="status">
+  <span class="aviso-envio__ic" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+  </span>
+  <span class="aviso-envio__txt">
+    <b>ATENÇÃO, SOBRE ENVIOS</b>
+    <small>pedidos feitos a partir de <b>{{ aviso_data_pedido }}</b> serão postados a partir de <b>{{ aviso_data_envio }}</b> — estaremos em congresso internacional</small>
+  </span>
+</div>
