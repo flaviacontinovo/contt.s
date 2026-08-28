@@ -5,10 +5,10 @@
 
 <div class="pv-top">
   <span class="pv-tag">pr&eacute;via com o css real do tema</span>
-  <span class="pv-note">o card marcado &eacute; o de dois tamanhos &middot; r&oacute;tulo, linha e bot&atilde;o na mesma altura dos outros</span>
+  <span class="pv-note">o card marcado &eacute; o electric rose, que tem tamanho de top e de legging &mdash; agora igual aos outros</span>
 </div>
 
-<div class="container" style="padding:18px 16px 40px">
+<div class="container" style="padding:18px 16px 26px">
   <div class="pgrid">
 
     <div class="pcard">
@@ -28,8 +28,8 @@
       <div class="pcard__pix">R$ 291,65 <small>no pix</small></div>
       <div class="pcard__inst">ou R$ 307,00 em at&eacute; 6x sem juros</div>
       <div class="pcard__sizelabel">tamanho</div>
-      <div class="pcard__sizes pcard__sizes--uni"><span class="pcard__size pcard__size--uni">top e legging</span></div>
-      <a class="pcard__cart pcard__cart--choose" href="#">escolher tamanhos</a>
+      <div class="pcard__sizes"><button type="button" class="pcard__size">P</button><button type="button" class="pcard__size">M</button><button type="button" class="pcard__size">G</button></div>
+      <button class="pcard__cart" type="button">adicionar ao carrinho</button>
     </div>
     <div class="pcard">
       <a class="pcard__imgwrap" href="#"><span class="pcard__best">best seller</span><span class="pv-ph"></span></a>
@@ -52,6 +52,7 @@
       <button class="pcard__cart" type="button">adicionar ao carrinho</button>
     </div>
   </div>
+  <p class="pv-foot">No card marcado, o bot&atilde;o <b>M</b> adiciona o conjunto inteiro no tamanho M &mdash; top M e legging M. Para misturar tamanhos, a cliente abre a p&aacute;gina do produto, onde os dois seletores aparecem separados.</p>
 </div>
 
 <style>
@@ -208,7 +209,6 @@ input,select,textarea{font-family:inherit;}
 .pcard__inst{font-size:11px;color:var(--muted);margin-top:2px;}
 .pcard__cart{margin-top:auto;width:100%;padding:12px;background:#000;color:#fff;border:none;text-transform:lowercase;font-size:12.5px;font-weight:600;letter-spacing:.02em;cursor:pointer;transition:background .2s;}
 .pcard__cart:hover{background:var(--gold);}
-.pcard__cart--choose{display:block;box-sizing:border-box;text-align:center;text-decoration:none;}
 /* ===== tamanhos para compra rápida no card ===== */
 .pcard__sizelabel{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 6px;text-align:center;}
 .pcard__sizelabel--center{text-align:center;}
@@ -1508,4 +1508,5 @@ body{background:#fafafa;}
 @media(min-width:760px){.pgrid{grid-template-columns:repeat(4,1fr);}}
 .pcard{display:flex;flex-direction:column;}
 .pv-mark{outline:2px dashed #c9a24b;outline-offset:6px;}
+.pv-foot{margin:34px auto 0;max-width:62ch;font-size:13.5px;line-height:1.6;color:#4b463f;text-align:center;}
 </style>
