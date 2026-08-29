@@ -1,0 +1,205 @@
+<title>Auditoria de Cores</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,500&family=Outfit:wght@300;400;500;600;700;800&display=swap">
+
+<style>
+:root{
+  --paper:#f7f6f3;--surface:#fff;--surface-2:#efece6;
+  --ink:#14120f;--ink-2:#4b463f;--muted:#7d776d;
+  --line:#e3dfd7;--line-soft:#eeebe4;
+  --gold:#c9a24b;--gold-deep:#8a6d2e;--gold-soft:#f7f0df;
+  --ok:#3f6b4a;--ok-soft:#e7efe8;
+  --bad:#8a4a3f;--bad-soft:#f6e8e5;
+  --warn:#8a6d2e;--warn-soft:#f9f1de;
+  --shadow:0 1px 2px rgba(20,18,15,.05),0 10px 30px rgba(20,18,15,.07);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#131211;--surface:#1c1a18;--surface-2:#252220;
+  --ink:#f3f1ec;--ink-2:#cac5bc;--muted:#948d82;
+  --line:#332f2b;--line-soft:#2a2724;
+  --gold:#dcb668;--gold-deep:#e0c489;--gold-soft:#2e2617;
+  --ok:#90c19d;--ok-soft:#1e2a21;--bad:#d79a8c;--bad-soft:#2c1e1b;
+  --warn:#e0c489;--warn-soft:#2c2415;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);
+}}
+:root[data-theme="dark"]{
+  --paper:#131211;--surface:#1c1a18;--surface-2:#252220;
+  --ink:#f3f1ec;--ink-2:#cac5bc;--muted:#948d82;
+  --line:#332f2b;--line-soft:#2a2724;
+  --gold:#dcb668;--gold-deep:#e0c489;--gold-soft:#2e2617;
+  --ok:#90c19d;--ok-soft:#1e2a21;--bad:#d79a8c;--bad-soft:#2c1e1b;
+  --warn:#e0c489;--warn-soft:#2c2415;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:'Outfit',-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+.serif-it{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:500;}
+.wrap{max-width:1000px;margin:0 auto;padding:52px 22px 90px;}
+.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted);font-weight:600;margin:0 0 16px;}
+h1{font-size:clamp(32px,5.4vw,50px);line-height:1.04;margin:0 0 14px;font-weight:600;letter-spacing:-.025em;text-wrap:balance;}
+.lede{font-size:17.5px;color:var(--ink-2);max-width:64ch;margin:0;}
+.head{border-bottom:1px solid var(--line);padding-bottom:32px;margin-bottom:40px;}
+h2{font-size:13px;text-transform:uppercase;letter-spacing:.16em;font-weight:600;color:var(--muted);
+  margin:0 0 20px;display:flex;align-items:center;gap:14px;}
+h2::after{content:"";flex:1;height:1px;background:var(--line);}
+.block{margin-bottom:56px;}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:26px;}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:5px;padding:16px 18px;box-shadow:var(--shadow);}
+.stat b{display:block;font-size:27px;font-weight:800;letter-spacing:-.02em;line-height:1;font-variant-numeric:tabular-nums;}
+.stat span{display:block;font-size:12.5px;color:var(--muted);margin-top:6px;line-height:1.35;}
+
+.item{background:var(--surface);border:1px solid var(--line);border-radius:5px;padding:18px 20px;
+  margin-bottom:12px;box-shadow:var(--shadow);display:grid;grid-template-columns:38px 1fr;gap:16px;align-items:start;}
+.sw{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);flex:none;}
+.item h3{margin:0 0 3px;font-size:16px;font-weight:600;letter-spacing:-.01em;}
+.item p{margin:0;font-size:14px;color:var(--ink-2);line-height:1.55;}
+.item code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;color:var(--muted);}
+.tag{display:inline-block;font-size:10px;text-transform:uppercase;letter-spacing:.12em;font-weight:700;
+  padding:4px 8px;border-radius:2px;margin-bottom:7px;}
+.tag--ok{background:var(--ok-soft);color:var(--ok);}
+.tag--bad{background:var(--bad-soft);color:var(--bad);}
+.tag--warn{background:var(--warn-soft);color:var(--warn);}
+.pair{display:flex;align-items:center;gap:9px;margin-top:9px;font-size:12.5px;color:var(--muted);}
+.pair i{width:22px;height:22px;border-radius:50%;border:1px solid var(--line);display:inline-block;flex:none;}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:5px;background:var(--surface);}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:520px;}
+th,td{text-align:left;padding:12px 16px;border-bottom:1px solid var(--line-soft);vertical-align:top;}
+th{font-size:10.5px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:600;}
+tr:last-child td{border-bottom:none;}
+td b{font-weight:600;}
+.note{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--gold);
+  border-radius:4px;padding:18px 20px;font-size:14.5px;color:var(--ink-2);line-height:1.6;}
+.note b{color:var(--ink);}
+footer{margin-top:52px;padding-top:22px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted);}
+</style>
+
+<div class="wrap">
+  <header class="head">
+    <p class="eyebrow">contt.s fitness · verificação de catálogo</p>
+    <h1>as cores de <span class="serif-it">todos</span> os produtos</h1>
+    <p class="lede">Passei os 258 produtos da loja pela mesma regra que o tema usa para pintar a bolinha de cor. A conclusão principal: o problema era do site, não do seu cadastro.</p>
+    <div class="stats">
+      <div class="stat"><b>258</b><span>produtos verificados</span></div>
+      <div class="stat"><b>30</b><span>nomes de cor em uso</span></div>
+      <div class="stat"><b>4</b><span>corrigidas no tema</span></div>
+      <div class="stat"><b>0</b><span>conflitos título × cor</span></div>
+      <div class="stat"><b>6</b><span>casos a decidir</span></div>
+      <div class="stat"><b>2</b><span>endereços desatualizados</span></div>
+    </div>
+  </header>
+
+  <section class="block">
+    <h2>como a bolinha de cor funciona</h2>
+    <div class="note">
+      A bolinha não sai da foto: ela vem do <b>nome</b> que você digita no campo Cor. O tema tem uma lista que traduz nome em cor — "preto" vira preto, "azul marinho" vira azul escuro. <b>Quando o nome não está na lista, sai um cinza claro</b>, que na tela parece branco ou defeito. Foi exatamente o que aconteceu com a matcha.
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>1. corrigido no site — já no ar</h2>
+
+    <div class="item">
+      <span class="sw" style="background:#93a55e"></span>
+      <div>
+        <span class="tag tag--ok">corrigido</span>
+        <h3>Matcha</h3>
+        <p>Não estava na lista. Ganhou verde próprio.</p>
+        <div class="pair"><i style="background:#c9c4bb"></i> antes <i style="background:#93a55e"></i> agora</div>
+      </div>
+    </div>
+
+    <div class="item">
+      <span class="sw" style="background:#b08d6a"></span>
+      <div>
+        <span class="tag tag--ok">corrigido</span>
+        <h3>Capuccino</h3>
+        <p>Mesmo problema da matcha — saía cinza. Usada em <code>legging canelada capuccino milano</code> e <code>top milano canelado capuccino</code>.</p>
+        <div class="pair"><i style="background:#c9c4bb"></i> antes <i style="background:#b08d6a"></i> agora</div>
+      </div>
+    </div>
+
+    <div class="item">
+      <span class="sw" style="background:#e3c3bb"></span>
+      <div>
+        <span class="tag tag--ok">corrigido</span>
+        <h3>Nude Rosé</h3>
+        <p>Virava nude puro, sem o rosado, porque a regra de "nude" vinha antes. Agora tem tom próprio.</p>
+        <div class="pair"><i style="background:#e7d8c4"></i> antes <i style="background:#e3c3bb"></i> agora</div>
+      </div>
+    </div>
+
+    <div class="item">
+      <span class="sw" style="background:repeating-linear-gradient(45deg,#d3cabc 0 4px,#a99c89 4px 8px)"></span>
+      <div>
+        <span class="tag tag--ok">corrigido</span>
+        <h3>Estampado</h3>
+        <p>É o nome mais usado da loja — dezenas de peças — e saía cinza liso. Agora mostra uma textura listrada, que sinaliza estampa em vez de fingir uma cor que a peça não tem.</p>
+        <div class="pair"><i style="background:#c9c4bb"></i> antes <i style="background:repeating-linear-gradient(45deg,#d3cabc 0 4px,#a99c89 4px 8px)"></i> agora</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>2. cadastro — nenhum conflito</h2>
+    <p style="margin:-6px 0 18px;font-size:14.5px;color:var(--ink-2);max-width:64ch;">Comparei o título de cada produto com a cor cadastrada nos 258. <b>Todos batem.</b> Nenhuma peça está com a cor errada.</p>
+
+    <div class="note" style="border-left-color:var(--bad)">
+      <b>Correção de uma versão anterior deste relatório.</b> Eu havia apontado dois produtos como cor errada. Estava errado: eu tinha lido a cor pelo <b>endereço da página</b>, não pelo título. Os dois estão certos — o título e a cor combinam. Nada foi alterado no seu catálogo por causa disso.
+    </div>
+
+    <p style="margin:22px 0 14px;font-size:14.5px;color:var(--ink-2);max-width:64ch;">O que de fato ficou para trás são <b>dois endereços de página</b> herdados de duplicação. A cliente não vê, só aparece na barra do navegador — e trocar o endereço quebra links antigos, então é opcional.</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>produto (título e cor certos)</th><th>endereço diz</th></tr></thead>
+        <tbody>
+          <tr><td><b>Legging jacquard cintura alta empina bumbum rosa</b> · Rosa</td><td>…-azul-copia</td></tr>
+          <tr><td><b>Top Adaptiv CONTT.s preto</b> · Preto</td><td>…-nude-copia</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="margin:22px 0 14px;font-size:14.5px;color:var(--ink-2);max-width:64ch;">E uma inconsistência mínima de escrita: um produto usa <b>"Branca"</b> onde todos os outros usam <b>"Branco"</b>. O site pinta as duas igual, então não quebra nada — só bagunça o filtro, que passa a listar duas opções para a mesma cor.</p>
+  </section>
+
+  <section class="block">
+    <h2>3. a decidir — estampas cadastradas com cor sólida</h2>
+    <p style="margin:-6px 0 18px;font-size:14.5px;color:var(--ink-2);max-width:64ch;">Não são erros, mas a bolinha promete uma cor lisa onde a peça é estampada. Se preferir, troco o campo Cor destes para <b>Estampado</b> e eles passam a mostrar a textura.</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>produto</th><th>cor cadastrada</th></tr></thead>
+        <tbody>
+          <tr><td>Legging cintura alta empina bumbum <b>tie dye</b></td><td>Pink</td></tr>
+          <tr><td>Legging empina bumbum <b>tie dye</b> exclusiva</td><td>Branco</td></tr>
+          <tr><td>Short empina bumbum <b>tie dye</b></td><td>Azul Marinho</td></tr>
+          <tr><td>Legging empina bumbum <b>newspaper</b></td><td>Verde</td></tr>
+          <tr><td>Short empina bumbum <b>animal print zebra</b></td><td>Bege</td></tr>
+          <tr><td>Macacão jacquard brocado <b>lime green</b></td><td>Verde</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:14px;font-size:13.5px;color:var(--muted);">Existe um valor <b>Tie Dye</b> já em uso em outro produto, com bolinha colorida — dá para padronizar as três peças tie dye nele.</p>
+  </section>
+
+  <section class="block">
+    <h2>4. achado de brinde — produtos sem tamanho</h2>
+    <p style="margin:-6px 0 18px;font-size:14.5px;color:var(--ink-2);max-width:64ch;">Apareceram na varredura: três produtos ativos têm apenas o campo Cor, sem nenhuma opção de tamanho. No site eles aparecem como "tamanho único", o que provavelmente não é a intenção.</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>produto</th><th>opções</th></tr></thead>
+        <tbody>
+          <tr><td>Top brocado branco</td><td>só Cor</td></tr>
+          <tr><td>Legging cintura alta comum cirré</td><td>só Cor</td></tr>
+          <tr><td>Macacão empina bumbum ray</td><td>só Cor</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    Verificação feita sobre os 258 produtos do catálogo, ativos e rascunhos. As correções do item 1 já estão no ar; os itens 2, 3 e 4 dependem da sua decisão.
+  </footer>
+</div>
