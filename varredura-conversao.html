@@ -1,0 +1,288 @@
+<title>Varredura de Conversão</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,500&family=Outfit:wght@300;400;500;600;700;800&display=swap">
+
+<style>
+:root{
+  --paper:#f7f6f3;--surface:#fff;--surface-2:#efece6;
+  --ink:#14120f;--ink-2:#4b463f;--muted:#7d776d;
+  --line:#e3dfd7;--line-soft:#eeebe4;
+  --gold:#c9a24b;--gold-deep:#8a6d2e;
+  --track:#e6e1d6;
+  --ok:#3f6b4a;--ok-soft:#e7efe8;
+  --bad:#8a4a3f;--bad-soft:#f6e8e5;
+  --warn:#8a6d2e;--warn-soft:#f9f1de;
+  --shadow:0 1px 2px rgba(20,18,15,.05),0 10px 30px rgba(20,18,15,.07);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#131211;--surface:#1c1a18;--surface-2:#252220;
+  --ink:#f3f1ec;--ink-2:#cac5bc;--muted:#948d82;
+  --line:#332f2b;--line-soft:#2a2724;
+  --gold:#dcb668;--gold-deep:#e0c489;--track:#302c28;
+  --ok:#90c19d;--ok-soft:#1e2a21;--bad:#d79a8c;--bad-soft:#2c1e1b;
+  --warn:#e0c489;--warn-soft:#2c2415;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);
+}}
+:root[data-theme="dark"]{
+  --paper:#131211;--surface:#1c1a18;--surface-2:#252220;
+  --ink:#f3f1ec;--ink-2:#cac5bc;--muted:#948d82;
+  --line:#332f2b;--line-soft:#2a2724;
+  --gold:#dcb668;--gold-deep:#e0c489;--track:#302c28;
+  --ok:#90c19d;--ok-soft:#1e2a21;--bad:#d79a8c;--bad-soft:#2c1e1b;
+  --warn:#e0c489;--warn-soft:#2c2415;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:'Outfit',-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+.serif-it{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:500;}
+.wrap{max-width:1020px;margin:0 auto;padding:52px 22px 90px;}
+.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted);font-weight:600;margin:0 0 16px;}
+h1{font-size:clamp(32px,5.4vw,50px);line-height:1.04;margin:0 0 14px;font-weight:600;letter-spacing:-.025em;text-wrap:balance;}
+.lede{font-size:17.5px;color:var(--ink-2);max-width:64ch;margin:0;}
+.head{border-bottom:1px solid var(--line);padding-bottom:32px;margin-bottom:40px;}
+h2{font-size:13px;text-transform:uppercase;letter-spacing:.16em;font-weight:600;color:var(--muted);
+  margin:0 0 20px;display:flex;align-items:center;gap:14px;}
+h2::after{content:"";flex:1;height:1px;background:var(--line);}
+.block{margin-bottom:56px;}
+h3{font-size:18px;font-weight:600;margin:0 0 8px;letter-spacing:-.01em;}
+p{margin:0 0 14px;}
+.sub{font-size:14.5px;color:var(--ink-2);max-width:66ch;}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:26px;}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:5px;padding:16px 18px;box-shadow:var(--shadow);}
+.stat b{display:block;font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1;font-variant-numeric:tabular-nums;}
+.stat span{display:block;font-size:12.5px;color:var(--muted);margin-top:6px;line-height:1.35;}
+
+/* funil — barras proporcionais, uma série só */
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:24px;box-shadow:var(--shadow);}
+.fig__cap{font-size:12.5px;color:var(--muted);margin:0 0 20px;}
+.funnel{display:grid;gap:16px;}
+.fstep{display:grid;grid-template-columns:190px 1fr;gap:16px;align-items:center;}
+@media(max-width:640px){.fstep{grid-template-columns:1fr;gap:6px;}}
+.fstep__lbl{font-size:13.5px;color:var(--ink-2);line-height:1.3;}
+.fstep__bar{position:relative;height:34px;background:var(--track);border-radius:4px;overflow:hidden;}
+.fstep__fill{position:absolute;inset:0 auto 0 0;background:var(--gold-deep);border-radius:4px;}
+.fstep__val{position:absolute;top:0;bottom:0;left:12px;display:flex;align-items:center;gap:10px;
+  font-size:13.5px;font-weight:700;color:#fff;font-variant-numeric:tabular-nums;}
+.fstep__val small{font-weight:500;opacity:.82;font-size:12px;}
+.fstep--thin .fstep__val{left:auto;right:12px;color:var(--ink);}
+.drop{display:grid;grid-template-columns:190px 1fr;gap:16px;}
+@media(max-width:640px){.drop{grid-template-columns:1fr;}}
+.drop__txt{grid-column:2;font-size:12.5px;color:var(--bad);margin:-8px 0 0;font-weight:600;}
+@media(max-width:640px){.drop__txt{grid-column:1;}}
+
+/* comparativo */
+.cmp{display:grid;gap:14px;margin-top:6px;}
+.cmp__row{display:grid;grid-template-columns:110px 1fr;gap:14px;align-items:center;}
+.cmp__lbl{font-size:14px;font-weight:600;}
+.cmp__bar{position:relative;height:30px;background:var(--track);border-radius:4px;}
+.cmp__fill{position:absolute;inset:0 auto 0 0;background:var(--gold-deep);border-radius:4px;}
+.cmp__val{position:absolute;top:0;bottom:0;left:calc(100% + 12px);display:flex;align-items:center;
+  font-size:13.5px;font-weight:700;color:var(--ink);white-space:nowrap;font-variant-numeric:tabular-nums;}
+
+.item{background:var(--surface);border:1px solid var(--line);border-radius:5px;padding:18px 20px;
+  margin-bottom:12px;box-shadow:var(--shadow);border-left:3px solid var(--line);}
+.item--bad{border-left-color:var(--bad);}
+.item--warn{border-left-color:var(--gold);}
+.item--ok{border-left-color:var(--ok);}
+.item h3{font-size:16px;margin-bottom:5px;}
+.item p{font-size:14px;color:var(--ink-2);margin:0 0 8px;line-height:1.55;}
+.item p:last-child{margin-bottom:0;}
+.item code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;color:var(--muted);}
+.tag{display:inline-block;font-size:10px;text-transform:uppercase;letter-spacing:.12em;font-weight:700;
+  padding:4px 8px;border-radius:2px;margin-bottom:8px;}
+.tag--bad{background:var(--bad-soft);color:var(--bad);}
+.tag--warn{background:var(--warn-soft);color:var(--warn);}
+.tag--ok{background:var(--ok-soft);color:var(--ok);}
+
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:5px;background:var(--surface);}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:540px;}
+th,td{text-align:left;padding:12px 16px;border-bottom:1px solid var(--line-soft);vertical-align:top;}
+th{font-size:10.5px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:600;}
+tr:last-child td{border-bottom:none;}
+td:last-child,th:last-child{text-align:right;font-variant-numeric:tabular-nums;}
+.note{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--gold);
+  border-radius:4px;padding:18px 20px;font-size:14.5px;color:var(--ink-2);line-height:1.6;}
+.note b{color:var(--ink);}
+ol.prio{margin:0;padding:0;list-style:none;counter-reset:p;display:grid;gap:16px;}
+ol.prio li{counter-increment:p;display:grid;grid-template-columns:30px 1fr;gap:16px;align-items:start;}
+ol.prio li::before{content:counter(p);font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;
+  font-size:24px;color:var(--gold);line-height:1;}
+ol.prio b{display:block;font-size:15.5px;color:var(--ink);margin-bottom:3px;}
+ol.prio span{font-size:14px;color:var(--ink-2);line-height:1.55;}
+footer{margin-top:52px;padding-top:22px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted);}
+</style>
+
+<div class="wrap">
+  <header class="head">
+    <p class="eyebrow">contt.s fitness · varredura de conversão · últimos 30 dias</p>
+    <h1>onde a loja está <span class="serif-it">perdendo</span> venda</h1>
+    <p class="lede">Números reais da sua Shopify, cruzados com o código do tema. A conversão está dentro da média do setor — mas há duas perdas concentradas que valem mais que qualquer ajuste fino.</p>
+    <div class="stats">
+      <div class="stat"><b>1.955</b><span>sessões</span></div>
+      <div class="stat"><b>1,64%</b><span>conversão geral</span></div>
+      <div class="stat"><b>40</b><span>pedidos</span></div>
+      <div class="stat"><b>R$ 288</b><span>ticket médio</span></div>
+      <div class="stat"><b>R$ 12.146</b><span>faturamento</span></div>
+    </div>
+  </header>
+
+  <section class="block">
+    <h2>1. o funil — onde as pessoas somem</h2>
+    <div class="fig">
+      <p class="fig__cap">De cada 100 visitas, 8 colocam no carrinho, 4 chegam ao checkout e menos de 2 compram.</p>
+      <div class="funnel">
+        <div class="fstep">
+          <span class="fstep__lbl">visitaram a loja</span>
+          <div class="fstep__bar" title="1.955 sessões"><span class="fstep__fill" style="width:100%"></span><span class="fstep__val">1.955 <small>100%</small></span></div>
+        </div>
+        <div class="fstep">
+          <span class="fstep__lbl">colocaram na sacola</span>
+          <div class="fstep__bar" title="158 sessões com adição ao carrinho"><span class="fstep__fill" style="width:8.1%"></span><span class="fstep__val" style="left:calc(8.1% + 12px);color:var(--ink)">158 <small>8,1%</small></span></div>
+        </div>
+        <div class="drop"><p class="drop__txt">↓ perde 1.797 aqui — normal para moda, mas é o maior volume absoluto</p></div>
+        <div class="fstep">
+          <span class="fstep__lbl">chegaram ao checkout</span>
+          <div class="fstep__bar" title="81 sessões que chegaram ao checkout"><span class="fstep__fill" style="width:4.1%"></span><span class="fstep__val" style="left:calc(4.1% + 12px);color:var(--ink)">81 <small>4,1%</small></span></div>
+        </div>
+        <div class="drop"><p class="drop__txt">↓ metade de quem coloca na sacola não vai ao checkout (51% seguem)</p></div>
+        <div class="fstep">
+          <span class="fstep__lbl">compraram</span>
+          <div class="fstep__bar" title="32 sessões que completaram a compra"><span class="fstep__fill" style="width:1.6%"></span><span class="fstep__val" style="left:calc(1.6% + 12px);color:var(--ink)">32 <small>1,6%</small></span></div>
+        </div>
+        <div class="drop"><p class="drop__txt">↓ 6 em cada 10 desistem já dentro do checkout — o vazamento mais caro</p></div>
+      </div>
+    </div>
+    <p class="sub" style="margin-top:16px">Referência do setor de moda no Brasil: sacola→checkout costuma ficar em <b>60–70%</b> (aqui: 51%) e checkout→compra em <b>45–60%</b> (aqui: 39%). Os dois estão abaixo, e o segundo é onde o dinheiro já estava quase na mão.</p>
+  </section>
+
+  <section class="block">
+    <h2>2. o achado mais forte — computador converte 4× pior</h2>
+    <div class="fig">
+      <p class="fig__cap">Conversão por dispositivo · mesma loja, mesmo período</p>
+      <div class="cmp">
+        <div class="cmp__row">
+          <span class="cmp__lbl">celular</span>
+          <div class="cmp__bar" title="1.505 sessões · 30 compras · 1,99%"><span class="cmp__fill" style="width:100%"></span><span class="cmp__val" style="left:auto;right:12px;color:#fff">1,99%</span></div>
+        </div>
+        <div class="cmp__row">
+          <span class="cmp__lbl">computador</span>
+          <div class="cmp__bar" title="449 sessões · 2 compras · 0,45%"><span class="cmp__fill" style="width:22.6%"></span><span class="cmp__val">0,45%</span></div>
+        </div>
+      </div>
+    </div>
+    <p class="sub" style="margin-top:16px"><b>1.505 visitas no celular geraram 30 vendas. 449 no computador geraram 2.</b> Se o computador convertesse como o celular, seriam ~9 pedidos em vez de 2 — cerca de <b>R$ 2.000 a mais por mês</b>, sem trazer uma visita nova.</p>
+    <div class="item item--bad">
+      <span class="tag tag--bad">investigar primeiro</span>
+      <h3>Uma diferença dessa ordem quase nunca é só comportamento</h3>
+      <p>Costuma ser algo quebrado que só aparece na tela grande: um botão que não responde, um campo que some, o menu que cobre o conteúdo. Vale abrir a loja num computador e ir até o fim de uma compra de teste.</p>
+      <p>A outra hipótese é origem de tráfego: se o desktop vem de fonte fria (busca genérica, link solto), converter menos é esperado. Dá para separar isso no relatório de origens da Shopify.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>3. checkout</h2>
+
+    <div class="item item--bad">
+      <span class="tag tag--bad">perda direta</span>
+      <h3>Nenhuma carteira digital está ativa</h3>
+      <p>Verifiquei na API: <code>supportedDigitalWallets: []</code> — não há Shop Pay, Apple Pay nem Google Pay. Com <b>77% do seu tráfego no celular</b>, esses botões são o caminho mais curto entre a vontade e o pedido: a cliente paga com a digital, sem digitar cartão nem endereço.</p>
+      <p>É exatamente na etapa em que você perde 6 de cada 10. Ativar é grátis, em Configurações → Pagamentos.</p>
+    </div>
+
+    <div class="item item--warn">
+      <span class="tag tag--warn">conferir</span>
+      <h3>O site promete Pix com 5% — o checkout entrega?</h3>
+      <p>A loja anuncia o desconto no Pix na sacola, no card e na página de produto. Eu não consigo ler pela API se o Pix está ativo como meio de pagamento. Se a cliente chega ao checkout e não encontra Pix, ou encontra sem o desconto prometido, ela desiste — e isso explicaria parte dos 60%.</p>
+      <p>Vale um teste de compra real até a tela de pagamento.</p>
+    </div>
+
+    <div class="item item--warn">
+      <span class="tag tag--warn">oportunidade</span>
+      <h3>A sacola oferece uma saída antes do checkout</h3>
+      <p>Logo abaixo de "finalizar compra" existe o botão <b>"comprar pelo whatsapp"</b>. Ele ajuda quem tem dúvida, mas também tira do checkout quem já ia comprar — e some do funil.</p>
+      <p>Um sinal disso: a Shopify registra <b>40 pedidos</b> no período, mas só <b>32 vieram do funil do site</b>. Sugiro deixá-lo menor e secundário, abaixo do selo de segurança, em vez de logo colado no botão principal.</p>
+    </div>
+
+    <div class="item item--ok">
+      <span class="tag tag--ok">está bom</span>
+      <h3>O que já joga a favor</h3>
+      <p>Cupom BEMVINDO ativo, cálculo de frete e prazo na sacola e na página de produto, barra de frete grátis com progresso, selo de ambiente seguro e parcelamento visível. É uma sacola bem acima da média para o porte da loja.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>4. produtos — o que vende não é o que a home destaca</h2>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>mais vendidos em 30 dias</th><th>pedidos</th></tr></thead>
+        <tbody>
+          <tr><td>Legging empina bumbum urban ink</td><td>5</td></tr>
+          <tr><td>Legging empina bumbum abstract branca</td><td>4</td></tr>
+          <tr><td>Legging empina bumbum cintura alta jacquard preta</td><td>3</td></tr>
+          <tr><td>Legging empina bumbum jacquard brocada chiclete</td><td>3</td></tr>
+          <tr><td>Legging empina bumbum jacquard chumbo</td><td>3</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="sub" style="margin-top:16px"><b>Os oito produtos mais vendidos são todos legging empina bumbum.</b> Nenhum conjunto aparece. Hoje a home dá o primeiro bloco depois das categorias para a vitrine de conjuntos por R$ 189 — que é uma aposta nova, com 5 peças — enquanto o que realmente vende fica mais abaixo, no carrossel de mais vendidos.</p>
+    <p class="sub">Não é erro: promoção precisa de vitrine. Mas vale medir. Se em duas semanas os conjuntos não subirem no ranking, inverter a ordem — mais vendidos primeiro, promoção depois — tende a render mais.</p>
+    <div class="item item--warn" style="margin-top:18px">
+      <span class="tag tag--warn">arrumar</span>
+      <h3>Três produtos ativos sem opção de tamanho</h3>
+      <p>Top brocado branco, Legging cintura alta comum cirré e Macacão empina bumbum ray aparecem como "tamanho único". Se não forem tamanho único de verdade, a cliente que quer M não tem como pedir.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>5. velocidade</h2>
+    <div class="note" style="margin-bottom:18px">
+      <b>Ressalva honesta:</b> eu não consigo abrir o site daqui para cronometrar o carregamento — meu acesso à internet é bloqueado. O que segue é medição do <b>código e dos arquivos do tema</b>, que é onde os problemas nascem. Para o número real, rode o <b>PageSpeed Insights</b> do Google no endereço da loja.
+    </div>
+
+    <div class="item item--bad">
+      <span class="tag tag--bad">pesado</span>
+      <h3>A página de produto varre o catálogo até 6 vezes</h3>
+      <p>A seção "compre junto" (<code>product-bundle.liquid</code>) faz <b>6 varreduras de até 250 produtos cada</b> para escolher a peça complementar, e isso roda em <b>toda</b> página de produto. É o trecho mais caro do tema e atrasa justamente a página que mais importa para a venda.</p>
+      <p>Dá para resolver guardando o par escolhido num campo do produto, em vez de procurar a cada visita.</p>
+    </div>
+
+    <div class="item item--warn">
+      <span class="tag tag--warn">otimizar</span>
+      <h3>Cada card carrega duas fotos</h3>
+      <p>O card traz a foto principal e uma segunda para o efeito de troca ao passar o mouse — as duas em 800px. Numa coleção com 24 produtos são <b>48 imagens</b>. No celular, onde não existe passar o mouse, a segunda foto é peso puro.</p>
+    </div>
+
+    <div class="item item--warn">
+      <span class="tag tag--warn">otimizar</span>
+      <h3>Fotos fixas do tema sem compressão</h3>
+      <p>As imagens de depoimento e do bloco do Instagram somam <b>~840 KB</b> — uma delas tem 185 KB sozinha — e são exibidas em 500px. Por estarem em <code>assets/</code>, não passam pelo redimensionador da Shopify. Comprimir resolve sem perder qualidade visível.</p>
+    </div>
+
+    <div class="item item--ok">
+      <span class="tag tag--ok">já está certo</span>
+      <h3>O básico foi bem feito</h3>
+      <p>O JavaScript carrega com <code>defer</code> (não trava a tela), as fontes do Google carregam sem bloquear, as imagens têm <code>lazy</code> e dimensões declaradas. O <code>site.css</code> tem 109 KB e é o único arquivo que bloqueia — minificar tiraria cerca de um terço.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>por onde eu começaria</h2>
+    <div class="fig">
+      <ol class="prio">
+        <li><b>Testar uma compra no computador, do início ao fim</b><span>É o maior buraco: 449 visitas, 2 vendas. Se houver algo quebrado, é o conserto de maior retorno da lista — e eu não consigo ver isso pelo código.</span></li>
+        <li><b>Ativar as carteiras digitais</b><span>Shop Pay, Apple Pay e Google Pay estão desligadas, com 77% do público no celular. É de graça e ataca direto a etapa onde você perde 60%.</span></li>
+        <li><b>Confirmar que o Pix está no checkout, com o desconto prometido</b><span>A loja promete em quatro lugares. Se não entregar, a cliente desiste na última tela.</span></li>
+        <li><b>Aliviar o "compre junto" da página de produto</b><span>Seis varreduras do catálogo por visita. É a página que decide a venda.</span></li>
+        <li><b>Dar ao WhatsApp um lugar secundário na sacola</b><span>Ele hoje disputa com o botão de finalizar compra e tira gente do funil.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <footer>
+    Dados de sessões, pedidos e produtos: Shopify Analytics, últimos 30 dias. Medições de tema: arquivos do repositório contts-shopify-theme. Sem medição de tempo real de carregamento — ver ressalva no item 5.
+  </footer>
+</div>
