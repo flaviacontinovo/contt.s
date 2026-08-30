@@ -102,75 +102,95 @@
   <header class="head">
     <p class="eyebrow">contt.s fitness · revisão de site, sacola e checkout · 30/08/2026</p>
     <h1>da sacola ao <span class="serif-it">pedido</span></h1>
-    <p class="lede">Revisei o site inteiro contra os dados reais da sua Shopify: o código do tema, os 311 produtos, as 1.164 variantes e os pedidos dos últimos dois meses. Achei duas quebras de verdade no caminho da compra — as duas já estão corrigidas. O catálogo passou quase limpo. O que sobrou está fora do código, na loja.</p>
+    <p class="lede">Revisei o site inteiro contra os dados reais da sua Shopify: o código do tema, os 311 produtos, as 1.164 variantes e os pedidos dos últimos dois meses. Achei duas quebras no caminho da compra e um problema de conteúdo bem maior do que eu tinha visto de início. <b>Tudo isso já está corrigido e no ar.</b> O que sobrou depende de você — e os pedidos, como você pediu, eu não toquei.</p>
     <div class="stats">
-      <div class="stat"><b>6</b><span>correções no código, prontas</span></div>
+      <div class="stat"><b>10</b><span>correções publicadas na loja</span></div>
       <div class="stat"><b>1.164</b><span>variantes conferidas</span></div>
       <div class="stat"><b>0</b><span>SKU vazio ou repetido</span></div>
       <div class="stat"><b>32</b><span>cores, todas com tom próprio</span></div>
-      <div class="stat"><b>43</b><span>pedidos pagos sem baixa de envio</span></div>
-      <div class="stat"><b>2</b><span>produtos vendendo sem estoque</span></div>
+      <div class="stat"><b>2</b><span>pontos ainda esperando você</span></div>
     </div>
   </header>
 
   <section class="block">
-    <h2>1. as duas quebras de verdade</h2>
-    <p class="sub">Nenhuma das duas aparece como erro na tela. As duas acontecem em silêncio, exatamente no trecho em que a cliente já decidiu comprar.</p>
+    <h2>1. as duas quebras no caminho da compra</h2>
+    <p class="sub">Nenhuma das duas aparecia como erro na tela. As duas aconteciam em silêncio, exatamente no trecho em que a cliente já tinha decidido comprar.</p>
 
-    <div class="item item--bad" style="margin-top:22px">
-      <span class="tag tag--bad">corrigido</span>
+    <div class="item item--ok" style="margin-top:22px">
+      <span class="tag tag--ok">no ar</span>
       <h3>A cliente não conseguia esvaziar a sacola</h3>
       <p>O tema guarda uma cópia do carrinho no navegador para o caso de a Shopify perder o cookie (que expira em ~14 dias). O problema é que ele restaurava essa cópia <b>toda vez</b> que a página carregava com o carrinho vazio — sem distinguir "o cookie sumiu" de "a cliente esvaziou de propósito".</p>
-      <p>Como o link <code>remover item</code> da página da sacola é navegação normal (recarrega a página), e não AJAX, o efeito era este:</p>
+      <p>Como o link <code>remover item</code> da página da sacola é navegação normal, e não AJAX, o efeito era este:</p>
       <ol class="flow">
         <li>Ela clica em "remover item" no último produto da sacola.</li>
         <li>A Shopify esvazia o carrinho e recarrega a página.</li>
         <li>O tema vê carrinho vazio + cópia salva e repõe tudo.</li>
         <li>O produto que ela acabou de remover está de volta.</li>
       </ol>
-      <p style="margin-top:12px">Pela sacola lateral (o "minicart") isso não acontecia, porque lá a remoção é AJAX e atualiza a cópia. Só na página da sacola — que é justamente por onde passa quem vai fechar a compra.</p>
-      <p><b>Como ficou:</b> a cópia agora guarda também o <i>token</i> do carrinho. Token igual significa que é o mesmo carrinho e foi a cliente que esvaziou — descarta a cópia e respeita a decisão dela. Token diferente significa carrinho novo, cookie perdido de verdade — aí sim restaura.</p>
+      <p style="margin-top:12px">Pela sacola lateral isso não acontecia, porque lá a remoção é AJAX e atualiza a cópia. Só na página da sacola — que é justamente por onde passa quem vai fechar a compra.</p>
+      <p><b>Como ficou:</b> a cópia agora guarda também o <i>token</i> do carrinho. Token igual significa mesmo carrinho, foi a cliente que esvaziou — descarta a cópia. Token diferente significa carrinho novo, cookie perdido de verdade — aí sim restaura.</p>
     </div>
 
-    <div class="item item--bad">
-      <span class="tag tag--bad">corrigido</span>
+    <div class="item item--ok">
+      <span class="tag tag--ok">no ar</span>
       <h3>Produto esgotado mostrava "adicionar ao carrinho" — e o clique falhava</h3>
-      <p>Quando um produto está sem estoque, o Liquid da Shopify ainda devolve uma variante em <code>selected_or_first_available_variant</code>. O card não conferia isso, então caía no caminho da compra rápida e desenhava o botão preto normal, como se desse para comprar.</p>
-      <p>Clicando, o pedido ia para <code>/cart/add.js</code>, a Shopify recusava e sobrava só um <code>alert()</code> genérico: <i>"Não foi possível adicionar ao carrinho."</i> Sem dizer que era esgotado, sem oferecer outro tamanho.</p>
-      <p><b>Atinge 11 produtos ativos hoje</b>, entre eles Legging empina bumbum newspaper, Top tiras fake jeans e as leggings abstract. <b>Como ficou:</b> botão "esgotado", cinza e desabilitado — que é o que a página do produto já fazia certo.</p>
+      <p>Com o produto sem estoque, o Liquid ainda devolve uma variante em <code>selected_or_first_available_variant</code>. O card não conferia isso, caía no caminho da compra rápida e desenhava o botão preto normal, como se desse para comprar. O clique ia para <code>/cart/add.js</code>, a Shopify recusava e sobrava um <code>alert()</code> genérico — sem dizer que era esgotado.</p>
+      <p><b>Atingia 11 produtos ativos.</b> Agora mostra "esgotado", cinza e desabilitado, como a página do produto já fazia certo.</p>
     </div>
   </section>
 
   <section class="block">
-    <h2>2. as outras quatro correções</h2>
-    <div class="item item--ok">
-      <span class="tag tag--ok">corrigido</span>
-      <h3>O card baixava a mesma foto duas vezes</h3>
-      <p>A segunda imagem (a da troca no passar do mouse) usava <code>product.images[1] | default: product.featured_image</code>. Em produto com uma foto só, o <code>default</code> repetia a principal — o navegador baixava 800px duplicados por card, sem efeito nenhum. Numa coleção de 24 produtos isso é peso puro, e no celular nem existe passar o mouse. Agora a segunda foto só é escrita quando ela existe mesmo.</p>
+    <h2>2. o conteúdo inventado — era muito maior do que eu disse</h2>
+    <p class="sub">Quando escrevi a primeira versão deste relatório, eu tinha visto só os números. Ao abrir a seção de avaliações inteira, o quadro era outro — e vale você saber exatamente o que havia ali.</p>
+
+    <div class="item item--bad" style="margin-top:22px">
+      <span class="tag tag--bad">o que existia</span>
+      <h3>Cada página de produto montava 8 depoimentos falsos</h3>
+      <p>Não eram só a nota e a contagem. O arquivo <code>product-reviews.liquid</code> sorteava, a partir do número do produto:</p>
+      <ul style="font-size:14px;color:var(--ink-2);line-height:1.6;margin:0 0 10px;padding-left:20px">
+        <li>o <b>texto</b> da avaliação, de uma lista fixa por categoria de peça;</li>
+        <li>o <b>nome completo</b> da cliente, de um pool de 16 (Marjorye Dias, Camila Andrade, Beatriz Fernandes…);</li>
+        <li>a <b>cidade</b>, a <b>data</b> e o <b>tamanho comprado</b>;</li>
+        <li>o contador de "útil (N)";</li>
+        <li>e o selo <b>"compra verificada"</b> em cada uma das oito.</li>
+      </ul>
+      <p>O resumo no topo trazia nota, distribuição de estrelas (92% cinco estrelas), "% recomendam" e total de avaliações pela mesma fórmula. Isso rodava em <b>todos os 296 produtos ativos</b>.</p>
+      <p>Depoimento assinado com nome e cidade inventados, carimbado de "compra verificada", é outro patamar em relação a um contador inflado — é o tipo de coisa que o Procon trata como publicidade enganosa, e que destrói a confiança se uma cliente perceber.</p>
     </div>
+
     <div class="item item--ok">
-      <span class="tag tag--ok">corrigido</span>
-      <h3>Preço do embrulho para presente estava fixo no código</h3>
-      <p>A sacola anunciava <code>+ R$ 9,90</code> escrito à mão. Hoje bate com a Shopify, mas se você mudar esse preço no admin a sacola continuaria anunciando 9,90 e o checkout cobraria outro valor. Agora o preço é lido da própria variante.</p>
+      <span class="tag tag--ok">no ar</span>
+      <h3>O que ficou no lugar</h3>
+      <p>A seção agora mostra <b>só avaliação real</b>. As três que o próprio código marcava como verdadeiras — com foto e texto de cliente, num comentário que dizia "Nada inventado" — foram preservadas inteiras.</p>
+      <p>Produto sem avaliação passa a exibir um convite honesto ("essa peça ainda não tem avaliação — conta pra gente como ficou") com botão que abre o WhatsApp da loja já com a mensagem pronta. De quebra, o link "avalie esse produto" era um <code>href="#"</code> morto; agora funciona.</p>
+      <p>Nos cards saíram a nota e o número de avaliações. Na página do produto saíram as cinco estrelas fixas e o "N favoritaram". E o selo <b>"best seller"</b>, que antes vinha por palavra no título — qualquer peça com "brocado", "jeans", "abstract" ou "feel rib" no nome ganhava —, agora sai da coleção <b>Mais Vendidos</b>, que é real.</p>
     </div>
-    <div class="item item--ok">
-      <span class="tag tag--ok">corrigido</span>
-      <h3>Limite de frete grátis estava escrito em dois lugares</h3>
-      <p>A barra da sacola lateral tinha <code>19900</code> fixo no <code>theme.js</code>, enquanto a página da sacola lia a configuração do tema. Mudar o limite no painel deixaria as duas discordando. Agora as duas leem a mesma configuração.</p>
+
+    <div class="note">
+      <p><b>Uma coisa eu não apaguei.</b> A seção de depoimentos da home guarda 9 textos com nomes e cidades fictícios e "compra verificada" ligado, mas está <b>desligada</b> — não vai ao ar. É conteúdo seu, editável no painel, então deixei intacto e coloquei um aviso bem no topo do editor: antes de ligar essa seção, troque os 9 blocos por depoimentos reais.</p>
     </div>
+
+    <p class="sub" style="margin-top:16px">Se você preferir o visual anterior em alguma parte, é só me dizer — está tudo em commits separados e dá para voltar item a item.</p>
+  </section>
+
+  <section class="block">
+    <h2>3. as outras correções técnicas</h2>
     <div class="item item--ok">
-      <span class="tag tag--ok">corrigido</span>
-      <h3><code>&amp;</code> sem escape nos links de remover</h3>
-      <p>Detalhe de HTML: <code>&amp;quantity=0</code> dentro de um <code>href</code> precisa ser <code>&amp;amp;</code>. Os navegadores perdoam, mas era o único ponto do tema fora do padrão.</p>
+      <span class="tag tag--ok">no ar</span>
+      <h3>Quatro ajustes menores no tema</h3>
+      <p><b>Foto duplicada no card:</b> a segunda imagem usava <code>| default: product.featured_image</code>, então produto com uma foto só baixava a mesma imagem duas vezes, sem efeito nenhum. No celular, onde não existe passar o mouse, era peso puro.</p>
+      <p><b>Preço do embrulho:</b> estava escrito à mão como <code>R$ 9,90</code> na sacola. Bate com a Shopify hoje, mas se você mudasse no admin a sacola anunciaria um valor e o checkout cobraria outro. Agora é lido da variante.</p>
+      <p><b>Frete grátis em dois lugares:</b> a barra da sacola lateral tinha <code>19900</code> fixo no JavaScript enquanto a página da sacola lia a configuração do tema. Agora as duas leem a mesma fonte.</p>
+      <p><b><code>&amp;</code> sem escape</b> nos links de remover item — detalhe de HTML, o único ponto do tema fora do padrão.</p>
     </div>
   </section>
 
   <section class="block">
-    <h2>3. o checkout entrega o que promete</h2>
+    <h2>4. o checkout entrega o que promete</h2>
     <p class="sub">A varredura anterior deixou isso em aberto: o site promete Pix com 5% em quatro lugares e não dava para ler pela API se o checkout cumpria. Dava, sim — pelos pedidos. E cumpre.</p>
 
     <div class="note" style="margin-top:22px">
-      <p><b>Pix está ativo</b> ("Pix, oferecido por Appmax") e o desconto de 5% é <b>automático</b>: pedidos pagos no Pix <i>sem nenhum cupom</i> saíram com exatamente 5% de desconto (#1065, #1061, #1044). Ninguém precisa digitar nada.</p>
+      <p><b>Pix está ativo</b> ("Pix, oferecido por Appmax") e o desconto de 5% é <b>automático</b>: pedidos pagos no Pix <i>sem nenhum cupom</i> saíram com exatamente 5% (#1065, #1061, #1044). Ninguém precisa digitar nada.</p>
       <p>E o cupom <b>BEMVINDO soma por cima</b>: Pix + BEMVINDO fecha em 10%. No cartão, o BEMVINDO sozinho dá os 5%.</p>
     </div>
 
@@ -188,83 +208,68 @@
         </tbody>
       </table>
     </div>
-    <p class="sub" style="margin-top:12px">Uma ressalva de escrita, não de dinheiro: o BEMVINDO está configurado como <b>uma vez por cliente</b> e o botão diz "5% OFF no Pix na primeira compra", mas ele funciona no cartão também. Quem repete a compra continua tendo os 5% do Pix — só não tem mais o cupom.</p>
+    <p class="sub" style="margin-top:12px">Uma ressalva de escrita, não de dinheiro: o botão diz "5% OFF no Pix na primeira compra", mas o BEMVINDO funciona no cartão também. Quem repete a compra continua tendo os 5% do Pix — só não tem mais o cupom.</p>
   </section>
 
   <section class="block">
-    <h2>4. catálogo — cores, sku e estoque</h2>
+    <h2>5. catálogo — cores, sku e estoque</h2>
 
     <div class="item item--ok">
-      <span class="tag tag--ok">está certo</span>
+      <span class="tag tag--ok">conferido</span>
       <h3>As cores estão todas resolvidas</h3>
       <p>Passei os 311 produtos pela mesma regra que o tema usa para pintar a bolinha de cor. São <b>32 nomes de cor em uso</b> e <b>todos</b> têm tom próprio — nenhum cai no cinza de fallback que fazia a matcha parecer defeito. Os nomes novos desde a última auditoria (Azul Royal, Off White, Orange, Bronze, Cereja, Manteiga, Chumbo) entram todos por alguma regra existente.</p>
-      <p>Só uma sobra da vez passada: um produto usa <b>"Branca"</b> onde os outros 42 usam <b>"Branco"</b>. Pinta igual, mas o filtro da loja lista duas opções para a mesma cor. É o rascunho <i>Legging cintura alta jacquard brocada branca</i>.</p>
+      <p><b>Corrigido:</b> o único produto que usava <b>"Branca"</b> onde os outros 42 usam <b>"Branco"</b> foi acertado direto na Shopify. O filtro da loja não lista mais duas opções para a mesma cor.</p>
     </div>
 
     <div class="item item--ok">
-      <span class="tag tag--ok">está certo</span>
+      <span class="tag tag--ok">conferido</span>
       <h3>Os SKUs estão limpos</h3>
       <p>Nas 1.164 variantes: nenhum SKU vazio, nenhum SKU repetido entre produtos diferentes, nenhum preço zerado. O padrão <code>CTTS-XXXXXXXXX-TAM-COR</code> está consistente. É raro um catálogo desse tamanho passar sem nenhum achado.</p>
     </div>
 
     <div class="item item--bad">
-      <span class="tag tag--bad">precisa de você</span>
+      <span class="tag tag--bad">preciso de você</span>
       <h3>Dois dos cinco conjuntos de R$ 189 vendem sem controle de estoque</h3>
-      <p>O <b>Conjunto Shape Matcha</b> e o <b>Conjunto Shape Off White</b> estão com o controle de estoque <b>desligado</b> nas nove variantes de cada um. Na prática eles aceitam pedidos para sempre, independente do que exista na prateleira — e o estoque total dos dois já marca zero.</p>
-      <p>Os outros três da mesma vitrine (Aura Petróleo, Solar Orange e Bronze) estão com o controle ligado e funcionando. Ou seja: é um descuido de cadastro nesses dois, não uma escolha da loja.</p>
-      <p>São os únicos dois casos do catálogo inteiro. E estão justamente na vitrine que a home destaca primeiro. <b>Não mexi</b> — é o seu estoque, e ligar o controle com a quantidade errada tira a peça do ar na hora. Me diga a quantidade real de cada tamanho e eu acerto.</p>
+      <p>O <b>Conjunto Shape Matcha</b> e o <b>Conjunto Shape Off White</b> estão com o controle de estoque <b>desligado</b> nas nove variantes de cada um, e o estoque total dos dois marca zero. Na prática aceitam pedido para sempre, independente do que exista na prateleira.</p>
+      <p>Os outros três da mesma vitrine (Aura Petróleo, Solar Orange e Bronze) estão com o controle ligado. É descuido de cadastro nesses dois, não escolha da loja — e são os únicos dois casos do catálogo inteiro.</p>
+      <p><b>Este é o único item que não dá para eu resolver sozinha.</b> Ligar o controle exige informar a quantidade de cada tamanho, e eu não tenho como saber quantas peças existem aí. Se eu chutar zero, os dois somem da loja na hora; se chutar alto, continua vendendo sem lastro. <b>Me passe quantas peças você tem de P, M e G de cada um e eu ligo na mesma hora.</b></p>
     </div>
   </section>
 
   <section class="block">
-    <h2>5. depois que o pedido entra</h2>
+    <h2>6. depois que o pedido entra</h2>
 
-    <div class="item item--bad">
-      <span class="tag tag--bad">precisa de você</span>
-      <h3>43 pedidos pagos nunca foram marcados como enviados</h3>
-      <p>O último pedido com baixa de envio na Shopify é o <b>#1032, de 29/07</b>. De lá para cá, um mês inteiro, nenhum foi marcado — o mais antigo parado é o <b>#1009, de 15/07</b>.</p>
-      <p>Se as peças saíram e a baixa só não foi dada no painel, o efeito ainda é ruim: a Shopify só dispara o e-mail de "seu pedido foi enviado" com o código de rastreio quando o pedido é marcado como enviado. Essas 43 clientes pagaram e nunca receberam confirmação de postagem — é exatamente o tipo de silêncio que vira "cadê meu pedido?" no WhatsApp e some com a recompra.</p>
+    <div class="item item--warn">
+      <span class="tag tag--warn">você pediu para não mexer</span>
+      <h3>43 pedidos pagos sem baixa de envio</h3>
+      <p>Registro aqui só para não se perder: o último pedido com baixa na Shopify é o <b>#1032, de 29/07</b>, e o mais antigo parado é o <b>#1009, de 15/07</b>. Como a Shopify só dispara o e-mail de "pedido enviado" com rastreio quando o pedido é marcado como enviado, essas clientes pagaram e não receberam confirmação de postagem. <b>Não toquei em nada disso.</b></p>
     </div>
 
     <div class="item item--warn">
       <span class="tag tag--warn">oportunidade</span>
       <h3>15% dos pedidos expiram sem pagamento</h3>
-      <p>De 73 pedidos criados desde 30/06, <b>11 expiraram</b> — a cliente chegou até o fim, gerou o pagamento e não concluiu. Sete deles eram Pix: o QR Code foi gerado e não foi pago dentro do prazo.</p>
-      <p>São pessoas que já escolheram, já preencheram o endereço e já decidiram. Um lembrete de Pix não pago (a própria Shopify manda, ou um fluxo simples de WhatsApp) costuma recuperar boa parte — é o público mais barato de reconquistar que existe.</p>
+      <p>De 73 pedidos criados desde 30/06, <b>11 expiraram</b> — a cliente chegou ao fim, gerou o pagamento e não concluiu. Sete eram Pix: o QR Code foi gerado e não foi pago no prazo. São pessoas que já escolheram e já preencheram o endereço; um lembrete de Pix não pago costuma recuperar boa parte.</p>
     </div>
 
     <div class="item item--warn">
       <span class="tag tag--warn">continua aberto</span>
       <h3>Nenhuma carteira digital ativada</h3>
-      <p>Continua como na varredura anterior: <code>supportedDigitalWallets: []</code>. Sem Shop Pay, Apple Pay ou Google Pay. Com a maior parte do público no celular, são os botões que encurtam mais o caminho até o pedido — a cliente paga pela digital, sem digitar cartão nem endereço. Ativar é grátis, em <b>Configurações → Pagamentos</b>.</p>
+      <p>Continua <code>supportedDigitalWallets: []</code> — sem Shop Pay, Apple Pay ou Google Pay. Não existe como ligar isso pela API; é um clique seu em <b>Configurações → Pagamentos</b>. Com a maior parte do público no celular, são os botões que mais encurtam o caminho até o pedido.</p>
     </div>
   </section>
 
   <section class="block">
-    <h2>6. isto eu não mexi — é decisão sua</h2>
-    <div class="item item--warn">
-      <span class="tag tag--warn">a decidir</span>
-      <h3>As avaliações e os "favoritaram" do site são gerados por fórmula</h3>
-      <p>Nos cards das vitrines da home, a nota e a quantidade de avaliações saem de uma conta com o número do produto — não de avaliações reais:</p>
-      <p><code>review_count = product.id | modulo: 280 | plus: 160</code> &nbsp;→&nbsp; 160 a 440 avaliações, nota fixa 5,0 nos destaques e 4,8/4,9 no resto.</p>
-      <p>Na página do produto acontece o mesmo com o "<b>N favoritaram</b>" (<code>product.id | modulo: 433 | plus: 47</code>) e com as cinco estrelas cheias no topo. E o selo "<b>best seller</b>" é dado por palavra no título — qualquer peça com "brocado", "jeans", "abstract" ou "feel rib" no nome ganha o selo, independente de venda.</p>
-      <p>Levanto isso porque número de avaliação inventado é publicidade enganosa pelo Código de Defesa do Consumidor, e porque é o tipo de coisa que, se uma cliente percebe, derruba a confiança justamente em quem já ia comprar. Mas é uma escolha de negócio e mexe no visual das vitrines — <b>não tirei nada</b>. Se você quiser, eu removo os números inventados e deixo o selo "best seller" saindo da coleção Mais Vendidos, que é real.</p>
-    </div>
-  </section>
-
-  <section class="block">
-    <h2>7. por onde eu começaria</h2>
+    <h2>7. o que falta</h2>
     <ol class="prio">
-      <li><b>Publicar as correções</b><span>As seis já estão prontas na branch <code>claude/correcoes-checkout-carrinho</code> do repositório do tema. Elas não estão no ar ainda — branch separada não publica. É só juntar na <code>main</code>.</span></li>
-      <li><b>Dar baixa nos 43 pedidos</b><span>É a ação com efeito mais imediato sobre cliente que já pagou. Cada baixa dispara o e-mail com rastreio.</span></li>
-      <li><b>Ligar o estoque do Matcha e do Off White</b><span>Estão na vitrine principal aceitando pedido sem lastro. Me passe as quantidades e eu acerto.</span></li>
-      <li><b>Ativar as carteiras digitais</b><span>De graça, em Configurações → Pagamentos, e ataca a etapa onde a perda é maior.</span></li>
+      <li><b>Me passar o estoque do Matcha e do Off White</b><span>Quantas peças de P, M e G de cada. É o único ponto onde eu preciso de um número que só você tem — e estão na vitrine principal aceitando pedido sem lastro.</span></li>
+      <li><b>Ativar as carteiras digitais</b><span>De graça, em Configurações → Pagamentos. Ataca a etapa onde a perda é maior.</span></li>
       <li><b>Testar uma compra no computador</b><span>Segue de pé da varredura anterior: 449 visitas no desktop geraram 2 vendas, contra 1,99% no celular. Eu não consigo abrir o site daqui para ver.</span></li>
+      <li><b>Olhar as páginas de produto agora</b><span>A seção de avaliações mudou de cara em 296 produtos. Vale uma passada de olho para dizer se o convite para avaliar ficou bom ou se prefere outro tratamento.</span></li>
     </ol>
   </section>
 
   <footer>
-    <p>Verificação feita em 30/08/2026 sobre os arquivos do repositório <code>contts-shopify-theme</code> e sobre os dados ao vivo da Shopify Admin API: 311 produtos, 1.164 variantes, 73 pedidos desde 30/06. As correções do item 1 e 2 foram validadas por leitura de código e checagem de sintaxe — <b>não consegui abrir a loja para testar no navegador</b>, meu acesso à internet é bloqueado. Vale um teste de compra de ponta a ponta depois de publicar.</p>
+    <p>Verificação e correções feitas em 30/08/2026 sobre o repositório <code>contts-shopify-theme</code> e os dados ao vivo da Shopify Admin API: 311 produtos, 1.164 variantes, 73 pedidos desde 30/06. As dez correções estão publicadas na <code>main</code> do tema, em três commits separados, e portanto no ar na loja. Foram validadas por leitura de código, checagem de sintaxe do JavaScript, balanceamento das tags Liquid e validação do JSON dos schemas — <b>não consegui abrir a loja no navegador para conferir na tela</b>, meu acesso à internet é bloqueado. Vale um teste de compra de ponta a ponta e uma olhada numa página de produto.</p>
   </footer>
 
 </div>
