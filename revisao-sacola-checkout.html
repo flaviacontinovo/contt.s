@@ -1,0 +1,270 @@
+<title>Da Sacola ao Pedido</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@1,500;1,600&display=swap">
+<style>
+  :root{
+    --paper:#f7f6f3;--surface:#fff;--surface-2:#efece6;
+    --ink:#14120f;--ink-2:#4b463f;--muted:#7d776d;
+    --line:#e3dfd7;--line-soft:#eeebe4;
+    --gold:#c9a24b;--gold-deep:#8a6d2e;
+    --ok:#3f6b4a;--ok-soft:#e7efe8;
+    --bad:#8a4a3f;--bad-soft:#f6e8e5;
+    --warn:#8a6d2e;--warn-soft:#f9f1de;
+    --code-bg:#f2efe8;--code-ink:#4b463f;
+    --shadow:0 1px 2px rgba(20,18,15,.05),0 10px 30px rgba(20,18,15,.07);
+  }
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    --paper:#131211;--surface:#1c1a18;--surface-2:#252220;
+    --ink:#f3f1ec;--ink-2:#cac5bc;--muted:#948d82;
+    --line:#332f2b;--line-soft:#2a2724;
+    --gold:#dcb668;--gold-deep:#e0c489;
+    --ok:#90c19d;--ok-soft:#1e2a21;--bad:#d79a8c;--bad-soft:#2c1e1b;
+    --warn:#e0c489;--warn-soft:#2c2415;
+    --code-bg:#232120;--code-ink:#cac5bc;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);
+  }}
+  :root[data-theme="dark"]{
+    --paper:#131211;--surface:#1c1a18;--surface-2:#252220;
+    --ink:#f3f1ec;--ink-2:#cac5bc;--muted:#948d82;
+    --line:#332f2b;--line-soft:#2a2724;
+    --gold:#dcb668;--gold-deep:#e0c489;
+    --ok:#90c19d;--ok-soft:#1e2a21;--bad:#d79a8c;--bad-soft:#2c1e1b;
+    --warn:#e0c489;--warn-soft:#2c2415;
+    --code-bg:#232120;--code-ink:#cac5bc;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:'Outfit',-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+  .serif-it{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:500;}
+  .wrap{max-width:1020px;margin:0 auto;padding:52px 22px 90px;}
+  .eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted);font-weight:600;margin:0 0 16px;}
+  h1{font-size:clamp(32px,5.4vw,50px);line-height:1.04;margin:0 0 14px;font-weight:600;letter-spacing:-.025em;text-wrap:balance;}
+  .lede{font-size:17.5px;color:var(--ink-2);max-width:64ch;margin:0;}
+  .head{border-bottom:1px solid var(--line);padding-bottom:32px;margin-bottom:40px;}
+  h2{font-size:13px;text-transform:uppercase;letter-spacing:.16em;font-weight:600;color:var(--muted);
+    margin:0 0 20px;display:flex;align-items:center;gap:14px;}
+  h2::after{content:"";flex:1;height:1px;background:var(--line);}
+  .block{margin-bottom:56px;}
+  h3{font-size:18px;font-weight:600;margin:0 0 8px;letter-spacing:-.01em;}
+  p{margin:0 0 14px;}
+  .sub{font-size:14.5px;color:var(--ink-2);max-width:66ch;}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:12px;margin-top:26px;}
+  .stat{background:var(--surface);border:1px solid var(--line);border-radius:5px;padding:16px 18px;box-shadow:var(--shadow);}
+  .stat b{display:block;font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1;font-variant-numeric:tabular-nums;}
+  .stat span{display:block;font-size:12.5px;color:var(--muted);margin-top:6px;line-height:1.35;}
+  .item{background:var(--surface);border:1px solid var(--line);border-radius:5px;padding:18px 20px;
+    margin-bottom:12px;box-shadow:var(--shadow);border-left:3px solid var(--line);}
+  .item--bad{border-left-color:var(--bad);}
+  .item--warn{border-left-color:var(--gold);}
+  .item--ok{border-left-color:var(--ok);}
+  .item h3{font-size:16px;margin-bottom:5px;}
+  .item p{font-size:14px;color:var(--ink-2);margin:0 0 8px;line-height:1.55;}
+  .item p:last-child{margin-bottom:0;}
+  .tag{display:inline-block;font-size:10px;text-transform:uppercase;letter-spacing:.12em;font-weight:700;
+    padding:4px 8px;border-radius:2px;margin-bottom:8px;}
+  .tag--bad{background:var(--bad-soft);color:var(--bad);}
+  .tag--warn{background:var(--warn-soft);color:var(--warn);}
+  .tag--ok{background:var(--ok-soft);color:var(--ok);}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;
+    background:var(--code-bg);color:var(--code-ink);padding:1px 5px;border-radius:3px;}
+  .flow{display:grid;gap:8px;margin:14px 0 4px;padding:0;list-style:none;counter-reset:f;}
+  .flow li{counter-increment:f;display:grid;grid-template-columns:22px 1fr;gap:12px;align-items:baseline;
+    font-size:13.5px;color:var(--ink-2);line-height:1.5;}
+  .flow li::before{content:counter(f);font-size:11px;font-weight:700;color:var(--muted);
+    background:var(--surface-2);border-radius:50%;width:22px;height:22px;display:flex;
+    align-items:center;justify-content:center;font-variant-numeric:tabular-nums;}
+  .flow li:last-child{color:var(--bad);font-weight:600;}
+  .flow--ok li:last-child{color:var(--ok);}
+  .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:5px;background:var(--surface);box-shadow:var(--shadow);}
+  table{border-collapse:collapse;width:100%;font-size:14px;min-width:520px;}
+  th,td{text-align:left;padding:11px 16px;border-bottom:1px solid var(--line-soft);vertical-align:top;}
+  th{font-size:10.5px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:600;}
+  tr:last-child td{border-bottom:none;}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;}
+  .note{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--gold);
+    border-radius:4px;padding:18px 20px;font-size:14.5px;color:var(--ink-2);line-height:1.6;box-shadow:var(--shadow);}
+  .note b{color:var(--ink);}
+  .note p:last-child{margin-bottom:0;}
+  ol.prio{margin:0;padding:0;list-style:none;counter-reset:p;display:grid;gap:16px;}
+  ol.prio li{counter-increment:p;display:grid;grid-template-columns:30px 1fr;gap:16px;align-items:start;}
+  ol.prio li::before{content:counter(p);font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;
+    font-size:24px;color:var(--gold);line-height:1;}
+  ol.prio b{display:block;font-size:15.5px;color:var(--ink);margin-bottom:3px;}
+  ol.prio span{font-size:14px;color:var(--ink-2);line-height:1.55;}
+  footer{margin-top:52px;padding-top:22px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted);}
+  a{color:var(--gold-deep);}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+</style>
+
+<div class="wrap">
+
+  <header class="head">
+    <p class="eyebrow">contt.s fitness · revisão de site, sacola e checkout · 30/08/2026</p>
+    <h1>da sacola ao <span class="serif-it">pedido</span></h1>
+    <p class="lede">Revisei o site inteiro contra os dados reais da sua Shopify: o código do tema, os 311 produtos, as 1.164 variantes e os pedidos dos últimos dois meses. Achei duas quebras de verdade no caminho da compra — as duas já estão corrigidas. O catálogo passou quase limpo. O que sobrou está fora do código, na loja.</p>
+    <div class="stats">
+      <div class="stat"><b>6</b><span>correções no código, prontas</span></div>
+      <div class="stat"><b>1.164</b><span>variantes conferidas</span></div>
+      <div class="stat"><b>0</b><span>SKU vazio ou repetido</span></div>
+      <div class="stat"><b>32</b><span>cores, todas com tom próprio</span></div>
+      <div class="stat"><b>43</b><span>pedidos pagos sem baixa de envio</span></div>
+      <div class="stat"><b>2</b><span>produtos vendendo sem estoque</span></div>
+    </div>
+  </header>
+
+  <section class="block">
+    <h2>1. as duas quebras de verdade</h2>
+    <p class="sub">Nenhuma das duas aparece como erro na tela. As duas acontecem em silêncio, exatamente no trecho em que a cliente já decidiu comprar.</p>
+
+    <div class="item item--bad" style="margin-top:22px">
+      <span class="tag tag--bad">corrigido</span>
+      <h3>A cliente não conseguia esvaziar a sacola</h3>
+      <p>O tema guarda uma cópia do carrinho no navegador para o caso de a Shopify perder o cookie (que expira em ~14 dias). O problema é que ele restaurava essa cópia <b>toda vez</b> que a página carregava com o carrinho vazio — sem distinguir "o cookie sumiu" de "a cliente esvaziou de propósito".</p>
+      <p>Como o link <code>remover item</code> da página da sacola é navegação normal (recarrega a página), e não AJAX, o efeito era este:</p>
+      <ol class="flow">
+        <li>Ela clica em "remover item" no último produto da sacola.</li>
+        <li>A Shopify esvazia o carrinho e recarrega a página.</li>
+        <li>O tema vê carrinho vazio + cópia salva e repõe tudo.</li>
+        <li>O produto que ela acabou de remover está de volta.</li>
+      </ol>
+      <p style="margin-top:12px">Pela sacola lateral (o "minicart") isso não acontecia, porque lá a remoção é AJAX e atualiza a cópia. Só na página da sacola — que é justamente por onde passa quem vai fechar a compra.</p>
+      <p><b>Como ficou:</b> a cópia agora guarda também o <i>token</i> do carrinho. Token igual significa que é o mesmo carrinho e foi a cliente que esvaziou — descarta a cópia e respeita a decisão dela. Token diferente significa carrinho novo, cookie perdido de verdade — aí sim restaura.</p>
+    </div>
+
+    <div class="item item--bad">
+      <span class="tag tag--bad">corrigido</span>
+      <h3>Produto esgotado mostrava "adicionar ao carrinho" — e o clique falhava</h3>
+      <p>Quando um produto está sem estoque, o Liquid da Shopify ainda devolve uma variante em <code>selected_or_first_available_variant</code>. O card não conferia isso, então caía no caminho da compra rápida e desenhava o botão preto normal, como se desse para comprar.</p>
+      <p>Clicando, o pedido ia para <code>/cart/add.js</code>, a Shopify recusava e sobrava só um <code>alert()</code> genérico: <i>"Não foi possível adicionar ao carrinho."</i> Sem dizer que era esgotado, sem oferecer outro tamanho.</p>
+      <p><b>Atinge 11 produtos ativos hoje</b>, entre eles Legging empina bumbum newspaper, Top tiras fake jeans e as leggings abstract. <b>Como ficou:</b> botão "esgotado", cinza e desabilitado — que é o que a página do produto já fazia certo.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>2. as outras quatro correções</h2>
+    <div class="item item--ok">
+      <span class="tag tag--ok">corrigido</span>
+      <h3>O card baixava a mesma foto duas vezes</h3>
+      <p>A segunda imagem (a da troca no passar do mouse) usava <code>product.images[1] | default: product.featured_image</code>. Em produto com uma foto só, o <code>default</code> repetia a principal — o navegador baixava 800px duplicados por card, sem efeito nenhum. Numa coleção de 24 produtos isso é peso puro, e no celular nem existe passar o mouse. Agora a segunda foto só é escrita quando ela existe mesmo.</p>
+    </div>
+    <div class="item item--ok">
+      <span class="tag tag--ok">corrigido</span>
+      <h3>Preço do embrulho para presente estava fixo no código</h3>
+      <p>A sacola anunciava <code>+ R$ 9,90</code> escrito à mão. Hoje bate com a Shopify, mas se você mudar esse preço no admin a sacola continuaria anunciando 9,90 e o checkout cobraria outro valor. Agora o preço é lido da própria variante.</p>
+    </div>
+    <div class="item item--ok">
+      <span class="tag tag--ok">corrigido</span>
+      <h3>Limite de frete grátis estava escrito em dois lugares</h3>
+      <p>A barra da sacola lateral tinha <code>19900</code> fixo no <code>theme.js</code>, enquanto a página da sacola lia a configuração do tema. Mudar o limite no painel deixaria as duas discordando. Agora as duas leem a mesma configuração.</p>
+    </div>
+    <div class="item item--ok">
+      <span class="tag tag--ok">corrigido</span>
+      <h3><code>&amp;</code> sem escape nos links de remover</h3>
+      <p>Detalhe de HTML: <code>&amp;quantity=0</code> dentro de um <code>href</code> precisa ser <code>&amp;amp;</code>. Os navegadores perdoam, mas era o único ponto do tema fora do padrão.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>3. o checkout entrega o que promete</h2>
+    <p class="sub">A varredura anterior deixou isso em aberto: o site promete Pix com 5% em quatro lugares e não dava para ler pela API se o checkout cumpria. Dava, sim — pelos pedidos. E cumpre.</p>
+
+    <div class="note" style="margin-top:22px">
+      <p><b>Pix está ativo</b> ("Pix, oferecido por Appmax") e o desconto de 5% é <b>automático</b>: pedidos pagos no Pix <i>sem nenhum cupom</i> saíram com exatamente 5% de desconto (#1065, #1061, #1044). Ninguém precisa digitar nada.</p>
+      <p>E o cupom <b>BEMVINDO soma por cima</b>: Pix + BEMVINDO fecha em 10%. No cartão, o BEMVINDO sozinho dá os 5%.</p>
+    </div>
+
+    <div class="tablewrap" style="margin-top:16px">
+      <table>
+        <thead><tr><th>pedido</th><th>pagamento</th><th>cupom</th><th class="num">desconto real</th></tr></thead>
+        <tbody>
+          <tr><td>#1065</td><td>Pix</td><td>nenhum</td><td class="num">5,0%</td></tr>
+          <tr><td>#1061</td><td>Pix</td><td>nenhum</td><td class="num">5,0%</td></tr>
+          <tr><td>#1044</td><td>Pix</td><td>nenhum</td><td class="num">5,0%</td></tr>
+          <tr><td>#1073</td><td>Pix</td><td>BEMVINDO</td><td class="num">10,0%</td></tr>
+          <tr><td>#1067</td><td>Pix</td><td>BEMVINDO</td><td class="num">10,0%</td></tr>
+          <tr><td>#1072</td><td>Cartão</td><td>BEMVINDO</td><td class="num">5,0%</td></tr>
+          <tr><td>#1050</td><td>Cartão</td><td>BEMVINDO</td><td class="num">5,0%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="sub" style="margin-top:12px">Uma ressalva de escrita, não de dinheiro: o BEMVINDO está configurado como <b>uma vez por cliente</b> e o botão diz "5% OFF no Pix na primeira compra", mas ele funciona no cartão também. Quem repete a compra continua tendo os 5% do Pix — só não tem mais o cupom.</p>
+  </section>
+
+  <section class="block">
+    <h2>4. catálogo — cores, sku e estoque</h2>
+
+    <div class="item item--ok">
+      <span class="tag tag--ok">está certo</span>
+      <h3>As cores estão todas resolvidas</h3>
+      <p>Passei os 311 produtos pela mesma regra que o tema usa para pintar a bolinha de cor. São <b>32 nomes de cor em uso</b> e <b>todos</b> têm tom próprio — nenhum cai no cinza de fallback que fazia a matcha parecer defeito. Os nomes novos desde a última auditoria (Azul Royal, Off White, Orange, Bronze, Cereja, Manteiga, Chumbo) entram todos por alguma regra existente.</p>
+      <p>Só uma sobra da vez passada: um produto usa <b>"Branca"</b> onde os outros 42 usam <b>"Branco"</b>. Pinta igual, mas o filtro da loja lista duas opções para a mesma cor. É o rascunho <i>Legging cintura alta jacquard brocada branca</i>.</p>
+    </div>
+
+    <div class="item item--ok">
+      <span class="tag tag--ok">está certo</span>
+      <h3>Os SKUs estão limpos</h3>
+      <p>Nas 1.164 variantes: nenhum SKU vazio, nenhum SKU repetido entre produtos diferentes, nenhum preço zerado. O padrão <code>CTTS-XXXXXXXXX-TAM-COR</code> está consistente. É raro um catálogo desse tamanho passar sem nenhum achado.</p>
+    </div>
+
+    <div class="item item--bad">
+      <span class="tag tag--bad">precisa de você</span>
+      <h3>Dois dos cinco conjuntos de R$ 189 vendem sem controle de estoque</h3>
+      <p>O <b>Conjunto Shape Matcha</b> e o <b>Conjunto Shape Off White</b> estão com o controle de estoque <b>desligado</b> nas nove variantes de cada um. Na prática eles aceitam pedidos para sempre, independente do que exista na prateleira — e o estoque total dos dois já marca zero.</p>
+      <p>Os outros três da mesma vitrine (Aura Petróleo, Solar Orange e Bronze) estão com o controle ligado e funcionando. Ou seja: é um descuido de cadastro nesses dois, não uma escolha da loja.</p>
+      <p>São os únicos dois casos do catálogo inteiro. E estão justamente na vitrine que a home destaca primeiro. <b>Não mexi</b> — é o seu estoque, e ligar o controle com a quantidade errada tira a peça do ar na hora. Me diga a quantidade real de cada tamanho e eu acerto.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>5. depois que o pedido entra</h2>
+
+    <div class="item item--bad">
+      <span class="tag tag--bad">precisa de você</span>
+      <h3>43 pedidos pagos nunca foram marcados como enviados</h3>
+      <p>O último pedido com baixa de envio na Shopify é o <b>#1032, de 29/07</b>. De lá para cá, um mês inteiro, nenhum foi marcado — o mais antigo parado é o <b>#1009, de 15/07</b>.</p>
+      <p>Se as peças saíram e a baixa só não foi dada no painel, o efeito ainda é ruim: a Shopify só dispara o e-mail de "seu pedido foi enviado" com o código de rastreio quando o pedido é marcado como enviado. Essas 43 clientes pagaram e nunca receberam confirmação de postagem — é exatamente o tipo de silêncio que vira "cadê meu pedido?" no WhatsApp e some com a recompra.</p>
+    </div>
+
+    <div class="item item--warn">
+      <span class="tag tag--warn">oportunidade</span>
+      <h3>15% dos pedidos expiram sem pagamento</h3>
+      <p>De 73 pedidos criados desde 30/06, <b>11 expiraram</b> — a cliente chegou até o fim, gerou o pagamento e não concluiu. Sete deles eram Pix: o QR Code foi gerado e não foi pago dentro do prazo.</p>
+      <p>São pessoas que já escolheram, já preencheram o endereço e já decidiram. Um lembrete de Pix não pago (a própria Shopify manda, ou um fluxo simples de WhatsApp) costuma recuperar boa parte — é o público mais barato de reconquistar que existe.</p>
+    </div>
+
+    <div class="item item--warn">
+      <span class="tag tag--warn">continua aberto</span>
+      <h3>Nenhuma carteira digital ativada</h3>
+      <p>Continua como na varredura anterior: <code>supportedDigitalWallets: []</code>. Sem Shop Pay, Apple Pay ou Google Pay. Com a maior parte do público no celular, são os botões que encurtam mais o caminho até o pedido — a cliente paga pela digital, sem digitar cartão nem endereço. Ativar é grátis, em <b>Configurações → Pagamentos</b>.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>6. isto eu não mexi — é decisão sua</h2>
+    <div class="item item--warn">
+      <span class="tag tag--warn">a decidir</span>
+      <h3>As avaliações e os "favoritaram" do site são gerados por fórmula</h3>
+      <p>Nos cards das vitrines da home, a nota e a quantidade de avaliações saem de uma conta com o número do produto — não de avaliações reais:</p>
+      <p><code>review_count = product.id | modulo: 280 | plus: 160</code> &nbsp;→&nbsp; 160 a 440 avaliações, nota fixa 5,0 nos destaques e 4,8/4,9 no resto.</p>
+      <p>Na página do produto acontece o mesmo com o "<b>N favoritaram</b>" (<code>product.id | modulo: 433 | plus: 47</code>) e com as cinco estrelas cheias no topo. E o selo "<b>best seller</b>" é dado por palavra no título — qualquer peça com "brocado", "jeans", "abstract" ou "feel rib" no nome ganha o selo, independente de venda.</p>
+      <p>Levanto isso porque número de avaliação inventado é publicidade enganosa pelo Código de Defesa do Consumidor, e porque é o tipo de coisa que, se uma cliente percebe, derruba a confiança justamente em quem já ia comprar. Mas é uma escolha de negócio e mexe no visual das vitrines — <b>não tirei nada</b>. Se você quiser, eu removo os números inventados e deixo o selo "best seller" saindo da coleção Mais Vendidos, que é real.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>7. por onde eu começaria</h2>
+    <ol class="prio">
+      <li><b>Publicar as correções</b><span>As seis já estão prontas na branch <code>claude/correcoes-checkout-carrinho</code> do repositório do tema. Elas não estão no ar ainda — branch separada não publica. É só juntar na <code>main</code>.</span></li>
+      <li><b>Dar baixa nos 43 pedidos</b><span>É a ação com efeito mais imediato sobre cliente que já pagou. Cada baixa dispara o e-mail com rastreio.</span></li>
+      <li><b>Ligar o estoque do Matcha e do Off White</b><span>Estão na vitrine principal aceitando pedido sem lastro. Me passe as quantidades e eu acerto.</span></li>
+      <li><b>Ativar as carteiras digitais</b><span>De graça, em Configurações → Pagamentos, e ataca a etapa onde a perda é maior.</span></li>
+      <li><b>Testar uma compra no computador</b><span>Segue de pé da varredura anterior: 449 visitas no desktop geraram 2 vendas, contra 1,99% no celular. Eu não consigo abrir o site daqui para ver.</span></li>
+    </ol>
+  </section>
+
+  <footer>
+    <p>Verificação feita em 30/08/2026 sobre os arquivos do repositório <code>contts-shopify-theme</code> e sobre os dados ao vivo da Shopify Admin API: 311 produtos, 1.164 variantes, 73 pedidos desde 30/06. As correções do item 1 e 2 foram validadas por leitura de código e checagem de sintaxe — <b>não consegui abrir a loja para testar no navegador</b>, meu acesso à internet é bloqueado. Vale um teste de compra de ponta a ponta depois de publicar.</p>
+  </footer>
+
+</div>
