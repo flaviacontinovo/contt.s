@@ -104,7 +104,7 @@
     <h1>da sacola ao <span class="serif-it">pedido</span></h1>
     <p class="lede">Revisei o site inteiro contra os dados reais da sua Shopify: o código do tema, os 311 produtos, as 1.164 variantes e os pedidos dos últimos dois meses. Achei duas quebras no caminho da compra e um problema de conteúdo bem maior do que eu tinha visto de início. <b>Tudo isso já está corrigido e no ar.</b> O que sobrou depende de você — e os pedidos, como você pediu, eu não toquei.</p>
     <div class="stats">
-      <div class="stat"><b>10</b><span>correções publicadas na loja</span></div>
+      <div class="stat"><b>11</b><span>correções publicadas na loja</span></div>
       <div class="stat"><b>1.164</b><span>variantes conferidas</span></div>
       <div class="stat"><b>0</b><span>SKU vazio ou repetido</span></div>
       <div class="stat"><b>32</b><span>cores, todas com tom próprio</span></div>
@@ -174,7 +174,21 @@
   </section>
 
   <section class="block">
-    <h2>3. as outras correções técnicas</h2>
+    <h2>3. a revisão do próprio trabalho</h2>
+    <p class="sub">Depois de publicar, reli tudo o que eu tinha escrito procurando erro meu. Achei um — e era o pior tipo, porque parecia certo no código.</p>
+
+    <div class="item item--ok" style="margin-top:22px">
+      <span class="tag tag--ok">corrigido</span>
+      <h3>Eu tinha quebrado o botão de avaliar</h3>
+      <p>No Liquid os filtros se aplicam em cadeia ao valor acumulado. Eu escrevi <code>'https://wa.me/' | append: numero | append: '?text=' | append: mensagem | url_encode</code> — e o <code>url_encode</code> pegou a <b>URL inteira</b>, não só a mensagem. O endereço saía assim:</p>
+      <p><code>https%3A%2F%2Fwa.me%2F5511934108008%3Ftext%3DOl%C3%A1...</code></p>
+      <p>Sem o <code>https://</code> legível, o navegador tratava como caminho relativo e o clique caía em 404 dentro da própria loja. Atingia os dois botões da seção nova — incluindo o do estado vazio, que aparece em 293 dos 296 produtos ativos. Ou seja: eu tinha trocado um link morto (<code>href="#"</code>) por outro link morto.</p>
+      <p><b>Corrigido e publicado:</b> agora só a mensagem passa pelo <code>url_encode</code>, no mesmo padrão que a sacola já usava. Aproveitei para deixar a correção do carrinho mais firme: além da comparação de token, um clique em remover/atualizar na página da sacola já zera o backup na hora, então o conserto não depende do <code>/cart.js</code> devolver token.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>4. as outras correções técnicas</h2>
     <div class="item item--ok">
       <span class="tag tag--ok">no ar</span>
       <h3>Quatro ajustes menores no tema</h3>
@@ -186,7 +200,7 @@
   </section>
 
   <section class="block">
-    <h2>4. o checkout entrega o que promete</h2>
+    <h2>5. o checkout entrega o que promete</h2>
     <p class="sub">A varredura anterior deixou isso em aberto: o site promete Pix com 5% em quatro lugares e não dava para ler pela API se o checkout cumpria. Dava, sim — pelos pedidos. E cumpre.</p>
 
     <div class="note" style="margin-top:22px">
@@ -212,7 +226,7 @@
   </section>
 
   <section class="block">
-    <h2>5. catálogo — cores, sku e estoque</h2>
+    <h2>6. catálogo — cores, sku e estoque</h2>
 
     <div class="item item--ok">
       <span class="tag tag--ok">conferido</span>
@@ -237,7 +251,7 @@
   </section>
 
   <section class="block">
-    <h2>6. depois que o pedido entra</h2>
+    <h2>7. depois que o pedido entra</h2>
 
     <div class="item item--warn">
       <span class="tag tag--warn">você pediu para não mexer</span>
@@ -259,7 +273,7 @@
   </section>
 
   <section class="block">
-    <h2>7. o que falta</h2>
+    <h2>8. o que falta</h2>
     <ol class="prio">
       <li><b>Me passar o estoque do Matcha e do Off White</b><span>Quantas peças de P, M e G de cada. É o único ponto onde eu preciso de um número que só você tem — e estão na vitrine principal aceitando pedido sem lastro.</span></li>
       <li><b>Ativar as carteiras digitais</b><span>De graça, em Configurações → Pagamentos. Ataca a etapa onde a perda é maior.</span></li>
@@ -269,7 +283,8 @@
   </section>
 
   <footer>
-    <p>Verificação e correções feitas em 30/08/2026 sobre o repositório <code>contts-shopify-theme</code> e os dados ao vivo da Shopify Admin API: 311 produtos, 1.164 variantes, 73 pedidos desde 30/06. As dez correções estão publicadas na <code>main</code> do tema, em três commits separados, e portanto no ar na loja. Foram validadas por leitura de código, checagem de sintaxe do JavaScript, balanceamento das tags Liquid e validação do JSON dos schemas — <b>não consegui abrir a loja no navegador para conferir na tela</b>, meu acesso à internet é bloqueado. Vale um teste de compra de ponta a ponta e uma olhada numa página de produto.</p>
+    <p>Revisado uma segunda vez depois de publicar, procurando erro meu: um foi encontrado e corrigido (item 3). Nessa passada revalidei também o estado da loja — a renomeação da cor preservou SKUs, preços e estoque, e os 311 produtos e 1.164 variantes seguem intactos.</p>
+    <p>Verificação e correções feitas em 30/08/2026 sobre o repositório <code>contts-shopify-theme</code> e os dados ao vivo da Shopify Admin API: 311 produtos, 1.164 variantes, 73 pedidos desde 30/06. As onze correções estão publicadas na <code>main</code> do tema, em quatro commits separados, e portanto no ar na loja. Foram validadas por leitura de código, checagem de sintaxe do JavaScript, balanceamento das tags Liquid e validação do JSON dos schemas — <b>não consegui abrir a loja no navegador para conferir na tela</b>, meu acesso à internet é bloqueado. Vale um teste de compra de ponta a ponta e uma olhada numa página de produto.</p>
   </footer>
 
 </div>
