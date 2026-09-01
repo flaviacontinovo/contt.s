@@ -1,0 +1,225 @@
+<title>Instagram Shopping da CONTT.s</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@1,500;1,600&display=swap">
+<style>
+  :root{
+    --paper:#f7f6f3;--surface:#fff;--surface-2:#efece6;
+    --ink:#14120f;--ink-2:#4b463f;--muted:#7d776d;
+    --line:#e3dfd7;--line-soft:#eeebe4;
+    --gold:#c9a24b;--gold-deep:#8a6d2e;
+    --ok:#3f6b4a;--ok-soft:#e7efe8;
+    --bad:#8a4a3f;--bad-soft:#f6e8e5;
+    --warn:#8a6d2e;--warn-soft:#f9f1de;
+    --code-bg:#f2efe8;--code-ink:#4b463f;
+    --shadow:0 1px 2px rgba(20,18,15,.05),0 10px 30px rgba(20,18,15,.07);
+  }
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    --paper:#131211;--surface:#1c1a18;--surface-2:#252220;
+    --ink:#f3f1ec;--ink-2:#cac5bc;--muted:#948d82;
+    --line:#332f2b;--line-soft:#2a2724;
+    --gold:#dcb668;--gold-deep:#e0c489;
+    --ok:#90c19d;--ok-soft:#1e2a21;--bad:#d79a8c;--bad-soft:#2c1e1b;
+    --warn:#e0c489;--warn-soft:#2c2415;
+    --code-bg:#232120;--code-ink:#cac5bc;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);
+  }}
+  :root[data-theme="dark"]{
+    --paper:#131211;--surface:#1c1a18;--surface-2:#252220;
+    --ink:#f3f1ec;--ink-2:#cac5bc;--muted:#948d82;
+    --line:#332f2b;--line-soft:#2a2724;
+    --gold:#dcb668;--gold-deep:#e0c489;
+    --ok:#90c19d;--ok-soft:#1e2a21;--bad:#d79a8c;--bad-soft:#2c1e1b;
+    --warn:#e0c489;--warn-soft:#2c2415;
+    --code-bg:#232120;--code-ink:#cac5bc;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:'Outfit',-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+  .serif-it{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:500;}
+  .wrap{max-width:940px;margin:0 auto;padding:52px 22px 90px;}
+  .eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted);font-weight:600;margin:0 0 16px;}
+  h1{font-size:clamp(32px,5.4vw,48px);line-height:1.05;margin:0 0 14px;font-weight:600;letter-spacing:-.025em;text-wrap:balance;}
+  .lede{font-size:17.5px;color:var(--ink-2);max-width:62ch;margin:0;}
+  .head{border-bottom:1px solid var(--line);padding-bottom:32px;margin-bottom:40px;}
+  h2{font-size:13px;text-transform:uppercase;letter-spacing:.16em;font-weight:600;color:var(--muted);
+    margin:0 0 20px;display:flex;align-items:center;gap:14px;}
+  h2::after{content:"";flex:1;height:1px;background:var(--line);}
+  .block{margin-bottom:52px;}
+  p{margin:0 0 14px;}
+  .sub{font-size:14.5px;color:var(--ink-2);max-width:64ch;}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;
+    background:var(--code-bg);color:var(--code-ink);padding:1px 5px;border-radius:3px;}
+  /* estado atual */
+  .state{display:grid;gap:10px;margin-top:24px;}
+  .srow{display:grid;grid-template-columns:26px 1fr auto;gap:14px;align-items:center;
+    background:var(--surface);border:1px solid var(--line);border-radius:5px;
+    padding:13px 16px;box-shadow:var(--shadow);}
+  .srow__ic{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;
+    justify-content:center;font-size:12px;font-weight:800;}
+  .srow--ok .srow__ic{background:var(--ok-soft);color:var(--ok);}
+  .srow--no .srow__ic{background:var(--bad-soft);color:var(--bad);}
+  .srow--q .srow__ic{background:var(--warn-soft);color:var(--warn);}
+  .srow__txt{font-size:14.5px;line-height:1.4;}
+  .srow__txt small{display:block;font-size:12.5px;color:var(--muted);margin-top:2px;}
+  .srow__who{font-size:10.5px;text-transform:uppercase;letter-spacing:.1em;
+    color:var(--muted);font-weight:600;white-space:nowrap;}
+  /* passos */
+  ol.steps{margin:0;padding:0;list-style:none;counter-reset:s;display:grid;gap:26px;}
+  ol.steps>li{counter-increment:s;display:grid;grid-template-columns:38px 1fr;gap:18px;align-items:start;}
+  ol.steps>li::before{content:counter(s);font-family:'Cormorant Garamond',Georgia,serif;
+    font-style:italic;font-size:30px;color:var(--gold);line-height:.9;text-align:right;}
+  ol.steps h3{font-size:17px;font-weight:600;margin:0 0 6px;letter-spacing:-.01em;}
+  ol.steps p{font-size:14.5px;color:var(--ink-2);line-height:1.6;margin:0 0 10px;}
+  ol.steps p:last-child{margin-bottom:0;}
+  .path{display:inline-block;background:var(--surface-2);border-radius:4px;
+    padding:3px 9px;font-size:13px;font-weight:500;color:var(--ink);}
+  .note{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--gold);
+    border-radius:4px;padding:16px 18px;font-size:14px;color:var(--ink-2);line-height:1.6;
+    box-shadow:var(--shadow);margin:12px 0 0;}
+  .note b{color:var(--ink);}
+  .note p:last-child{margin-bottom:0;}
+  .note--bad{border-left-color:var(--bad);}
+  .cols{columns:2;column-gap:26px;font-size:13px;color:var(--ink-2);margin:12px 0 0;
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;line-height:1.75;}
+  @media(max-width:640px){.cols{columns:1;}}
+  .cols div{break-inside:avoid;}
+  footer{margin-top:52px;padding-top:22px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted);}
+  footer a{color:var(--gold-deep);}
+  a:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+</style>
+
+<div class="wrap">
+
+  <header class="head">
+    <p class="eyebrow">contt.s fitness · instagram shopping</p>
+    <h1>ligar o Instagram <span class="serif-it">à</span> loja</h1>
+    <p class="lede">Metade do caminho já está feita: o app da Meta está instalado na sua Shopify e o catálogo sincroniza sozinho. O que falta é do lado da Meta, e uma coisa dentro da Shopify que está deixando 18 produtos de fora.</p>
+  </header>
+
+  <section class="block">
+    <h2>onde você está agora</h2>
+    <div class="state">
+      <div class="srow srow--ok">
+        <span class="srow__ic" aria-hidden="true">✓</span>
+        <span class="srow__txt">App <b>Facebook &amp; Instagram</b> instalado na Shopify
+          <small>o canal existe e o catálogo sincroniza automaticamente</small></span>
+        <span class="srow__who">shopify</span>
+      </div>
+      <div class="srow srow--ok">
+        <span class="srow__ic" aria-hidden="true">✓</span>
+        <span class="srow__txt">Loja pública, com domínio próprio e SSL
+          <small>www.conttsfitness.com.br — requisito da Meta, atendido</small></span>
+        <span class="srow__who">shopify</span>
+      </div>
+      <div class="srow srow--ok">
+        <span class="srow__ic" aria-hidden="true">✓</span>
+        <span class="srow__txt">278 dos 296 produtos ativos já publicados no canal
+          <small>com foto, preço e descrição — o que a Meta exige para aprovar</small></span>
+        <span class="srow__who">shopify</span>
+      </div>
+      <div class="srow srow--no">
+        <span class="srow__ic" aria-hidden="true">✕</span>
+        <span class="srow__txt"><b>18 produtos ativos estão fora do canal</b>
+          <small>não vão aparecer no Instagram, por mais que o resto funcione</small></span>
+        <span class="srow__who">shopify</span>
+      </div>
+      <div class="srow srow--no">
+        <span class="srow__ic" aria-hidden="true">✕</span>
+        <span class="srow__txt">Publicação automática <b>desligada</b> no canal
+          <small>todo produto novo nasce fora do Instagram até você publicar à mão</small></span>
+        <span class="srow__who">shopify</span>
+      </div>
+      <div class="srow srow--q">
+        <span class="srow__ic" aria-hidden="true">?</span>
+        <span class="srow__txt">Página do Facebook, conta profissional e Gerenciador de Comércio
+          <small>não consigo ver de fora — é o que os passos abaixo cobrem</small></span>
+        <span class="srow__who">meta</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>o que fazer, na ordem</h2>
+    <ol class="steps">
+      <li>
+        <div>
+          <h3>Publicar os 18 produtos que estão de fora</h3>
+          <p>Na Shopify, em <span class="path">Produtos</span>, selecione os produtos e use <span class="path">Mais ações → Adicionar canais de vendas → Facebook &amp; Instagram</span>. Aproveite e ligue a publicação automática dentro do canal, senão o problema volta a cada produto novo.</p>
+          <p>São quase todos da linha jacquard/brocado — justamente a família que mais vende na loja. A lista está no fim desta página. <b>Eu faço isso para você se quiser</b>, é só pedir.</p>
+        </div>
+      </li>
+      <li>
+        <div>
+          <h3>Ter uma Página do Facebook da marca</h3>
+          <p>Não serve perfil pessoal: precisa ser <b>Página</b>, publicada, no nome da CONTT.s. Se ainda não existe, dá para criar a partir da sua conta pessoal sem misturar as coisas — a Página é uma entidade separada.</p>
+        </div>
+      </li>
+      <li>
+        <div>
+          <h3>Deixar o @useconttsfitness como conta profissional</h3>
+          <p>No app do Instagram: <span class="path">Configurações → Tipo de conta → Mudar para conta profissional → Empresa</span>. Depois, ainda nas configurações, vincule essa conta à Página do Facebook do passo anterior.</p>
+          <div class="note"><p>Sem esse vínculo entre Instagram e Página <b>não existe aprovação</b>. É a causa mais comum de a solicitação ser recusada.</p></div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <h3>Juntar tudo num portfólio empresarial</h3>
+          <p>No <b>Meta Business Suite</b> (business.facebook.com), crie ou abra o portfólio empresarial da CONTT.s e adicione ali dentro: a Página do Facebook, a conta do Instagram e o catálogo que a Shopify criou.</p>
+          <p>Verifique também o domínio <code>conttsfitness.com.br</code> em <span class="path">Configurações → Segurança da marca → Domínios</span>. A Shopify dá a meta tag de verificação, e domínio verificado acelera a análise.</p>
+        </div>
+      </li>
+      <li>
+        <div>
+          <h3>Criar a loja no Gerenciador de Comércio</h3>
+          <p>Ainda no Business Suite, abra o <b>Gerenciador de Comércio</b> e crie a loja apontando para o catálogo da Shopify. Quando perguntar o método de finalização, no Brasil a única opção é <b>"No site"</b> — confirme e informe <code>https://www.conttsfitness.com.br</code>.</p>
+          <div class="note"><p>O nome da conta de comércio <b>não pode conter</b> as palavras <i>facebook</i>, <i>ig</i> ou <i>meta</i>. Use algo como "CONTT.s FITNESS".</p></div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <h3>Enviar para análise e esperar</h3>
+          <p>A Meta revisa manualmente. Costuma sair em alguns dias, mas o prazo oficial vai até cerca de quatro semanas. Enquanto estiver em análise, nada aparece marcado no Instagram — é normal, não é erro de configuração.</p>
+          <p>Aprovada a loja, as marcações de produto passam a existir nos posts e stories, e a sacola abre no <b>seu</b> site, no checkout que você já tem.</p>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section class="block">
+    <h2>o que muda no seu checkout</h2>
+    <p class="sub">Nada. Com a opção "No site", a cliente que toca na etiqueta do produto no Instagram cai na página do produto em conttsfitness.com.br e compra pelo caminho de sempre — mesmo Pix com 5%, mesmo frete grátis acima de R$ 199, mesmo cupom.</p>
+    <div class="note"><p>Vale lembrar de uma coisa que já estava na revisão anterior: desde 26/08/2025 a Meta <b>não é mais facilitadora de impostos</b> nesse fluxo. Como a venda acontece no seu site, a responsabilidade fiscal é a mesma de qualquer pedido da loja — nada muda para você, mas é bom saber.</p></div>
+  </section>
+
+  <section class="block">
+    <h2>os 18 produtos que estão fora do canal</h2>
+    <p class="sub">Todos ativos e à venda no site, mas invisíveis para o Instagram. A embalagem para presente também está fora, e essa é correto continuar fora.</p>
+    <div class="cols">
+      <div>legging-empina-bumbum-cintura-alta-jacquard-preta-cawa</div>
+      <div>legging-empina-bumbum-cintura-alta-brocada-jacquard-preta-97e6</div>
+      <div>legging-empina-bumbum-jacquard-vermelha-vghr</div>
+      <div>legging-empina-bumbum-jacquard-verde-militar-vlrp</div>
+      <div>legging-empina-bumbum-jacquard-chumbo-1mgn</div>
+      <div>legging-empina-bumbum-jacquard-cereja-7edw</div>
+      <div>legging-empina-bumbum-jacquard-brocada-chiclete-cal0</div>
+      <div>legging-empina-bumbum-jacquard-lime-green</div>
+      <div>legging-cintura-alta-modeladora-brocada-azul-royal</div>
+      <div>conjunto-legging-cintura-alta-modeladora-brocada-azul-marinho</div>
+      <div>conjunto-legging-empina-bumbum-abstract-gzog</div>
+      <div>macaco-empina-bumbum-contts-branco-ds2n</div>
+      <div>macaco-empina-bumbum-jacquard-brocado-verde-militar-flxo</div>
+      <div>macaco-empina-bumbum-jacquard-brocado-lime-green-iauy</div>
+      <div>macaco-empina-bumbum-jacquard-brocado-chiclete-yrjb</div>
+      <div>macaco-empina-bumbum-jacquard-brocado-chumbo-buya</div>
+      <div>macaco-empina-bumbum-jacquard-brocado-cereja-tava</div>
+      <div>macacao-empina-bumbum-jacquard-brocado-preto</div>
+    </div>
+  </section>
+
+  <footer>
+    <p>Estado da loja lido ao vivo pela Shopify Admin API em 01/09/2026: canal "Facebook &amp; Instagram" instalado (publicação automática desligada), 296 produtos ativos, 18 fora do canal. Os passos do lado da Meta não consigo executar nem verificar daqui — não tenho acesso à sua conta Meta, e a interface deles muda de nome com frequência, então os caminhos entre parênteses podem aparecer com outro rótulo.</p>
+    <p>Fontes consultadas: <a href="https://apps.shopify.com/facebook" target="_blank" rel="noopener">app Facebook &amp; Instagram na Shopify App Store</a> · <a href="https://help.shopify.com/en/manual/online-sales-channels/social-commerce/facebook-instagram-by-meta/requirements-and-considerations" target="_blank" rel="noopener">requisitos do canal (Shopify)</a> · <a href="https://www.facebook.com/business/help/268860861184453?id=1077620002609475" target="_blank" rel="noopener">configurar loja no Facebook e Instagram (Meta)</a> · <a href="https://www.mlabs.com.br/blog/instagram-shop" target="_blank" rel="noopener">Instagram Shop no Brasil</a></p>
+  </footer>
+
+</div>
