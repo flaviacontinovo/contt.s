@@ -100,7 +100,7 @@
 <div class="wrap">
 
   <header class="head">
-    <p class="eyebrow">contt.s fitness · revisão de site, sacola e checkout · 30/08/2026</p>
+    <p class="eyebrow">contt.s fitness · revisão de site, sacola e checkout · 30/08, revisto em 08/09/2026</p>
     <h1>da sacola ao <span class="serif-it">pedido</span></h1>
     <p class="lede">Revisei o site inteiro contra os dados reais da sua Shopify: o código do tema, os 311 produtos, as 1.164 variantes e os pedidos dos últimos dois meses. Achei duas quebras no caminho da compra e um problema de conteúdo bem maior do que eu tinha visto de início. <b>Tudo isso já está corrigido e no ar.</b> O que sobrou depende de você — e os pedidos, como você pediu, eu não toquei.</p>
     <div class="stats">
@@ -108,9 +108,52 @@
       <div class="stat"><b>1.164</b><span>variantes conferidas</span></div>
       <div class="stat"><b>0</b><span>SKU vazio ou repetido</span></div>
       <div class="stat"><b>32</b><span>cores, todas com tom próprio</span></div>
-      <div class="stat"><b>2</b><span>pontos ainda esperando você</span></div>
+      <div class="stat"><b>16</b><span>pedidos pagos sem baixa de envio</span></div>
     </div>
   </header>
+
+  <section class="block">
+    <h2>uma semana depois — 08/09/2026</h2>
+    <p class="sub">Revisão de acompanhamento: o que aguentou, o que andou e o que não saiu do lugar. Nada regrediu — o tema está exatamente como foi publicado, sem nenhum commit depois dos meus.</p>
+
+    <div class="item item--bad" style="margin-top:22px">
+      <span class="tag tag--bad">vence em 2 dias</span>
+      <h3>O aviso de congresso expira em 10/09</h3>
+      <p>O aviso na página de produto diz que <b>"pedidos feitos a partir de 28/08 serão postados a partir de 10/09"</b>. Depois de quinta-feira ele passa a mentir para a cliente — vai continuar prometendo uma data que já passou.</p>
+      <p>Duas saídas: <b>prorrogar</b> (trocar as duas datas no topo de <code>snippets/aviso-envio.liquid</code>) ou <b>remover</b> (apagar a linha <code>{% render 'aviso-envio' %}</code> de <code>main-product.liquid</code>, o snippet e o bloco <code>.aviso-envio</code> do CSS). Me diga qual e eu faço.</p>
+    </div>
+
+    <div class="item item--ok">
+      <span class="tag tag--ok">andou bem</span>
+      <h3>A fila de envios encolheu de 43 para 16 pedidos</h3>
+      <p>O último pedido com baixa era o #1032, de 29/07. Agora é o <b>#1061, de 18/08</b> — você deu baixa em cerca de 29 pedidos nesta semana. Essas clientes receberam a confirmação de postagem que não tinham recebido.</p>
+      <p>Sobraram <b>16 pedidos pagos sem baixa, somando R$ 5.368,71</b>. Doze deles são de 28/08 em diante, ou seja, estão <i>dentro</i> da janela do congresso — é esperado. Mas <b>seis não estão</b>: #1009, #1020, #1062, #1065, #1067 e #1068, que somam R$ 1.842,64.</p>
+      <p>Os dois primeiros preocupam: <b>#1009 é de 15/07 (R$ 756,00)</b> e <b>#1020 de 19/07 (R$ 349,60)</b>. São quase dois meses sem confirmação de envio, e o #1009 é o pedido de maior valor de toda a fila.</p>
+    </div>
+
+    <div class="item item--warn">
+      <span class="tag tag--warn">sem mudança</span>
+      <h3>Matcha e Off White continuam vendendo sem controle de estoque</h3>
+      <p>Conferi hoje: as duas peças seguem com o controle desligado e estoque total zero, aceitando pedido sem lastro. São as mesmas da vitrine de R$ 189. Continua faltando só o número: quantas peças de P, M e G existem de cada.</p>
+    </div>
+
+    <div class="item item--warn">
+      <span class="tag tag--warn">sem mudança</span>
+      <h3>Carteiras digitais continuam desligadas</h3>
+      <p><code>supportedDigitalWallets: []</code> — nada de Shop Pay, Apple Pay ou Google Pay. É um clique em Configurações → Pagamentos, de graça, e ataca a etapa do funil onde a perda é maior.</p>
+    </div>
+
+    <div class="item item--ok">
+      <span class="tag tag--ok">segurando</span>
+      <h3>O canal da Meta continua íntegro</h3>
+      <p>Publicação automática ainda ligada, 296 produtos ativos, e os cinco produtos mais recentes da loja estão todos no canal. Nada saiu do lugar desde 01/09.</p>
+    </div>
+
+    <div class="note">
+      <p><b>Sobre medir o efeito das correções: ainda não dá.</b> De 01/09 até hoje foram 6 pedidos pagos e 1 expirado, com ticket médio de R$ 313,87. Nos dez dias anteriores às correções foram 7 pagos e 2 expirados, com ticket de R$ 313,40.</p>
+      <p>Praticamente idêntico — mas <b>seis pedidos não medem nada</b>. As duas quebras que consertei (a sacola que não esvaziava e o botão de comprar em produto esgotado) são falhas silenciosas, que só aparecem em taxa de conversão ao longo de semanas. Para enxergar diferença de verdade, o caminho é o relatório de sessões e conversão da própria Shopify daqui a umas três ou quatro semanas — não a contagem de pedidos de uma semana.</p>
+    </div>
+  </section>
 
   <section class="block">
     <h2>1. as duas quebras no caminho da compra</h2>
@@ -257,6 +300,7 @@
       <span class="tag tag--warn">você pediu para não mexer</span>
       <h3>43 pedidos pagos sem baixa de envio</h3>
       <p>Registro aqui só para não se perder: o último pedido com baixa na Shopify é o <b>#1032, de 29/07</b>, e o mais antigo parado é o <b>#1009, de 15/07</b>. Como a Shopify só dispara o e-mail de "pedido enviado" com rastreio quando o pedido é marcado como enviado, essas clientes pagaram e não receberam confirmação de postagem. <b>Não toquei em nada disso.</b></p>
+      <p><b>Atualização de 08/09:</b> a fila caiu para 16 pedidos — você deu baixa em cerca de 29 deles. Os detalhes do que sobrou estão na seção "uma semana depois", no topo.</p>
     </div>
 
     <div class="item item--warn">
