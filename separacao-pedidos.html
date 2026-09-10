@@ -109,6 +109,33 @@
   .barra__t{background:var(--surface);border:1px solid var(--line);border-radius:999px;
     padding:6px 14px;font-size:13px;box-shadow:var(--shadow);}
   .barra__t b{font-variant-numeric:tabular-nums;}
+
+  /* --- caixas: cada pedido montado, como uma foto da encomenda --- */
+  .cx{background:var(--surface);border:1px solid var(--line);border-radius:9px;
+    margin-bottom:16px;box-shadow:var(--shadow);overflow:hidden;}
+  .cx--off{opacity:.55;border-style:dashed;}
+  .cx__h{display:flex;align-items:baseline;gap:10px;padding:15px 17px 13px;flex-wrap:wrap;
+    border-bottom:1px solid var(--line-soft);}
+  .cx__n{font-size:16px;font-weight:800;letter-spacing:-.02em;}
+  .cx__cli{font-size:14.5px;color:var(--ink);flex:1;min-width:130px;}
+  .cx__d{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;}
+  .cx__lay{display:flex;flex-wrap:wrap;gap:14px;padding:20px 17px 22px;
+    background:var(--surface-2);}
+  .pc{width:104px;display:flex;flex-direction:column;align-items:center;gap:0;}
+  .pc__im{position:relative;width:104px;height:132px;background:var(--surface);
+    border:1px solid var(--line);border-radius:7px;display:flex;align-items:center;
+    justify-content:center;overflow:hidden;}
+  .pc__im svg{width:74px;height:122px;display:block;}
+  .pc__t{position:absolute;top:6px;right:6px;background:var(--ink);color:var(--surface);
+    border-radius:4px;padding:3px 7px;font-size:10.5px;font-weight:800;letter-spacing:.05em;
+    line-height:1;}
+  .pc__t--dois{font-size:9px;padding:3px 6px;line-height:1.25;text-align:center;}
+  .pc__nm{font-size:11.5px;line-height:1.3;color:var(--ink-2);text-align:center;margin-top:7px;}
+  .pc__q{position:absolute;bottom:6px;left:6px;background:var(--gold);color:#1a1a1a;
+    border-radius:999px;min-width:21px;height:21px;display:flex;align-items:center;
+    justify-content:center;font-size:11.5px;font-weight:800;}
+  .cx__tot{padding:11px 17px;font-size:12.5px;color:var(--muted);
+    border-top:1px solid var(--line-soft);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;}
   footer{margin-top:44px;padding-top:20px;border-top:1px solid var(--line);font-size:12px;color:var(--muted);}
   @media print{
     body{background:#fff;} .lin,.ped,.stat{box-shadow:none;} .wrap{padding:0;}
@@ -255,79 +282,105 @@
   </section>
 
   <section class="block">
-    <h2>por pedido · para montar as caixas</h2>
+    <h2>as caixas, uma a uma</h2>
+    <p class="sub">Cada pedido montado como se você estivesse olhando a encomenda pronta: o desenho é o tipo da peça, a cor é a cor real dela e a etiqueta escura é o tamanho. O número dourado aparece quando vai mais de uma igual.</p>
 
-    <div class="ped">
-      <div class="ped__h"><span class="ped__n">#1072</span><span class="ped__cli">Maria Aparecida Pianezzer</span><span class="ped__d">29/08 · R$ 711,55</span></div>
-      <div class="ped__it">
-        <div class="ped__i"><span>Top regata elástico basic preto</span><span class="tam">G</span></div>
-        <div class="ped__i"><span>Top regata elástico basic marrom</span><span class="tam">G</span></div>
-        <div class="ped__i"><span>Legging cintura alta canelada capuccino milano</span><span class="tam">M</span></div>
-        <div class="ped__i"><span>Legging empina bumbum grafiatto rosa</span><span class="tam">G</span></div>
-        <div class="ped__i"><span>Legging empina bumbum cintura alta jacquard preta</span><span class="tam">G</span></div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <pattern id="est" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+    <rect width="9" height="9" fill="#d3cabc"/><rect width="4.5" height="9" fill="#a99c89"/>
+  </pattern>
+  <g id="g-legging"><path d="M13 4 H47 L44 38 L39 96 H31 L30 58 L29 96 H21 L16 38 Z"/></g>
+  <g id="g-top"><path d="M17 27 L22 9 M43 27 L38 9" fill="none" stroke-width="3.4" stroke-linecap="round"/>
+    <path d="M10 30 C10 21 18 17 30 17 C42 17 50 21 50 30 L48 52 C48 59 40 61 30 61 C20 61 12 59 12 52 Z"/></g>
+  <g id="g-macacao"><path d="M17 25 L23 8 M43 25 L37 8" fill="none" stroke-width="3.4" stroke-linecap="round"/>
+    <path d="M12 27 C12 20 20 16 30 16 C40 16 48 20 48 27 L46 46 L43 96 H34 L30 62 L26 96 H17 L14 46 Z"/></g>
+  <g id="g-conjunto">
+    <path d="M14 20 C14 14 20 11 29 11 C38 11 44 14 44 20 L43 34 C43 39 37 41 29 41 C21 41 15 39 15 34 Z"/>
+    <path d="M14 50 H44 L42 72 L38 98 H32 L29 76 L26 98 H20 L16 72 Z"/></g>
+</defs></svg>
+
+    <div class="cx">
+      <div class="cx__h"><span class="cx__n">#1072</span><span class="cx__cli">Maria Aparecida Pianezzer</span><span class="cx__d">29/08 · R$ 711,55</span></div>
+      <div class="cx__lay">
+        <div class="pc"><div class="pc__im"><svg viewBox="0 0 60 100"><use href="#g-top" fill="#1a1a1a" stroke="rgba(20,18,15,.35)" stroke-width="1.4"/></svg><span class="pc__t">G</span></div><span class="pc__nm">Top regata elástico basic preto</span></div>
+        <div class="pc"><div class="pc__im"><svg viewBox="0 0 60 100"><use href="#g-top" fill="#7a5230" stroke="rgba(20,18,15,.35)" stroke-width="1.4"/></svg><span class="pc__t">G</span></div><span class="pc__nm">Top regata elástico basic marrom</span></div>
+        <div class="pc"><div class="pc__im"><svg viewBox="0 0 60 100"><use href="#g-legging" fill="#b08d6a" stroke="rgba(20,18,15,.35)" stroke-width="1.4"/></svg><span class="pc__t">M</span></div><span class="pc__nm">Legging canelada capuccino milano</span></div>
+        <div class="pc"><div class="pc__im"><svg viewBox="0 0 60 100"><use href="#g-legging" fill="#d98a9e" stroke="rgba(20,18,15,.35)" stroke-width="1.4"/></svg><span class="pc__t">G</span></div><span class="pc__nm">Legging empina bumbum grafiatto rosa</span></div>
+        <div class="pc"><div class="pc__im"><svg viewBox="0 0 60 100"><use href="#g-legging" fill="#1a1a1a" stroke="rgba(20,18,15,.35)" stroke-width="1.4"/></svg><span class="pc__t">G</span></div><span class="pc__nm">Legging empina bumbum jacquard preta</span></div>
       </div>
+      <div class="cx__tot"><span>5 peças na caixa</span><span>sem baixa de envio</span></div>
     </div>
 
-    <div class="ped">
-      <div class="ped__h"><span class="ped__n">#1073</span><span class="ped__cli">Magda Gomes</span><span class="ped__d">30/08 · R$ 213,10</span></div>
-      <div class="ped__it">
-        <div class="ped__i"><span>Top milano canelado azul</span><span class="tam">G</span></div>
-        <div class="ped__i"><span>Legging empina bumbum fake jeans</span><span class="tam">G</span></div>
+    <div class="cx">
+      <div class="cx__h"><span class="cx__n">#1073</span><span class="cx__cli">Magda Gomes</span><span class="cx__d">30/08 · R$ 213,10</span></div>
+      <div class="cx__lay">
+        <div class="pc"><div class="pc__im"><svg viewBox="0 0 60 100"><use href="#g-top" fill="#3a7fd4" stroke="rgba(20,18,15,.35)" stroke-width="1.4"/></svg><span class="pc__t">G</span></div><span class="pc__nm">Top milano canelado azul</span></div>
+        <div class="pc"><div class="pc__im"><svg viewBox="0 0 60 100"><use href="#g-legging" fill="#4a6b9e" stroke="rgba(20,18,15,.35)" stroke-width="1.4"/></svg><span class="pc__t">G</span></div><span class="pc__nm">Legging empina bumbum fake jeans</span></div>
       </div>
+      <div class="cx__tot"><span>2 peças na caixa</span><span>sem baixa de envio</span></div>
     </div>
 
-    <div class="ped">
-      <div class="ped__h"><span class="ped__n">#1074</span><span class="ped__cli">Vanderlei Lucas</span><span class="ped__d">02/09 · R$ 166,82</span></div>
-      <div class="ped__it">
-        <div class="ped__i"><span>Legging comum marrom</span><span class="tam">P</span></div>
+    <div class="cx">
+      <div class="cx__h"><span class="cx__n">#1074</span><span class="cx__cli">Vanderlei Lucas</span><span class="cx__d">02/09 · R$ 166,82</span></div>
+      <div class="cx__lay">
+        <div class="pc"><div class="pc__im"><svg viewBox="0 0 60 100"><use href="#g-legging" fill="#7a5230" stroke="rgba(20,18,15,.35)" stroke-width="1.4"/></svg><span class="pc__t">P</span></div><span class="pc__nm">Legging comum marrom</span></div>
       </div>
+      <div class="cx__tot"><span>1 peça na caixa</span><span>sem baixa de envio</span></div>
     </div>
 
-    <div class="ped ped--off">
-      <div class="ped__h"><span class="ped__n">#1075</span><span class="ped__cli">Adriana FIALA <span class="sel">cancelado</span></span><span class="ped__d">03/09 · Pix expirado</span></div>
-      <div class="ped__it">
-        <div class="ped__i"><span>Macacão empina bumbum jacquard brocado Preto — <b>não enviar</b>, é a duplicata do #1076</span><span class="tam">ÚNICO</span></div>
+    <div class="cx cx--off">
+      <div class="cx__h"><span class="cx__n">#1075</span><span class="cx__cli">Adriana FIALA <span class="sel">cancelado</span></span><span class="cx__d">03/09 · Pix expirado</span></div>
+      <div class="cx__lay">
+        <div class="pc"><div class="pc__im"><svg viewBox="0 0 60 100"><use href="#g-macacao" fill="#1a1a1a" stroke="rgba(20,18,15,.35)" stroke-width="1.4"/></svg><span class="pc__t">ÚNICO</span></div><span class="pc__nm">NÃO ENVIAR — duplicata do #1076</span></div>
       </div>
+      <div class="cx__tot"><span>1 peça na caixa</span><span>não enviado</span></div>
     </div>
 
-    <div class="ped">
-      <div class="ped__h"><span class="ped__n">#1076</span><span class="ped__cli">Adriana FIALA</span><span class="ped__d">03/09 · R$ 255,55</span></div>
-      <div class="ped__it">
-        <div class="ped__i"><span>Macacão empina bumbum jacquard brocado Preto</span><span class="tam">ÚNICO 38–42</span></div>
+    <div class="cx">
+      <div class="cx__h"><span class="cx__n">#1076</span><span class="cx__cli">Adriana FIALA</span><span class="cx__d">03/09 · R$ 255,55</span></div>
+      <div class="cx__lay">
+        <div class="pc"><div class="pc__im"><svg viewBox="0 0 60 100"><use href="#g-macacao" fill="#1a1a1a" stroke="rgba(20,18,15,.35)" stroke-width="1.4"/></svg><span class="pc__t">ÚNICO</span></div><span class="pc__nm">Macacão jacquard brocado preto</span></div>
       </div>
+      <div class="cx__tot"><span>1 peça na caixa</span><span>sem baixa de envio</span></div>
     </div>
 
-    <div class="ped">
-      <div class="ped__h"><span class="ped__n">#1077</span><span class="ped__cli">Fabiana Pereira de Jesus Silveira</span><span class="ped__d">04/09 · R$ 186,10</span></div>
-      <div class="ped__it">
-        <div class="ped__i"><span>Legging empina bumbum abstract branca</span><span class="tam">G</span></div>
+    <div class="cx">
+      <div class="cx__h"><span class="cx__n">#1077</span><span class="cx__cli">Fabiana Pereira de Jesus Silveira</span><span class="cx__d">04/09 · R$ 186,10</span></div>
+      <div class="cx__lay">
+        <div class="pc"><div class="pc__im"><svg viewBox="0 0 60 100"><use href="#g-legging" fill="#f2f0ee" stroke="rgba(20,18,15,.35)" stroke-width="1.4"/></svg><span class="pc__t">G</span></div><span class="pc__nm">Legging empina bumbum abstract branca</span></div>
       </div>
+      <div class="cx__tot"><span>1 peça na caixa</span><span>sem baixa de envio</span></div>
     </div>
 
-    <div class="ped">
-      <div class="ped__h"><span class="ped__n">#1078</span><span class="ped__cli">Maiara Dias</span><span class="ped__d">06/09 · R$ 583,30</span></div>
-      <div class="ped__it">
-        <div class="ped__i"><span>Top regata abstract</span><span class="tam">G</span></div>
-        <div class="ped__i"><span>Legging empina bumbum abstract branca</span><span class="tam">G</span></div>
-        <div class="ped__i"><span>Conjunto legging empina bumbum e Top urban ink</span><span class="tam">TOP G · LEGGING G</span></div>
+    <div class="cx">
+      <div class="cx__h"><span class="cx__n">#1078</span><span class="cx__cli">Maiara Dias</span><span class="cx__d">06/09 · R$ 583,30</span></div>
+      <div class="cx__lay">
+        <div class="pc"><div class="pc__im"><svg viewBox="0 0 60 100"><use href="#g-top" fill="url(#est)" stroke="rgba(20,18,15,.35)" stroke-width="1.4"/></svg><span class="pc__t">G</span></div><span class="pc__nm">Top regata abstract</span></div>
+        <div class="pc"><div class="pc__im"><svg viewBox="0 0 60 100"><use href="#g-legging" fill="#f2f0ee" stroke="rgba(20,18,15,.35)" stroke-width="1.4"/></svg><span class="pc__t">G</span></div><span class="pc__nm">Legging empina bumbum abstract branca</span></div>
+        <div class="pc"><div class="pc__im"><svg viewBox="0 0 60 100"><use href="#g-conjunto" fill="#2a2f3a" stroke="rgba(20,18,15,.35)" stroke-width="1.4"/></svg><span class="pc__t pc__t--dois">TOP G<br>LEG G</span></div><span class="pc__nm">Conjunto legging + top urban ink</span></div>
       </div>
+      <div class="cx__tot"><span>3 peças na caixa</span><span>sem baixa de envio</span></div>
     </div>
 
-    <div class="ped">
-      <div class="ped__h"><span class="ped__n">#1079</span><span class="ped__cli">Roberto França Hid</span><span class="ped__d">07/09 · R$ 205,05</span></div>
-      <div class="ped__it">
-        <div class="ped__i"><span>Conjunto Legging cintura alta modeladora brocada Azul Marinho</span><span class="tam">M</span></div>
+    <div class="cx">
+      <div class="cx__h"><span class="cx__n">#1079</span><span class="cx__cli">Roberto França Hid</span><span class="cx__d">07/09 · R$ 205,05</span></div>
+      <div class="cx__lay">
+        <div class="pc"><div class="pc__im"><svg viewBox="0 0 60 100"><use href="#g-conjunto" fill="#1e2f6b" stroke="rgba(20,18,15,.35)" stroke-width="1.4"/></svg><span class="pc__t">M</span></div><span class="pc__nm">Conjunto legging modeladora azul marinho</span></div>
       </div>
+      <div class="cx__tot"><span>1 peça na caixa</span><span>sem baixa de envio</span></div>
     </div>
 
-    <div class="ped">
-      <div class="ped__h"><span class="ped__n">#1080</span><span class="ped__cli">Julia Almeida</span><span class="ped__d">07/09 · R$ 486,40</span></div>
-      <div class="ped__it">
-        <div class="ped__i"><span>Top tulipa branco</span><span class="tam">M</span></div>
-        <div class="ped__i"><span>Legging empina bumbum cintura alta jacquard preta</span><span class="tam">G</span></div>
-        <div class="ped__i"><span>Legging empina bumbum abstract branca</span><span class="tam">G</span></div>
+    <div class="cx">
+      <div class="cx__h"><span class="cx__n">#1080</span><span class="cx__cli">Julia Almeida</span><span class="cx__d">07/09 · R$ 486,40</span></div>
+      <div class="cx__lay">
+        <div class="pc"><div class="pc__im"><svg viewBox="0 0 60 100"><use href="#g-top" fill="#f2f0ee" stroke="rgba(20,18,15,.35)" stroke-width="1.4"/></svg><span class="pc__t">M</span></div><span class="pc__nm">Top tulipa branco</span></div>
+        <div class="pc"><div class="pc__im"><svg viewBox="0 0 60 100"><use href="#g-legging" fill="#1a1a1a" stroke="rgba(20,18,15,.35)" stroke-width="1.4"/></svg><span class="pc__t">G</span></div><span class="pc__nm">Legging empina bumbum jacquard preta</span></div>
+        <div class="pc"><div class="pc__im"><svg viewBox="0 0 60 100"><use href="#g-legging" fill="#f2f0ee" stroke="rgba(20,18,15,.35)" stroke-width="1.4"/></svg><span class="pc__t">G</span></div><span class="pc__nm">Legging empina bumbum abstract branca</span></div>
       </div>
+      <div class="cx__tot"><span>3 peças na caixa</span><span>sem baixa de envio</span></div>
     </div>
+
   </section>
 
   <footer>
