@@ -1,0 +1,307 @@
+<title>Separação a partir do #1072</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@1,500&display=swap">
+<style>
+  :root{
+    --paper:#f7f6f3;--surface:#fff;--surface-2:#efece6;
+    --ink:#14120f;--ink-2:#4b463f;--muted:#7d776d;
+    --line:#e3dfd7;--line-soft:#eeebe4;
+    --gold:#c9a24b;--gold-deep:#8a6d2e;
+    --ok:#3f6b4a;--ok-soft:#e7efe8;
+    --bad:#8a4a3f;--bad-soft:#f6e8e5;
+    --shadow:0 1px 2px rgba(20,18,15,.05),0 8px 24px rgba(20,18,15,.06);
+  }
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    --paper:#131211;--surface:#1c1a18;--surface-2:#252220;
+    --ink:#f3f1ec;--ink-2:#cac5bc;--muted:#948d82;
+    --line:#332f2b;--line-soft:#2a2724;
+    --gold:#dcb668;--gold-deep:#e0c489;
+    --ok:#90c19d;--ok-soft:#1e2a21;--bad:#d79a8c;--bad-soft:#2c1e1b;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.3);
+  }}
+  :root[data-theme="dark"]{
+    --paper:#131211;--surface:#1c1a18;--surface-2:#252220;
+    --ink:#f3f1ec;--ink-2:#cac5bc;--muted:#948d82;
+    --line:#332f2b;--line-soft:#2a2724;
+    --gold:#dcb668;--gold-deep:#e0c489;
+    --ok:#90c19d;--ok-soft:#1e2a21;--bad:#d79a8c;--bad-soft:#2c1e1b;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.3);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:'Outfit',-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;}
+  .serif-it{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:500;}
+  .wrap{max-width:760px;margin:0 auto;padding:44px 18px 80px;}
+  .eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted);font-weight:600;margin:0 0 14px;}
+  h1{font-size:clamp(29px,6vw,40px);line-height:1.06;margin:0 0 12px;font-weight:600;letter-spacing:-.025em;text-wrap:balance;}
+  .lede{font-size:16.5px;color:var(--ink-2);margin:0;max-width:56ch;}
+  .head{border-bottom:1px solid var(--line);padding-bottom:26px;margin-bottom:26px;}
+  h2{font-size:12.5px;text-transform:uppercase;letter-spacing:.16em;font-weight:600;color:var(--muted);
+    margin:0 0 16px;display:flex;align-items:center;gap:12px;}
+  h2::after{content:"";flex:1;height:1px;background:var(--line);}
+  .block{margin-bottom:46px;}
+  p{margin:0 0 12px;}
+  .sub{font-size:14px;color:var(--ink-2);max-width:60ch;}
+
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(112px,1fr));gap:9px;margin-top:22px;}
+  .stat{background:var(--surface);border:1px solid var(--line);border-radius:5px;padding:13px 14px;box-shadow:var(--shadow);}
+  .stat b{display:block;font-size:25px;font-weight:800;letter-spacing:-.02em;line-height:1;font-variant-numeric:tabular-nums;}
+  .stat span{display:block;font-size:11.5px;color:var(--muted);margin-top:5px;line-height:1.3;}
+
+  .alerta{background:var(--bad-soft);border:1px solid var(--bad);border-radius:6px;
+    padding:17px 19px;margin:24px 0 0;}
+  .alerta__t{font-size:11px;text-transform:uppercase;letter-spacing:.14em;font-weight:800;
+    color:var(--bad);margin:0 0 7px;}
+  .alerta p{font-size:14.5px;color:var(--ink);margin:0 0 8px;line-height:1.5;}
+  .alerta p:last-child{margin-bottom:0;}
+
+  /* linhas de separação */
+  .lin{display:flex;align-items:flex-start;gap:13px;background:var(--surface);
+    border:1px solid var(--line);border-radius:6px;padding:13px 15px;margin-bottom:7px;
+    box-shadow:var(--shadow);cursor:pointer;transition:opacity .15s;}
+  .lin input{appearance:none;-webkit-appearance:none;flex:0 0 auto;width:23px;height:23px;
+    border:1.5px solid var(--line);border-radius:5px;margin:1px 0 0;cursor:pointer;
+    background:var(--paper);position:relative;transition:all .12s;}
+  .lin input:checked{background:var(--ok);border-color:var(--ok);}
+  .lin input:checked::after{content:"";position:absolute;left:7.5px;top:3.5px;width:5px;height:10px;
+    border:solid #fff;border-width:0 2.2px 2.2px 0;transform:rotate(43deg);}
+  .lin input:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+  .lin__c{min-width:0;flex:1;}
+  .lin__n{font-size:15px;font-weight:500;line-height:1.35;color:var(--ink);}
+  .lin__m{font-size:12.5px;color:var(--muted);margin-top:3px;display:flex;flex-wrap:wrap;gap:7px;align-items:center;}
+  .lin__q{flex:0 0 auto;background:var(--surface-2);border-radius:5px;padding:4px 10px;
+    font-size:13px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--ink);align-self:center;}
+  .lin:has(input:checked){opacity:.45;}
+  .lin:has(input:checked) .lin__n{text-decoration:line-through;}
+  .tam{display:inline-block;background:var(--surface-2);border-radius:3px;padding:2px 7px;
+    font-size:11.5px;font-weight:700;letter-spacing:.04em;color:var(--ink);}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;color:var(--muted);}
+
+  /* por pedido */
+  .ped{background:var(--surface);border:1px solid var(--line);border-radius:7px;
+    margin-bottom:13px;box-shadow:var(--shadow);overflow:hidden;}
+  .ped--off{opacity:.62;border-style:dashed;}
+  .ped__h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;
+    padding:14px 16px;border-bottom:1px solid var(--line-soft);flex-wrap:wrap;}
+  .ped__n{font-size:15.5px;font-weight:700;letter-spacing:-.01em;}
+  .ped__cli{font-size:14px;color:var(--ink-2);flex:1;min-width:140px;}
+  .ped__d{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;}
+  .ped__it{padding:11px 16px 14px;display:grid;gap:8px;}
+  .ped__i{display:flex;justify-content:space-between;gap:12px;font-size:14px;align-items:baseline;}
+  .ped__i span:first-child{color:var(--ink);line-height:1.35;}
+  .sel{display:inline-block;font-size:9.5px;text-transform:uppercase;letter-spacing:.12em;
+    font-weight:800;padding:3px 7px;border-radius:2px;background:var(--bad-soft);color:var(--bad);}
+  .barra{display:flex;gap:7px;flex-wrap:wrap;margin:18px 0 0;}
+  .barra__t{background:var(--surface);border:1px solid var(--line);border-radius:999px;
+    padding:6px 14px;font-size:13px;box-shadow:var(--shadow);}
+  .barra__t b{font-variant-numeric:tabular-nums;}
+  footer{margin-top:44px;padding-top:20px;border-top:1px solid var(--line);font-size:12px;color:var(--muted);}
+  @media print{
+    body{background:#fff;} .lin,.ped,.stat{box-shadow:none;} .wrap{padding:0;}
+  }
+</style>
+
+<div class="wrap">
+
+  <header class="head">
+    <p class="eyebrow">contt.s fitness · separação · 10/09/2026</p>
+    <h1>o que sair <span class="serif-it">a partir do</span> #1072</h1>
+    <p class="lede">Tudo que foi vendido do pedido da Maria Aparecida em diante — o dela inclusive. Nenhum destes recebeu baixa de envio ainda.</p>
+    <div class="stats">
+      <div class="stat"><b>8</b><span>pedidos a enviar</span></div>
+      <div class="stat"><b>17</b><span>peças a separar</span></div>
+      <div class="stat"><b>12</b><span>são tamanho G</span></div>
+      <div class="stat"><b>1</b><span>pedido cancelado</span></div>
+    </div>
+
+    <div class="alerta">
+      <p class="alerta__t">⚠ não envie o #1075</p>
+      <p>A <b>Adriana FIALA</b> aparece duas vezes. Ela gerou o Pix às 03:14 do dia 03/09 (pedido <b>#1075</b>), não pagou dentro do prazo, refez três minutos depois e pagou (pedido <b>#1076</b>).</p>
+      <p>O #1075 está <b>expirado e cancelado</b> — é a mesma peça do #1076. <b>Ela leva um macacão só.</b></p>
+    </div>
+  </header>
+
+  <section class="block">
+    <h2>lista de separação · 17 peças</h2>
+    <p class="sub">Consolidado por peça e tamanho, para tirar tudo do estoque de uma vez. Pode marcar conforme separa — fica salvo neste aparelho.</p>
+
+    <div style="margin-top:20px">
+      <label class="lin"><input type="checkbox" data-k="s1">
+        <span class="lin__c"><span class="lin__n">Legging empina bumbum abstract branca</span>
+        <span class="lin__m"><span class="tam">G</span> Branco · <code>CTTS-LEGEMPBUMA-G</code></span></span>
+        <span class="lin__q">3</span></label>
+
+      <label class="lin"><input type="checkbox" data-k="s2">
+        <span class="lin__c"><span class="lin__n">Legging empina bumbum cintura alta jacquard preta</span>
+        <span class="lin__m"><span class="tam">G</span> Preto · <code>CTTS-LEGEMPBUMC-G-02</code></span></span>
+        <span class="lin__q">2</span></label>
+
+      <label class="lin"><input type="checkbox" data-k="s3">
+        <span class="lin__c"><span class="lin__n">Top regata elástico basic preto</span>
+        <span class="lin__m"><span class="tam">G</span> Preto · <code>CTTS-TOPELSBASP-G</code></span></span>
+        <span class="lin__q">1</span></label>
+
+      <label class="lin"><input type="checkbox" data-k="s4">
+        <span class="lin__c"><span class="lin__n">Top regata elástico basic marrom</span>
+        <span class="lin__m"><span class="tam">G</span> Marrom · <code>CTTS-TOPELSBASM-G</code></span></span>
+        <span class="lin__q">1</span></label>
+
+      <label class="lin"><input type="checkbox" data-k="s5">
+        <span class="lin__c"><span class="lin__n">Legging cintura alta canelada capuccino milano</span>
+        <span class="lin__m"><span class="tam">M</span> Capuccino · <code>CTTS-LEGCINMEDC-M-CAPU</code></span></span>
+        <span class="lin__q">1</span></label>
+
+      <label class="lin"><input type="checkbox" data-k="s6">
+        <span class="lin__c"><span class="lin__n">Legging empina bumbum grafiatto rosa</span>
+        <span class="lin__m"><span class="tam">G</span> Rosa · <code>CTTS-LEGEMPBUMG-G-02</code></span></span>
+        <span class="lin__q">1</span></label>
+
+      <label class="lin"><input type="checkbox" data-k="s7">
+        <span class="lin__c"><span class="lin__n">Top milano canelado azul</span>
+        <span class="lin__m"><span class="tam">G</span> Azul · <code>CTTS-TOPMILCANA-G</code></span></span>
+        <span class="lin__q">1</span></label>
+
+      <label class="lin"><input type="checkbox" data-k="s8">
+        <span class="lin__c"><span class="lin__n">Legging empina bumbum fake jeans</span>
+        <span class="lin__m"><span class="tam">G</span> Jeans · <code>CTTS-LEGEMPBUMF-G-02</code></span></span>
+        <span class="lin__q">1</span></label>
+
+      <label class="lin"><input type="checkbox" data-k="s9">
+        <span class="lin__c"><span class="lin__n">Legging comum marrom</span>
+        <span class="lin__m"><span class="tam">P</span> Marrom · <code>CTTS-LEGCOMMAR-P</code></span></span>
+        <span class="lin__q">1</span></label>
+
+      <label class="lin"><input type="checkbox" data-k="s10">
+        <span class="lin__c"><span class="lin__n">Macacão empina bumbum jacquard brocado Preto</span>
+        <span class="lin__m"><span class="tam">ÚNICO 38–42</span> Preto · <code>CTTS-MACEMPBUMJ-UNI-PRET-02</code></span></span>
+        <span class="lin__q">1</span></label>
+
+      <label class="lin"><input type="checkbox" data-k="s11">
+        <span class="lin__c"><span class="lin__n">Top regata abstract</span>
+        <span class="lin__m"><span class="tam">G</span> Estampado · <code>CTTS-TOPREGABS-G</code></span></span>
+        <span class="lin__q">1</span></label>
+
+      <label class="lin"><input type="checkbox" data-k="s12">
+        <span class="lin__c"><span class="lin__n">Conjunto legging empina bumbum e Top urban ink</span>
+        <span class="lin__m"><span class="tam">TOP G</span> <span class="tam">LEGGING G</span> Preto · <code>CTTS-CONLEGEMPB-URBINK-GxG</code></span></span>
+        <span class="lin__q">1</span></label>
+
+      <label class="lin"><input type="checkbox" data-k="s13">
+        <span class="lin__c"><span class="lin__n">Conjunto Legging cintura alta modeladora brocada Azul Marinho</span>
+        <span class="lin__m"><span class="tam">M</span> Azul Marinho · <code>CTTS-LEGCAMOD-M-MARI</code></span></span>
+        <span class="lin__q">1</span></label>
+
+      <label class="lin"><input type="checkbox" data-k="s14">
+        <span class="lin__c"><span class="lin__n">Top tulipa branco</span>
+        <span class="lin__m"><span class="tam">M</span> Branco · <code>CTTS-TOPTULBRA-M</code></span></span>
+        <span class="lin__q">1</span></label>
+    </div>
+
+    <div class="barra">
+      <span class="barra__t">tamanho G · <b>12</b></span>
+      <span class="barra__t">tamanho M · <b>3</b></span>
+      <span class="barra__t">tamanho P · <b>1</b></span>
+      <span class="barra__t">único · <b>1</b></span>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>por pedido · para montar as caixas</h2>
+
+    <div class="ped">
+      <div class="ped__h"><span class="ped__n">#1072</span><span class="ped__cli">Maria Aparecida Pianezzer</span><span class="ped__d">29/08 · R$ 711,55</span></div>
+      <div class="ped__it">
+        <div class="ped__i"><span>Top regata elástico basic preto</span><span class="tam">G</span></div>
+        <div class="ped__i"><span>Top regata elástico basic marrom</span><span class="tam">G</span></div>
+        <div class="ped__i"><span>Legging cintura alta canelada capuccino milano</span><span class="tam">M</span></div>
+        <div class="ped__i"><span>Legging empina bumbum grafiatto rosa</span><span class="tam">G</span></div>
+        <div class="ped__i"><span>Legging empina bumbum cintura alta jacquard preta</span><span class="tam">G</span></div>
+      </div>
+    </div>
+
+    <div class="ped">
+      <div class="ped__h"><span class="ped__n">#1073</span><span class="ped__cli">Magda Gomes</span><span class="ped__d">30/08 · R$ 213,10</span></div>
+      <div class="ped__it">
+        <div class="ped__i"><span>Top milano canelado azul</span><span class="tam">G</span></div>
+        <div class="ped__i"><span>Legging empina bumbum fake jeans</span><span class="tam">G</span></div>
+      </div>
+    </div>
+
+    <div class="ped">
+      <div class="ped__h"><span class="ped__n">#1074</span><span class="ped__cli">Vanderlei Lucas</span><span class="ped__d">02/09 · R$ 166,82</span></div>
+      <div class="ped__it">
+        <div class="ped__i"><span>Legging comum marrom</span><span class="tam">P</span></div>
+      </div>
+    </div>
+
+    <div class="ped ped--off">
+      <div class="ped__h"><span class="ped__n">#1075</span><span class="ped__cli">Adriana FIALA <span class="sel">cancelado</span></span><span class="ped__d">03/09 · Pix expirado</span></div>
+      <div class="ped__it">
+        <div class="ped__i"><span>Macacão empina bumbum jacquard brocado Preto — <b>não enviar</b>, é a duplicata do #1076</span><span class="tam">ÚNICO</span></div>
+      </div>
+    </div>
+
+    <div class="ped">
+      <div class="ped__h"><span class="ped__n">#1076</span><span class="ped__cli">Adriana FIALA</span><span class="ped__d">03/09 · R$ 255,55</span></div>
+      <div class="ped__it">
+        <div class="ped__i"><span>Macacão empina bumbum jacquard brocado Preto</span><span class="tam">ÚNICO 38–42</span></div>
+      </div>
+    </div>
+
+    <div class="ped">
+      <div class="ped__h"><span class="ped__n">#1077</span><span class="ped__cli">Fabiana Pereira de Jesus Silveira</span><span class="ped__d">04/09 · R$ 186,10</span></div>
+      <div class="ped__it">
+        <div class="ped__i"><span>Legging empina bumbum abstract branca</span><span class="tam">G</span></div>
+      </div>
+    </div>
+
+    <div class="ped">
+      <div class="ped__h"><span class="ped__n">#1078</span><span class="ped__cli">Maiara Dias</span><span class="ped__d">06/09 · R$ 583,30</span></div>
+      <div class="ped__it">
+        <div class="ped__i"><span>Top regata abstract</span><span class="tam">G</span></div>
+        <div class="ped__i"><span>Legging empina bumbum abstract branca</span><span class="tam">G</span></div>
+        <div class="ped__i"><span>Conjunto legging empina bumbum e Top urban ink</span><span class="tam">TOP G · LEGGING G</span></div>
+      </div>
+    </div>
+
+    <div class="ped">
+      <div class="ped__h"><span class="ped__n">#1079</span><span class="ped__cli">Roberto França Hid</span><span class="ped__d">07/09 · R$ 205,05</span></div>
+      <div class="ped__it">
+        <div class="ped__i"><span>Conjunto Legging cintura alta modeladora brocada Azul Marinho</span><span class="tam">M</span></div>
+      </div>
+    </div>
+
+    <div class="ped">
+      <div class="ped__h"><span class="ped__n">#1080</span><span class="ped__cli">Julia Almeida</span><span class="ped__d">07/09 · R$ 486,40</span></div>
+      <div class="ped__it">
+        <div class="ped__i"><span>Top tulipa branco</span><span class="tam">M</span></div>
+        <div class="ped__i"><span>Legging empina bumbum cintura alta jacquard preta</span><span class="tam">G</span></div>
+        <div class="ped__i"><span>Legging empina bumbum abstract branca</span><span class="tam">G</span></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>Dados lidos ao vivo da Shopify em 10/09/2026: todos os pedidos criados a partir de 29/08 às 03:45, que é o pedido #1072 da Maria Aparecida. São 9 pedidos no total — 8 a enviar e o #1075 cancelado. Os oito somam <b>R$ 2.807,87</b> e nenhum deles tem baixa de envio na Shopify, então nenhuma dessas clientes recebeu e-mail de postagem ainda.</p>
+  </footer>
+</div>
+
+<script>
+(function(){
+  /* marca o que já foi separado; fica só neste aparelho */
+  var K='contts_sep_1072';
+  var st={};
+  try{ st=JSON.parse(localStorage.getItem(K)||'{}')||{}; }catch(e){ st={}; }
+  var cx=document.querySelectorAll('.lin input[type=checkbox]');
+  for(var i=0;i<cx.length;i++){
+    (function(c){
+      var k=c.getAttribute('data-k');
+      if(st[k]) c.checked=true;
+      c.addEventListener('change',function(){
+        st[k]=c.checked;
+        try{ localStorage.setItem(K,JSON.stringify(st)); }catch(e){}
+      });
+    })(cx[i]);
+  }
+})();
+</script>
