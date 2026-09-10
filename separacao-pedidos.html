@@ -76,6 +76,20 @@
   .tam{display:inline-block;background:var(--surface-2);border-radius:3px;padding:2px 7px;
     font-size:11.5px;font-weight:700;letter-spacing:.04em;color:var(--ink);}
   code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;color:var(--muted);}
+  .chip{flex:0 0 auto;width:46px;height:46px;border-radius:7px;border:1px solid rgba(20,18,15,.14);
+    align-self:center;box-shadow:inset 0 1px 3px rgba(0,0,0,.09);}
+  .foto{flex:0 0 auto;align-self:center;display:inline-flex;align-items:center;gap:5px;
+    border:1px solid var(--line);border-radius:999px;padding:7px 13px;font-size:12.5px;
+    font-weight:600;color:var(--ink);text-decoration:none;background:var(--paper);white-space:nowrap;}
+  .foto:hover{background:var(--surface-2);}
+  .foto svg{width:13px;height:13px;}
+  .lin{align-items:center;}
+  @media(max-width:520px){
+    .lin{flex-wrap:wrap;}
+    .lin__c{flex:1 1 100%;order:3;}
+    .foto{order:4;margin-left:36px;}
+    .lin__q{order:2;margin-left:auto;}
+  }
 
   /* por pedido */
   .ped{background:var(--surface);border:1px solid var(--line);border-radius:7px;
@@ -123,78 +137,113 @@
 
   <section class="block">
     <h2>lista de separação · 17 peças</h2>
-    <p class="sub">Consolidado por peça e tamanho, para tirar tudo do estoque de uma vez. Pode marcar conforme separa — fica salvo neste aparelho.</p>
+    <p class="sub">Consolidado por peça e tamanho, para tirar tudo do estoque de uma vez. O quadradinho de cor é o tom da peça; <b>toque em "ver foto"</b> para abrir a página dela na loja e ver a imagem. Pode ir marcando conforme separa — fica salvo neste aparelho.</p>
 
     <div style="margin-top:20px">
       <label class="lin"><input type="checkbox" data-k="s1">
+        <span class="chip" style="background:#f2f0ee" aria-hidden="true"></span>
         <span class="lin__c"><span class="lin__n">Legging empina bumbum abstract branca</span>
         <span class="lin__m"><span class="tam">G</span> Branco · <code>CTTS-LEGEMPBUMA-G</code></span></span>
+        <a class="foto" href="https://www.conttsfitness.com.br/products/legging-empina-bumbum-abstract-branca-lgkk" target="_blank" rel="noopener" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 16l-5-5-6 6"/></svg>ver foto</a>
         <span class="lin__q">3</span></label>
 
       <label class="lin"><input type="checkbox" data-k="s2">
+        <span class="chip" style="background:#1a1a1a" aria-hidden="true"></span>
         <span class="lin__c"><span class="lin__n">Legging empina bumbum cintura alta jacquard preta</span>
         <span class="lin__m"><span class="tam">G</span> Preto · <code>CTTS-LEGEMPBUMC-G-02</code></span></span>
+        <a class="foto" href="https://www.conttsfitness.com.br/products/legging-empina-bumbum-cintura-alta-jacquard-preta-cawa" target="_blank" rel="noopener" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 16l-5-5-6 6"/></svg>ver foto</a>
         <span class="lin__q">2</span></label>
 
       <label class="lin"><input type="checkbox" data-k="s3">
+        <span class="chip" style="background:#1a1a1a" aria-hidden="true"></span>
         <span class="lin__c"><span class="lin__n">Top regata elástico basic preto</span>
         <span class="lin__m"><span class="tam">G</span> Preto · <code>CTTS-TOPELSBASP-G</code></span></span>
+        <a class="foto" href="https://www.conttsfitness.com.br/products/top-elstico-basic-preto-qg66" target="_blank" rel="noopener" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 16l-5-5-6 6"/></svg>ver foto</a>
         <span class="lin__q">1</span></label>
 
       <label class="lin"><input type="checkbox" data-k="s4">
+        <span class="chip" style="background:#7a5230" aria-hidden="true"></span>
         <span class="lin__c"><span class="lin__n">Top regata elástico basic marrom</span>
         <span class="lin__m"><span class="tam">G</span> Marrom · <code>CTTS-TOPELSBASM-G</code></span></span>
+        <a class="foto" href="https://www.conttsfitness.com.br/products/top-elstico-basic-marrom-p8fy" target="_blank" rel="noopener" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 16l-5-5-6 6"/></svg>ver foto</a>
         <span class="lin__q">1</span></label>
 
       <label class="lin"><input type="checkbox" data-k="s5">
+        <span class="chip" style="background:#b08d6a" aria-hidden="true"></span>
         <span class="lin__c"><span class="lin__n">Legging cintura alta canelada capuccino milano</span>
         <span class="lin__m"><span class="tam">M</span> Capuccino · <code>CTTS-LEGCINMEDC-M-CAPU</code></span></span>
+        <a class="foto" href="https://www.conttsfitness.com.br/products/legging-cintura-media-canelada-capuccino" target="_blank" rel="noopener" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 16l-5-5-6 6"/></svg>ver foto</a>
         <span class="lin__q">1</span></label>
 
       <label class="lin"><input type="checkbox" data-k="s6">
+        <span class="chip" style="background:#d98a9e" aria-hidden="true"></span>
         <span class="lin__c"><span class="lin__n">Legging empina bumbum grafiatto rosa</span>
         <span class="lin__m"><span class="tam">G</span> Rosa · <code>CTTS-LEGEMPBUMG-G-02</code></span></span>
+        <a class="foto" href="https://www.conttsfitness.com.br/products/legging-empina-bumbum-grafiatto-rosa-vfvl" target="_blank" rel="noopener" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 16l-5-5-6 6"/></svg>ver foto</a>
         <span class="lin__q">1</span></label>
 
       <label class="lin"><input type="checkbox" data-k="s7">
+        <span class="chip" style="background:#3a7fd4" aria-hidden="true"></span>
         <span class="lin__c"><span class="lin__n">Top milano canelado azul</span>
         <span class="lin__m"><span class="tam">G</span> Azul · <code>CTTS-TOPMILCANA-G</code></span></span>
+        <a class="foto" href="https://www.conttsfitness.com.br/products/top-milano-canelado-azul-wc6c" target="_blank" rel="noopener" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 16l-5-5-6 6"/></svg>ver foto</a>
         <span class="lin__q">1</span></label>
 
       <label class="lin"><input type="checkbox" data-k="s8">
+        <span class="chip" style="background:#4a6b9e" aria-hidden="true"></span>
         <span class="lin__c"><span class="lin__n">Legging empina bumbum fake jeans</span>
         <span class="lin__m"><span class="tam">G</span> Jeans · <code>CTTS-LEGEMPBUMF-G-02</code></span></span>
+        <a class="foto" href="https://www.conttsfitness.com.br/products/legging-empina-bumbum-fake-jeans-zbin" target="_blank" rel="noopener" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 16l-5-5-6 6"/></svg>ver foto</a>
         <span class="lin__q">1</span></label>
 
       <label class="lin"><input type="checkbox" data-k="s9">
+        <span class="chip" style="background:#7a5230" aria-hidden="true"></span>
         <span class="lin__c"><span class="lin__n">Legging comum marrom</span>
         <span class="lin__m"><span class="tam">P</span> Marrom · <code>CTTS-LEGCOMMAR-P</code></span></span>
+        <a class="foto" href="https://www.conttsfitness.com.br/products/legging-comum-marrom-5wdp" target="_blank" rel="noopener" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 16l-5-5-6 6"/></svg>ver foto</a>
         <span class="lin__q">1</span></label>
 
       <label class="lin"><input type="checkbox" data-k="s10">
+        <span class="chip" style="background:#1a1a1a" aria-hidden="true"></span>
         <span class="lin__c"><span class="lin__n">Macacão empina bumbum jacquard brocado Preto</span>
         <span class="lin__m"><span class="tam">ÚNICO 38–42</span> Preto · <code>CTTS-MACEMPBUMJ-UNI-PRET-02</code></span></span>
+        <a class="foto" href="https://www.conttsfitness.com.br/products/macacao-empina-bumbum-jacquard-brocado-preto" target="_blank" rel="noopener" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 16l-5-5-6 6"/></svg>ver foto</a>
         <span class="lin__q">1</span></label>
 
       <label class="lin"><input type="checkbox" data-k="s11">
+        <span class="chip" style="background:repeating-linear-gradient(45deg,#d3cabc 0 5px,#a99c89 5px 10px)" aria-hidden="true"></span>
         <span class="lin__c"><span class="lin__n">Top regata abstract</span>
         <span class="lin__m"><span class="tam">G</span> Estampado · <code>CTTS-TOPREGABS-G</code></span></span>
+        <a class="foto" href="https://www.conttsfitness.com.br/products/top-regata-abstract-b2jr" target="_blank" rel="noopener" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 16l-5-5-6 6"/></svg>ver foto</a>
         <span class="lin__q">1</span></label>
 
       <label class="lin"><input type="checkbox" data-k="s12">
+        <span class="chip" style="background:#2a2f3a" aria-hidden="true"></span>
         <span class="lin__c"><span class="lin__n">Conjunto legging empina bumbum e Top urban ink</span>
         <span class="lin__m"><span class="tam">TOP G</span> <span class="tam">LEGGING G</span> Preto · <code>CTTS-CONLEGEMPB-URBINK-GxG</code></span></span>
+        <a class="foto" href="https://www.conttsfitness.com.br/products/conjunto-legging-empina-bumbum-e-top-urban-ink" target="_blank" rel="noopener" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 16l-5-5-6 6"/></svg>ver foto</a>
         <span class="lin__q">1</span></label>
 
       <label class="lin"><input type="checkbox" data-k="s13">
+        <span class="chip" style="background:#1e2f6b" aria-hidden="true"></span>
         <span class="lin__c"><span class="lin__n">Conjunto Legging cintura alta modeladora brocada Azul Marinho</span>
         <span class="lin__m"><span class="tam">M</span> Azul Marinho · <code>CTTS-LEGCAMOD-M-MARI</code></span></span>
+        <a class="foto" href="https://www.conttsfitness.com.br/products/conjunto-legging-cintura-alta-modeladora-brocada-azul-marinho" target="_blank" rel="noopener" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 16l-5-5-6 6"/></svg>ver foto</a>
         <span class="lin__q">1</span></label>
 
       <label class="lin"><input type="checkbox" data-k="s14">
+        <span class="chip" style="background:#f2f0ee" aria-hidden="true"></span>
         <span class="lin__c"><span class="lin__n">Top tulipa branco</span>
         <span class="lin__m"><span class="tam">M</span> Branco · <code>CTTS-TOPTULBRA-M</code></span></span>
+        <a class="foto" href="https://www.conttsfitness.com.br/products/top-tulipa-branco-avsm" target="_blank" rel="noopener" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 16l-5-5-6 6"/></svg>ver foto</a>
         <span class="lin__q">1</span></label>
+
+    </div>
+
+    <div class="alerta" style="background:var(--surface);border-color:var(--line);border-left:3px solid var(--gold)">
+      <p class="alerta__t" style="color:var(--gold-deep)">de olho na foto do conjunto urban ink</p>
+      <p>Ao buscar as fotos vi que a <b>imagem principal</b> desse produto na loja é um arquivo chamado <code>tamanho_padrao_site.png</code> — é a <b>tabela de medidas</b>, não a peça. A foto real da roupa é a segunda.</p>
+      <p>Ou seja: nas vitrines e no topo da página, esse conjunto aparece como uma tabela. Ele vendeu R$ 921 em 60 dias mesmo assim. <b>Não mexi</b> — se quiser, eu inverto a ordem das duas imagens e a foto passa a ser a principal.</p>
     </div>
 
     <div class="barra">
@@ -282,6 +331,7 @@
   </section>
 
   <footer>
+    <p><b>Por que as fotos não estão aqui dentro:</b> a rede desta sessão bloqueia o CDN da Shopify por política da organização, e o visualizador desta página também não carrega imagem de fora. Então não consegui embutir as fotos. O que dá para fazer é o que está acima — o quadradinho mostra a cor da peça e o botão "ver foto" abre a página dela na loja, onde a imagem está. Se preferir tudo numa tela só, dá para eu montar uma planilha com os links.</p>
     <p>Dados lidos ao vivo da Shopify em 10/09/2026: todos os pedidos criados a partir de 29/08 às 03:45, que é o pedido #1072 da Maria Aparecida. São 9 pedidos no total — 8 a enviar e o #1075 cancelado. Os oito somam <b>R$ 2.807,87</b> e nenhum deles tem baixa de envio na Shopify, então nenhuma dessas clientes recebeu e-mail de postagem ainda.</p>
   </footer>
 </div>
