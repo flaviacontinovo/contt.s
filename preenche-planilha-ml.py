@@ -17,8 +17,8 @@ import re
 import shutil
 import zipfile
 
-ORIGINAL = "/root/.claude/uploads/94e285ac-89f9-5c02-a1e9-19cb80af0e4a/f8356a79-Anunciar-09-14-19_23_19.xlsx"
-SAIDA = "/home/user/contt.s/Anunciar-09-14-19_23_19.xlsx"
+ORIGINAL = "/root/.claude/uploads/94e285ac-89f9-5c02-a1e9-19cb80af0e4a/4f744bc8-Anunciar-09-14-19_33_37.xlsx"
+SAIDA = "/home/user/contt.s/Anunciar-09-14-19_33_37.xlsx"
 ABA = "xl/worksheets/sheet3.xml"
 PRIMEIRA_LINHA = 7
 
@@ -134,46 +134,52 @@ def monta_linhas():
     linhas = []
     for p in PRODUTOS:
         t = titulo(p)
-        fotos = "\n".join(CDN + f for f in p["fotos"])
+        # A aba "Ajuda" da planilha e explicita: "deve separa-las por virgula".
+        # Com quebra de linha o Mercado Livre le as 4 fotos como uma URL so e
+        # responde "Uma das URLs inseridas e muito longa".
+        fotos = ",".join(CDN + f for f in p["fotos"])
         modelo = "Conjunto {} {}".format(p["linha"], p["cor"])
         for tam in ["P", "M", "G"]:
             linhas.append({
-                "A": t,
-                "C": "Novo",
-                "D": "O produto não tem código cadastrado",
-                "E": p["cor"],
-                "F": "Lisa",
-                "G": tam,
-                "H": fotos,
-                "I": "{}-{}".format(p["sku"], tam),
-                "J": estoque_do_tamanho(p, tam),
-                "K": 189,
-                "L": p["desc"],
-                "M": "Clássico",
-                "O": "Mercado Envios",
-                "P": "Por conta do comprador",
-                "Q": "Não aceito",
-                "R": "Garantia do vendedor",
-                "S": 30,
-                "T": "dias",
-                "U": "Contt.s",
-                "V": modelo,
-                "W": "Feminino",
-                "X": 2,
-                "Y": "Poliamida",
-                "Z": "Não",
+                "Título": t,
+                "Erros": "",
+                "Condição": "Novo",
+                "Código universal de produto": "O produto não tem código cadastrado",
+                "Varia por: Nome comercial da cor": p["cor"],
+                "Varia por: Desenho do tecido": "Lisa",
+                "Varia por: Tamanho": tam,
+                "Fotos": fotos,
+                "SKU": "{}-{}".format(p["sku"], tam),
+                "Estoque": estoque_do_tamanho(p, tam),
+                "Preço [R$]": 189,
+                "Descrição": p["desc"],
+                "Tipo de anúncio": "Clássico",
+                "Forma de envio": "Mercado Envios",
+                "Custo de envio": "Por conta do comprador",
+                "Retirar pessoalmente": "Não aceito",
+                "Tipo de garantia": "Garantia do vendedor",
+                "Tempo de garantia": 30,
+                "Unidade de Tempo de garantia": "dias",
+                "Marca": "Contt.s",
+                "Modelo": modelo,
+                "Gênero": "Feminino",
+                "Quantidade de peças": 2,
+                "Material principal": "Poliamida",
+                "Materiais reciclados": "Não",
             })
     return linhas
 
 
 # estilo de cada coluna, copiado das celulas que ja vinham na planilha
-ESTILO = {"A": "0", "C": "0", "D": "0", "E": "0", "F": "0", "G": "0", "H": "0",
-          "I": "0", "J": "38", "K": "38", "L": "0", "M": "0", "O": "0", "P": "0",
-          "Q": "0", "R": "45", "S": "38", "T": "0", "U": "0", "V": "0", "W": "45",
-          "X": "38", "Y": "0", "Z": "45"}
+NUMERICAS = {"Estoque", "Preço [R$]", "Tempo de garantia", "Quantidade de peças"}
+ESTILO_TEXTO = "0"
+ESTILO_NUM = "38"
+ESTILO_ESPECIAL = {"Tipo de garantia": "45", "Gênero": "45", "Materiais reciclados": "45"}
 
 # colunas calculadas pela propria planilha; ficam exatamente como vieram
-FORMULAS = {"B", "N", "AA", "AB", "AC"}
+# calculadas pela propria planilha; ficam exatamente como vieram
+FORMULAS_POR_NOME = {"Quantidade de caracteres", "Tarifa de venda",
+                     "Resumo de erros", "BUYBOX_FORMULA", "HIDDEN_PICTURES"}
 
 
 def separa_celulas(corpo):
@@ -213,13 +219,51 @@ def esc(t):
     return (t.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))
 
 
+LINHA_CABECALHO = 3
+
+
+def mapa_de_colunas(sheet, shared_textos):
+    """Liga o nome de cada coluna a sua letra, lendo o cabecalho da linha 3.
+
+    E preciso porque o arquivo que o Mercado Livre devolve com os erros ganha
+    uma coluna "Erros" na frente e desloca todas as outras uma casa. Amarrar
+    pela letra quebraria; amarrar pelo nome funciona nos dois arquivos.
+    """
+    m = re.search(r'<row r="{}"(?: [^>]*)?>(.*?)</row>'.format(LINHA_CABECALHO),
+                  sheet, re.S)
+    assert m, "linha de cabecalho nao encontrada"
+    mapa = {}
+    for col, cel in separa_celulas(m.group(1)):
+        if 't="s"' not in cel:
+            continue
+        v = re.search(r"<v>(\d+)</v>", cel)
+        if not v:
+            continue
+        titulo_col = shared_textos[int(v.group(1))]
+        titulo_col = re.sub(r"<[^>]+>", "", titulo_col)
+        titulo_col = (titulo_col.replace("&amp;", "&").replace("&lt;", "<")
+                      .replace("&gt;", ">").strip())
+        # o cabecalho longo do titulo comeca com "Título:"
+        if titulo_col.startswith("Título"):
+            titulo_col = "Título"
+        mapa[titulo_col] = col
+    return mapa
+
+
 def main():
     zin = zipfile.ZipFile(ORIGINAL)
     sheet = zin.read(ABA).decode("utf-8")
     shared = zin.read("xl/sharedStrings.xml").decode("utf-8")
 
-    # ---- textos novos vao para o fim do sharedStrings, sem mexer nos antigos
     existentes = re.findall(r"<si>(.*?)</si>", shared, re.S)
+    colunas = mapa_de_colunas(sheet, existentes)
+
+    linhas = monta_linhas()
+    assert len(linhas) == 15, "esperava 15 variacoes, montei {}".format(len(linhas))
+
+    faltando = [k for k in linhas[0] if k not in colunas]
+    assert not faltando, "coluna nao encontrada no cabecalho: {}".format(faltando)
+
     indice = {}
     novos = []
 
@@ -231,10 +275,7 @@ def main():
         novos.append(txt)
         return i
 
-    linhas = monta_linhas()
-    assert len(linhas) == 15, "esperava 15 variacoes, montei {}".format(len(linhas))
-
-    # ---- reescreve so as linhas 7..21
+    formulas = {colunas[n] for n in FORMULAS_POR_NOME if n in colunas}
     trocadas = 0
     celulas_texto_novas = 0
 
@@ -245,27 +286,26 @@ def main():
         abertura = re.search(r'<row r="{}"(?: [^>]*)?>'.format(r), sheet).group(0)
 
         antigas = dict(separa_celulas(m.group(1)))
+        saida = {c: cel for c, cel in antigas.items() if c in formulas}
 
-        saida = {}
-        for col, cel in antigas.items():
-            if col in FORMULAS:
-                saida[col] = cel          # formula da planilha: intocada
-
-        for col, val in dados.items():
-            s = ESTILO[col]
+        for nome, val in dados.items():
+            col = colunas[nome]
             if isinstance(val, (int, float)):
-                saida[col] = '<c r="{}{}" t="n" s="{}"><v>{}</v></c>'.format(col, r, s, val)
+                saida[col] = '<c r="{}{}" t="n" s="{}"><v>{}</v></c>'.format(
+                    col, r, ESTILO_NUM, val)
+            elif val == "":
+                saida.pop(col, None)          # celula de erro: fica vazia
             else:
+                estilo = ESTILO_ESPECIAL.get(nome, ESTILO_TEXTO)
                 if col not in antigas:
                     celulas_texto_novas += 1
                 saida[col] = '<c r="{}{}" t="s" s="{}"><v>{}</v></c>'.format(
-                    col, r, s, idx_texto(esc(val)))
+                    col, r, estilo, idx_texto(esc(val)))
 
         corpo = "".join(saida[c] for c in sorted(saida, key=col_num))
         sheet = sheet.replace(m.group(0), abertura + corpo + "</row>", 1)
         trocadas += 1
 
-    # ---- fecha o sharedStrings
     if novos:
         bloco = "".join('<si><t xml:space="preserve">{}</t></si>'.format(t) for t in novos)
         shared = shared.replace("</sst>", bloco + "</sst>")
@@ -276,7 +316,6 @@ def main():
                 int(cont.group(1)) + celulas_texto_novas,
                 int(cont.group(2)) + len(novos)))
 
-    # ---- regrava o pacote, copiando tudo o que nao foi tocado
     with zipfile.ZipFile(SAIDA, "w", zipfile.ZIP_DEFLATED) as zout:
         for item in zin.infolist():
             if item.filename == ABA:
@@ -287,8 +326,9 @@ def main():
                 zout.writestr(item, zin.read(item.filename))
     zin.close()
 
+    print("colunas mapeadas pelo cabecalho: {}".format(len(colunas)))
     print("linhas preenchidas: {} (7 a {})".format(trocadas, PRIMEIRA_LINHA + len(linhas) - 1))
-    print("textos novos no sharedStrings: {}".format(len(novos)))
+    print("textos novos: {}".format(len(novos)))
     print("arquivo: {}".format(SAIDA))
 
 
