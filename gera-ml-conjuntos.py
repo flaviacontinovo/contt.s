@@ -56,6 +56,19 @@ NOTA_TAMANHO = (
     "pecas, escolha P/P, M/M ou G/G. A tabela de medidas esta nas fotos do anuncio."
 )
 
+# ---- campos que nao existem na Shopify, preenchidos a pedido da Flavia ----
+# Sao estimativas minhas, nao dados da loja. Ficam em amarelo na planilha para
+# serem conferidos. O peso e o de um conjunto de poliamida (legging ~180 g +
+# top ~90 g) mais a embalagem, arredondado para cima: subdeclarar peso no
+# Mercado Livre gera cobranca extra depois.
+EAN_TXT = "Nao tenho codigo universal"
+TIPO_ANUNCIO = "Classico"
+FORMA_ENVIO = "Mercado Envios"
+PESO_G = 350
+ALT_CM = 5
+LARG_CM = 22
+COMP_CM = 30
+
 PRODUTOS = [
     {
         "linha": "Shape", "cor": "Matcha", "cor_ml": "Verde",
@@ -199,9 +212,10 @@ for n, p in enumerate(PRODUTOS, start=1):
         valores = [
             "#{}".format(n), titulo, p["cor_ml"], combo, leg, top,
             sku_de(p["sku_base"], combo), 189.00, p["estoque"][combo],
-            p["estoque"][combo], "Novo", "", "Contt.s", modelo, "Feminino",
-            "Conjunto", "Poliamida com elastano", p["bojo"], "Sim", "", "",
-            "Garantia do vendedor: 30 dias", "", "", "", "", fotos, desc,
+            p["estoque"][combo], "Novo", EAN_TXT, "Contt.s", modelo, "Feminino",
+            "Conjunto", "Poliamida com elastano", p["bojo"], "Sim",
+            TIPO_ANUNCIO, FORMA_ENVIO, "Garantia do vendedor: 30 dias",
+            PESO_G, ALT_CM, LARG_CM, COMP_CM, fotos, desc,
         ]
         for i, v in enumerate(valores, start=1):
             c = ws.cell(row=linha, column=i, value=v)
@@ -246,11 +260,47 @@ c = wi.cell(row=lin, column=2, value="5 anuncios, 9 tamanhos cada, 45 linhas. Da
 c.font = Font(name=FONTE, size=10, italic=True, color="7F7F7F")
 lin += 3
 
+bloco("ANTES DE TUDO: esta planilha nao sobe direto no Mercado Livre", [
+    "O Mercado Livre so aceita o arquivo modelo que voce baixa dentro da conta dele. Ele vem "
+    "com os nomes de coluna e os codigos de categoria proprios, e recusa qualquer outro "
+    "arquivo, mesmo com o conteudo todo certo.",
+    "Esta planilha aqui e a FONTE: voce baixa o modelo deles, abre os dois lado a lado e copia "
+    "coluna por coluna, olhando o nome da coluna de la.",
+    "O caminho: Mercado Livre > Minhas publicacoes (ou Anuncios) > Publicar em massa > escolher "
+    "a categoria > Baixar planilha modelo.",
+])
+
+bloco("Duas versoes na planilha", [
+    "Aba ANUNCIOS ML - as 9 combinacoes por cor, com tamanho no formato P/G. E a versao boa, "
+    "vende qualquer mistura de legging e top.",
+    "Aba PLANO B - TAMANHO UNICO - so P, M e G, conjunto inteiro no mesmo tamanho. Use se o "
+    "Mercado Livre recusar os valores P/G na sua categoria.",
+    "No plano B o estoque de cada tamanho e o MENOR entre as combinacoes que usam aquele "
+    "tamanho, para nao vender o que nao tem: so da para entregar um P se houver legging P e "
+    "top P sobrando.",
+])
+
 bloco("As cores das celulas", [
     "BRANCO - pronto, veio da loja. Nao precisa mexer.",
-    "AMARELO - falta preencher. Sao dados que nao existem na Shopify: peso e medidas da caixa, "
-    "codigo de barras, tipo de anuncio e forma de envio.",
+    "AMARELO - preenchido por mim, confira antes de subir. Sao os campos que nao existem na "
+    "Shopify e que eu estimei: peso e medidas da caixa, codigo de barras, tipo de anuncio e "
+    "forma de envio. A lista do que assumi esta logo abaixo.",
     "CINZA - so para sua conferencia. Nao vai para o Mercado Livre.",
+])
+
+bloco("O que eu preenchi de cabeca (celulas amarelas)", [
+    "PESO: 350 g. Conta: legging de poliamida cerca de 180 g, top cerca de 90 g, embalagem cerca "
+    "de 30 g, arredondado para cima. Pese um conjunto real na balanca e corrija. Subdeclarar "
+    "peso no Mercado Livre gera cobranca de diferenca depois da venda.",
+    "CAIXA: 30 x 22 x 5 cm, uma embalagem de envio comum para roupa dobrada. Se voce usa saco "
+    "plastico menor, ajuste.",
+    "CODIGO UNIVERSAL: escrevi Nao tenho codigo universal. Peca de fabricacao propria nao tem "
+    "EAN, e o Mercado Livre aceita marcar essa opcao. Se voce mandou fabricar com codigo de "
+    "barras, troque pelo numero.",
+    "TIPO DE ANUNCIO: Classico. Cobra comissao menor que o Premium; o Premium oferece "
+    "parcelamento sem juros e custa mais. Comece no Classico e suba depois se quiser.",
+    "FORMA DE ENVIO: Mercado Envios, que e o padrao de quem despacha da propria casa.",
+    "GARANTIA: 30 dias do vendedor, que e o minimo de costume para roupa.",
 ])
 
 bloco("Os dois tamanhos no mesmo anuncio", [
@@ -302,6 +352,67 @@ bloco("Como jogar isso na planilha do Mercado Livre", [
 ])
 
 wb.move_sheet("Como usar", offset=-1)
+
+
+# ------------------------------------------------- plano B: um tamanho so
+
+# Se o Mercado Livre recusar os valores P/G na categoria, esta aba traz a mesma
+# linha de produtos com tamanho unico (conjunto inteiro no mesmo tamanho).
+# O estoque de cada tamanho e o menor entre as tres combinacoes que o usam,
+# para nao prometer o que nao existe: um P so pode ser vendido se houver
+# legging P E top P disponiveis.
+
+wb2 = wb.create_sheet("Plano B - tamanho unico")
+COL_B = [c for c in COLUNAS if c[0] not in ("Tam. legging", "Tam. top")]
+
+for i, (nome, larg, _) in enumerate(COL_B, start=1):
+    c = wb2.cell(row=1, column=i, value=nome)
+    c.font = Font(name=FONTE, bold=True, color="FFFFFF", size=10)
+    c.fill = PatternFill("solid", fgColor=AZUL)
+    c.alignment = Alignment(vertical="center", wrap_text=True)
+    wb2.column_dimensions[get_column_letter(i)].width = larg
+wb2.row_dimensions[1].height = 34
+wb2.freeze_panes = "C2"
+
+NOTA_B = (
+    "\n\nCOMO ESCOLHER O TAMANHO\n"
+    "O conjunto sai com a legging e o top no mesmo tamanho. Se voce precisa de "
+    "tamanhos diferentes entre as pecas, mande uma mensagem antes de comprar que a "
+    "gente separa. A tabela de medidas esta nas fotos do anuncio."
+)
+
+lb = 2
+for n, p in enumerate(PRODUTOS, start=1):
+    titulo = titulo_de(p)
+    fotos = ", ".join(p["fotos"])
+    desc = p["desc"] + NOTA_B
+    modelo = "Conjunto {} {}".format(p["linha"], p["cor"])
+    for tam in ["P", "M", "G"]:
+        # o tamanho unico depende da legging e do top; vale o menor estoque
+        usados = [c for c in COMBOS if c.split("/")[0] == tam or c.split("/")[1] == tam]
+        q = min(p["estoque"][c] for c in usados)
+        valores = [
+            "#{}".format(n), titulo, p["cor_ml"], tam,
+            "{}-{}".format(p["sku_base"], tam), 189.00, q, q, "Novo", EAN_TXT,
+            "Contt.s", modelo, "Feminino", "Conjunto", "Poliamida com elastano",
+            p["bojo"], "Sim", TIPO_ANUNCIO, FORMA_ENVIO,
+            "Garantia do vendedor: 30 dias",
+            PESO_G, ALT_CM, LARG_CM, COMP_CM, fotos, desc,
+        ]
+        for i, v in enumerate(valores, start=1):
+            c = wb2.cell(row=lb, column=i, value=v)
+            c.font = Font(name=FONTE, size=10)
+            c.alignment = Alignment(vertical="top", wrap_text=(i in (2, 25, 26)))
+            c.border = BORDA
+            tipo = COL_B[i - 1][2]
+            if tipo == "preencher":
+                c.fill = PatternFill("solid", fgColor=AMARELO)
+            elif tipo == "ref":
+                c.fill = PatternFill("solid", fgColor=CINZA)
+        wb2.cell(row=lb, column=6).number_format = '#,##0.00'
+        lb += 1
+
+wb.move_sheet("Como usar", offset=-2)
 
 wb.save("/home/user/contt.s/mercadolivre-conjuntos.xlsx")
 print("ok - {} linhas de variacao".format(ultima - 1))
