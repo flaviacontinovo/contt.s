@@ -1,0 +1,472 @@
+<title>Conjuntos no Mercado Livre</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --ground:#FBFAF7; --surface:#FFFFFF; --sunk:#F4F1EC;
+    --ink:#16140F; --body:#3D3830; --muted:#7D776D;
+    --line:#E5E0D6; --line-soft:#EFEBE3;
+    --accent:#8A6A24; --accent-soft:#F6EFDF;
+    --ok:#2C6448; --ok-soft:#E8F1EC;
+    --warn:#9A4A16; --warn-soft:#FBEDE3;
+    --shadow:0 1px 2px rgba(22,20,15,.05);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ground:#131209; --surface:#1C1A15; --sunk:#232019;
+      --ink:#F4F1E9; --body:#D8D2C6; --muted:#9E9789;
+      --line:#332F27; --line-soft:#2A2720;
+      --accent:#D3AB5C; --accent-soft:#2A2317;
+      --ok:#7FBF9C; --ok-soft:#1B2820;
+      --warn:#E0955F; --warn-soft:#2B1D13;
+      --shadow:0 1px 2px rgba(0,0,0,.3);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#131209; --surface:#1C1A15; --sunk:#232019;
+    --ink:#F4F1E9; --body:#D8D2C6; --muted:#9E9789;
+    --line:#332F27; --line-soft:#2A2720;
+    --accent:#D3AB5C; --accent-soft:#2A2317;
+    --ok:#7FBF9C; --ok-soft:#1B2820;
+    --warn:#E0955F; --warn-soft:#2B1D13;
+    --shadow:0 1px 2px rgba(0,0,0,.3);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    background:var(--ground); color:var(--body);
+    font-family:'Archivo',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    font-size:15px; line-height:1.55; margin:0;
+    padding-block:32px 72px; padding-left:20px; padding-right:20px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:860px; margin:0 auto; display:flex; flex-direction:column; gap:36px;}
+  h1,h2,h3{color:var(--ink); margin:0; text-wrap:balance; font-weight:600;}
+
+  /* ---------- topo ---------- */
+  .lede{display:flex; flex-direction:column; gap:10px;}
+  .kicker{
+    font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:500;
+    letter-spacing:.14em; text-transform:uppercase; color:var(--accent);
+  }
+  h1{font-size:clamp(28px,5.4vw,38px); line-height:1.12; letter-spacing:-.02em;}
+  .sub{color:var(--muted); max-width:62ch; font-size:14.5px;}
+
+  /* ---------- passos ---------- */
+  .steps{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:1px;
+    background:var(--line-soft); border:1px solid var(--line); border-radius:3px; overflow:hidden;}
+  .steps li{background:var(--surface); padding:13px 16px; display:flex; gap:13px; align-items:baseline;}
+  .steps b{
+    font-family:'IBM Plex Mono',monospace; font-size:11.5px; font-weight:600;
+    color:var(--accent); flex:none; width:16px;
+  }
+  .steps span{font-size:14px;}
+  .steps em{font-style:normal; color:var(--ink); font-weight:600;}
+
+  /* ---------- avisos ---------- */
+  .flag{
+    border-left:2px solid var(--warn); background:var(--warn-soft);
+    padding:13px 16px; border-radius:0 3px 3px 0; font-size:13.5px; color:var(--body);
+  }
+  .flag strong{color:var(--ink); display:block; margin-bottom:2px; font-size:13.5px;}
+
+  /* ---------- seletor de versão ---------- */
+  .modebar{
+    display:flex; flex-wrap:wrap; gap:14px; align-items:center;
+    padding:14px 16px; background:var(--sunk); border:1px solid var(--line); border-radius:3px;
+  }
+  .modebar > p{margin:0; font-size:13px; color:var(--muted); flex:1 1 220px; min-width:0;}
+  .seg{display:flex; background:var(--surface); border:1px solid var(--line); border-radius:3px; padding:2px;}
+  .seg button{
+    font-family:inherit; font-size:12.5px; font-weight:500; color:var(--muted);
+    background:none; border:0; padding:7px 13px; border-radius:2px; cursor:pointer;
+    white-space:nowrap; transition:background .12s, color .12s;
+  }
+  .seg button[aria-pressed="true"]{background:var(--ink); color:var(--ground);}
+  .seg button:focus-visible{outline:2px solid var(--accent); outline-offset:1px;}
+
+  /* ---------- ficha ---------- */
+  .card{background:var(--surface); border:1px solid var(--line); border-radius:3px; box-shadow:var(--shadow);}
+  .card__head{
+    display:flex; align-items:center; gap:13px; padding:15px 18px;
+    border-bottom:1px solid var(--line);
+  }
+  .chip{width:26px; height:26px; border-radius:50%; flex:none; border:1px solid rgba(0,0,0,.14);}
+  .card__head h2{font-size:17px; letter-spacing:-.01em; flex:1 1 auto; min-width:0;}
+  .card__head .n{
+    font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--muted);
+    background:var(--sunk); border-radius:2px; padding:3px 7px; flex:none;
+  }
+
+  .fields{display:grid; grid-template-columns:1fr; }
+  .f{
+    display:grid; grid-template-columns:132px minmax(0,1fr) auto;
+    gap:12px; align-items:baseline;
+    padding:9px 18px; border-bottom:1px solid var(--line-soft);
+  }
+  .f:last-child{border-bottom:0;}
+  .f__k{
+    font-family:'IBM Plex Mono',monospace; font-size:10.5px; font-weight:500;
+    letter-spacing:.07em; text-transform:uppercase; color:var(--muted);
+    line-height:1.7; word-break:break-word;
+  }
+  .f__v{color:var(--ink); font-size:14px; min-width:0; overflow-wrap:anywhere;}
+  .f__v.mono{font-family:'IBM Plex Mono',monospace; font-size:13px; font-variant-numeric:tabular-nums;}
+  .f__v .note{display:block; color:var(--muted); font-size:12px; font-family:'Archivo',sans-serif; margin-top:2px;}
+
+  /* estimativa */
+  .est{
+    display:inline-block; margin-left:7px; vertical-align:1px;
+    font-family:'IBM Plex Mono',monospace; font-size:9.5px; font-weight:600;
+    letter-spacing:.08em; text-transform:uppercase;
+    color:var(--warn); background:var(--warn-soft); border-radius:2px; padding:2px 5px;
+  }
+
+  /* botão copiar */
+  .cp{
+    font-family:'IBM Plex Mono',monospace; font-size:10.5px; font-weight:500;
+    letter-spacing:.06em; text-transform:uppercase;
+    color:var(--muted); background:none; border:1px solid var(--line);
+    border-radius:2px; padding:4px 9px; cursor:pointer; white-space:nowrap;
+    transition:color .12s, border-color .12s, background .12s;
+  }
+  .cp:hover{color:var(--ink); border-color:var(--muted);}
+  .cp:focus-visible{outline:2px solid var(--accent); outline-offset:1px;}
+  .cp[data-state="ok"]{color:var(--ok); border-color:var(--ok); background:var(--ok-soft);}
+  .cp[data-state="sel"]{color:var(--warn); border-color:var(--warn); background:var(--warn-soft);}
+
+  /* descrição */
+  .desc{padding:14px 18px; border-top:1px solid var(--line);}
+  .desc__top{display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:9px;}
+  .desc__top span{
+    font-family:'IBM Plex Mono',monospace; font-size:10.5px; font-weight:500;
+    letter-spacing:.07em; text-transform:uppercase; color:var(--muted);
+  }
+  .desc pre{
+    margin:0; padding:13px 14px; background:var(--sunk); border-radius:3px;
+    font-family:'Archivo',sans-serif; font-size:13.5px; line-height:1.6; color:var(--body);
+    white-space:pre-wrap; word-wrap:break-word; max-height:190px; overflow-y:auto;
+  }
+
+  /* variações */
+  .vars{border-top:1px solid var(--line); padding:14px 18px 16px;}
+  .vars__top{display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:10px; flex-wrap:wrap;}
+  .vars__top span{
+    font-family:'IBM Plex Mono',monospace; font-size:10.5px; font-weight:500;
+    letter-spacing:.07em; text-transform:uppercase; color:var(--muted);
+  }
+  .tscroll{overflow-x:auto;}
+  table{border-collapse:collapse; width:100%; font-size:13px;}
+  th,td{text-align:left; padding:7px 10px; border-bottom:1px solid var(--line-soft); white-space:nowrap;}
+  th{
+    font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:500;
+    letter-spacing:.07em; text-transform:uppercase; color:var(--muted);
+    border-bottom:1px solid var(--line);
+  }
+  td{font-family:'IBM Plex Mono',monospace; font-variant-numeric:tabular-nums; color:var(--ink);}
+  td.sku{color:var(--body);}
+  tr:last-child td{border-bottom:0;}
+  .q{display:inline-block; min-width:26px;}
+
+  /* fotos */
+  .ph{display:flex; flex-wrap:wrap; gap:7px; align-items:center;}
+  .ph a{
+    font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--accent);
+    text-decoration:none; border:1px solid var(--line); border-radius:2px; padding:4px 9px;
+  }
+  .ph a:hover{border-color:var(--accent);}
+  .ph a:focus-visible{outline:2px solid var(--accent); outline-offset:1px;}
+
+  footer{color:var(--muted); font-size:12.5px; border-top:1px solid var(--line); padding-top:18px;}
+  footer p{margin:0 0 6px;}
+
+  @media (max-width:560px){
+    .f{grid-template-columns:1fr auto; gap:3px 12px; padding:11px 15px;}
+    .f__k{grid-column:1; grid-row:1;}
+    .f__v{grid-column:1; grid-row:2;}
+    .cp{grid-column:2; grid-row:1 / span 2; align-self:center;}
+    .card__head,.desc,.vars{padding-left:15px; padding-right:15px;}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none !important;}}
+</style>
+
+<div class="wrap">
+
+  <header class="lede">
+    <div class="kicker">CONTT.s Fitness · 5 anúncios · 45 combinações</div>
+    <h1>Conjuntos no Mercado Livre</h1>
+    <p class="sub">Tudo pronto para publicar um anúncio de cada vez, direto no site do Mercado Livre.
+      Cada campo tem um botão de copiar — clica, cola lá, passa pro próximo. Dados da loja em 14/09/2026.</p>
+  </header>
+
+  <ol class="steps">
+    <li><b>1</b><span>No Mercado Livre: <em>Vender → Produto novo</em>. Não use publicação em massa — ela é feita para catálogo grande e exige o arquivo modelo deles.</span></li>
+    <li><b>2</b><span>Categoria: <em>Roupas e Acessórios → Roupas Femininas → Conjuntos Femininos</em>. Se o nome estiver diferente, escolha a mais próxima de conjunto fitness.</span></li>
+    <li><b>3</b><span>Copie os campos da ficha abaixo, um por um.</span></li>
+    <li><b>4</b><span>Em variações, cadastre <em>cor</em> e <em>tamanho</em> e lance a quantidade de cada linha da tabela.</span></li>
+    <li><b>5</b><span>Nas fotos, cole os endereços — o Mercado Livre baixa as imagens sozinho, não precisa subir arquivo.</span></li>
+  </ol>
+
+  <div class="flag">
+    <strong>Pese um conjunto antes de publicar</strong>
+    Os 350 g são estimativa minha (legging ~180 g + top ~90 g + embalagem). Declarar peso a menos faz o
+    Mercado Livre cobrar a diferença depois da venda. Todo campo marcado <span class="est">estimado</span> é conta minha, não dado da loja.
+  </div>
+
+  <div class="flag">
+    <strong>O estoque está anunciado em dois lugares</strong>
+    As quantidades abaixo são as mesmas peças que estão à venda no site. Sem integração, as duas lojas
+    podem vender a mesma legging. Separe uma parte só para o Mercado Livre, ou baixe na Shopify no mesmo
+    dia em que vender lá.
+  </div>
+
+  <div class="modebar">
+    <p id="modedesc">O Mercado Livre aceita um tamanho por variação, e o conjunto tem dois. Se ele recusar
+      os valores P/G, troque para a versão de tamanho único.</p>
+    <div class="seg" role="group" aria-labelledby="modedesc">
+      <button type="button" id="mode-full" aria-pressed="true">9 tamanhos (P/G)</button>
+      <button type="button" id="mode-simple" aria-pressed="false">Tamanho único</button>
+    </div>
+  </div>
+
+  <main id="cards" style="display:flex; flex-direction:column; gap:28px;"></main>
+
+  <footer>
+    <p><strong style="color:var(--ink)">Preço:</strong> R$ 189,00, igual ao site. O Mercado Livre cobra comissão
+      por venda e, acima de um valor, o frete grátis sai do seu bolso — nesse patamar isso pesa. Rode a conta
+      na calculadora deles antes de publicar. Não consultei as taxas atuais: o acesso ao Mercado Livre está
+      bloqueado pela política da organização daqui.</p>
+    <p><strong style="color:var(--ink)">Categoria:</strong> a sugestão do passo 2 é o caminho de costume para
+      conjunto fitness feminino. Não consegui conferir na árvore de categorias deles, pelo mesmo bloqueio.</p>
+  </footer>
+</div>
+
+<script>
+(function(){
+  var CDN = "https://cdn.shopify.com/s/files/1/0986/2430/7486/files/";
+
+  var DESC_SHAPE = "O Conjunto {COR} foi desenvolvido para valorizar suas curvas com conforto, segurança e muito estilo. Confeccionado em poliamida de alta qualidade, possui toque macio, excelente elasticidade e ZERO TRANSPARÊNCIA, proporcionando mais segurança durante os treinos.\n\nO top possui bojo, oferecendo melhor sustentação e valorizando o busto. A legging conta com modelagem estratégica que valoriza e realça o bumbum, desenhando as curvas e proporcionando um efeito ainda mais bonito ao corpo.\n\nUm conjunto perfeito para quem busca unir performance, conforto e uma modelagem que valoriza a silhueta.";
+
+  var DESC_AURA = "O Conjunto Aura une conforto, sofisticação e uma modelagem desenvolvida para valorizar suas curvas. Confeccionado em poliamida premium, possui toque extremamente macio, confortável e agradável ao corpo, além de oferecer ZERO TRANSPARÊNCIA, garantindo mais segurança durante os treinos.\n\nO top acompanha bojo removível, proporcionando melhor sustentação, conforto e valorizando o busto. Sua modelagem se ajusta perfeitamente ao corpo para acompanhar seus movimentos.\n\nA legging possui cintura alta, ajudando a disfarçar a região da barriga e modelar a silhueta. Além disso, sua modelagem estratégica valoriza e realça o bumbum, destacando as curvas de forma bonita e natural.\n\nConforto, segurança e uma modelagem que valoriza o seu corpo.";
+
+  var NOTA_FULL = "\n\nCOMO ESCOLHER O TAMANHO\nCada conjunto sai com a legging e o top no tamanho que você escolher, e eles podem ser diferentes. Na opção de tamanho, o primeiro valor é o da LEGGING e o segundo é o do TOP. Exemplo: M/G = legging M com top G. Se você usa o mesmo tamanho nas duas peças, escolha P/P, M/M ou G/G. A tabela de medidas está nas fotos do anúncio.";
+
+  var NOTA_SIMPLE = "\n\nCOMO ESCOLHER O TAMANHO\nO conjunto sai com a legging e o top no mesmo tamanho. Se você precisa de tamanhos diferentes entre as peças, mande uma mensagem antes de comprar que a gente separa. A tabela de medidas está nas fotos do anúncio.";
+
+  var COMBOS = ["P/P","M/P","G/P","P/M","P/G","M/M","M/G","G/M","G/G"];
+
+  var PRODUTOS = [
+    { linha:"Shape", cor:"Matcha", corML:"Verde", chip:"#8A9A6B", bojo:"Bojo fixo",
+      skuBase:"CTS-MATCHA", desc:DESC_SHAPE.replace("{COR}","Matcha"),
+      fotos:["1_79b30e4a-aeb6-41b7-8fed-2fdb2171fd34.png","3_1732dfaa-7367-4ad9-aa42-523be0187a90.png","2_55ecdae7-11f5-444e-8209-e77864ad95a4.png","2CE0018D-4C58-4BD1-AF17-2ACB97C88580.png"],
+      est:{"P/P":13,"M/P":13,"G/P":13,"P/M":13,"P/G":13,"M/M":13,"M/G":12,"G/M":13,"G/G":13} },
+    { linha:"Shape", cor:"Off White", corML:"Branco", chip:"#EFEBE1", bojo:"Bojo fixo",
+      skuBase:"CTS-OFFWHITE", desc:DESC_SHAPE.replace("{COR}","Off White"),
+      fotos:["6_da2222ad-a81d-42cd-9b4e-ed2f00b32c3c.png","4_070ccd73-5eb7-4560-b6ba-d54a369ae2d0.png","5_aab050bd-6eac-458c-a8d1-400b3e1894bd.png","2CF040B5-41D0-40B2-8023-04AE68142EC1.png"],
+      est:{"P/P":12,"M/P":12,"G/P":12,"P/M":12,"P/G":12,"M/M":12,"M/G":11,"G/M":12,"G/G":12} },
+    { linha:"Aura", cor:"Petróleo", corML:"Azul petróleo", chip:"#1F4F5A", bojo:"Bojo removível",
+      skuBase:"CTS-AURA", desc:DESC_AURA,
+      fotos:["11_e3552932-1780-4696-8c2c-93416e4fc612.png","12_e35d7013-5d49-41c7-98d1-509bd0ddcc28.png","13_898ab4d8-a1ce-4fe0-afaa-83496462a715.png","14_48939258-2086-4b46-add5-675e4955adb9.png"],
+      est:{"P/P":14,"M/P":14,"G/P":14,"P/M":14,"P/G":14,"M/M":14,"M/G":14,"G/M":14,"G/G":14} },
+    { linha:"Aura", cor:"Solar Orange", corML:"Laranja", chip:"#E2712B", bojo:"Bojo removível",
+      skuBase:"CTS-AURA-SOLAR", desc:DESC_AURA,
+      fotos:["4_51508998-643b-41ed-a3d1-688345ebf40f.png","1_862fde68-29ab-423b-85cb-6622cfdcacd3.png","2_93fcfeef-e45b-4c53-8ff7-879e437f8c20.png","3_a752fa1f-6f85-4757-89f3-05006ef13d7c.png","5_a63365ea-a917-43a2-9c75-cf321e6444f9.png"],
+      est:{"P/P":14,"M/P":14,"G/P":14,"P/M":14,"P/G":14,"M/M":14,"M/G":14,"G/M":14,"G/G":14} },
+    { linha:"Aura", cor:"Bronze", corML:"Bronze", chip:"#9A6B3F", bojo:"Bojo removível",
+      skuBase:"CTS-AURA-BRONZE", desc:DESC_AURA,
+      fotos:["6_8a345ae5-9d03-479b-8104-ad3d564facf3.png","9_84752be2-f1ee-47e4-8788-919b83d40b52.png","7_26b7815b-1529-4c74-b681-6dd89e56e98a.png","10_0653cd3c-7a50-4762-974f-5a55b71b1827.png","8_7684cb2f-6b22-4982-a402-0ae092619f47.png"],
+      est:{"P/P":13,"M/P":13,"G/P":13,"P/M":13,"P/G":13,"M/M":13,"M/G":13,"G/M":13,"G/G":13} }
+  ];
+
+  function titulo(p){ return "Conjunto Fitness Legging Cintura Alta + Top " + p.cor; }
+  function sku(p, combo){
+    var s = combo.split("/");
+    return p.skuBase + "-L" + s[0] + "-T" + s[1];
+  }
+  // no tamanho único vale o MENOR estoque entre as combinações que usam aquele tamanho:
+  // só dá para entregar um P se houver legging P e top P sobrando.
+  function estoqueUnico(p, tam){
+    var usados = COMBOS.filter(function(c){ var s=c.split("/"); return s[0]===tam || s[1]===tam; });
+    return Math.min.apply(null, usados.map(function(c){ return p.est[c]; }));
+  }
+
+  var modo = "full";
+
+  function el(tag, cls, txt){
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (txt != null) n.textContent = txt;
+    return n;
+  }
+
+  function botaoCopiar(getTexto, alvo){
+    var b = el("button", "cp", "copiar");
+    b.type = "button";
+    b.addEventListener("click", function(){
+      var txt = getTexto();
+      function ok(){
+        b.textContent = "copiado";
+        b.setAttribute("data-state", "ok");
+        setTimeout(function(){ b.textContent = "copiar"; b.removeAttribute("data-state"); }, 1600);
+      }
+      function selecionar(){
+        // Sem permissão de área de transferência: seleciona o texto para copiar na mão.
+        try {
+          var r = document.createRange();
+          r.selectNodeContents(alvo || b.parentNode);
+          var s = window.getSelection();
+          s.removeAllRanges(); s.addRange(r);
+        } catch (e) {}
+        b.textContent = "selecionado";
+        b.setAttribute("data-state", "sel");
+        setTimeout(function(){ b.textContent = "copiar"; b.removeAttribute("data-state"); }, 2600);
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(txt).then(ok).catch(selecionar);
+      } else {
+        selecionar();
+      }
+    });
+    return b;
+  }
+
+  function campo(chave, valor, opts){
+    opts = opts || {};
+    var row = el("div", "f");
+    row.appendChild(el("div", "f__k", chave));
+    var v = el("div", "f__v" + (opts.mono ? " mono" : ""), valor);
+    if (opts.estimado){
+      var tag = el("span", "est", "estimado");
+      v.appendChild(tag);
+    }
+    if (opts.nota) v.appendChild(el("span", "note", opts.nota));
+    row.appendChild(v);
+    row.appendChild(botaoCopiar(function(){ return valor; }, v));
+    return row;
+  }
+
+  function ficha(p, i){
+    var card = el("section", "card");
+
+    var head = el("div", "card__head");
+    var chip = el("span", "chip");
+    chip.style.background = p.chip;
+    head.appendChild(chip);
+    var h = el("h2", null, "Conjunto " + p.linha + " " + p.cor);
+    head.appendChild(h);
+    var total = modo === "full"
+      ? COMBOS.reduce(function(a,c){ return a + p.est[c]; }, 0)
+      : ["P","M","G"].reduce(function(a,t){ return a + estoqueUnico(p,t); }, 0);
+    head.appendChild(el("span", "n", "anúncio " + (i+1) + " · " + total + " peças"));
+    card.appendChild(head);
+
+    var t = titulo(p);
+    var fields = el("div", "fields");
+    fields.appendChild(campo("Título", t, { nota: t.length + " de 60 caracteres" }));
+    fields.appendChild(campo("Condição", "Novo"));
+    fields.appendChild(campo("Marca", "Contt.s"));
+    fields.appendChild(campo("Modelo", "Conjunto " + p.linha + " " + p.cor));
+    fields.appendChild(campo("Gênero", "Feminino"));
+    fields.appendChild(campo("Tipo de roupa", "Conjunto"));
+    fields.appendChild(campo("Composição", "Poliamida com elastano"));
+    fields.appendChild(campo("Tipo de bojo", p.bojo));
+    fields.appendChild(campo("É esportivo", "Sim"));
+    fields.appendChild(campo("Cor", p.corML, { nota: "na loja essa cor chama " + p.cor }));
+    fields.appendChild(campo("Preço", "189,00", { mono:true }));
+    fields.appendChild(campo("Tipo de anúncio", "Clássico", { estimado:true, nota:"comissão menor que o Premium; o Premium dá parcelamento sem juros e custa mais" }));
+    fields.appendChild(campo("Forma de envio", "Mercado Envios", { estimado:true }));
+    fields.appendChild(campo("Peso", "350", { mono:true, estimado:true, nota:"gramas, com a embalagem — confira na balança" }));
+    fields.appendChild(campo("Embalagem", "30 x 22 x 5", { mono:true, estimado:true, nota:"comprimento x largura x altura, em cm" }));
+    fields.appendChild(campo("Código universal", "não tenho", { estimado:true, nota:"peça de fabricação própria não tem EAN" }));
+    fields.appendChild(campo("Garantia", "Garantia do vendedor: 30 dias", { estimado:true }));
+    card.appendChild(fields);
+
+    // descrição
+    var texto = p.desc + (modo === "full" ? NOTA_FULL : NOTA_SIMPLE);
+    var d = el("div", "desc");
+    var dtop = el("div", "desc__top");
+    dtop.appendChild(el("span", null, "Descrição"));
+    var pre = el("pre", null, texto);
+    dtop.appendChild(botaoCopiar(function(){ return texto; }, pre));
+    d.appendChild(dtop);
+    d.appendChild(pre);
+    card.appendChild(d);
+
+    // variações
+    var v = el("div", "vars");
+    var vtop = el("div", "vars__top");
+    vtop.appendChild(el("span", null, modo === "full" ? "Variações · 9 tamanhos" : "Variações · tamanho único"));
+
+    var linhas = modo === "full"
+      ? COMBOS.map(function(c){ return { tam:c, sku:sku(p,c), q:p.est[c] }; })
+      : ["P","M","G"].map(function(t){ return { tam:t, sku:p.skuBase + "-" + t, q:estoqueUnico(p,t) }; });
+
+    var tabela = el("table");
+    var thead = el("thead");
+    var trh = el("tr");
+    ["Tamanho","SKU","Estoque"].forEach(function(x){ trh.appendChild(el("th", null, x)); });
+    thead.appendChild(trh);
+    tabela.appendChild(thead);
+    var tb = el("tbody");
+    linhas.forEach(function(l){
+      var tr = el("tr");
+      tr.appendChild(el("td", null, l.tam));
+      tr.appendChild(el("td", "sku", l.sku));
+      var td = el("td");
+      td.appendChild(el("span", "q", String(l.q)));
+      tr.appendChild(td);
+      tb.appendChild(tr);
+    });
+    tabela.appendChild(tb);
+
+    vtop.appendChild(botaoCopiar(function(){
+      return linhas.map(function(l){ return l.tam + "\t" + l.sku + "\t" + l.q; }).join("\n");
+    }, tabela));
+    v.appendChild(vtop);
+    var sc = el("div", "tscroll");
+    sc.appendChild(tabela);
+    v.appendChild(sc);
+
+    // fotos
+    var frow = el("div", "f");
+    frow.style.borderTop = "1px solid var(--line-soft)";
+    frow.style.marginTop = "12px";
+    frow.style.paddingLeft = "0";
+    frow.style.paddingRight = "0";
+    frow.appendChild(el("div", "f__k", "Fotos"));
+    var ph = el("div", "ph");
+    p.fotos.forEach(function(f, n){
+      var a = el("a", null, n === p.fotos.length - 1 ? "medidas" : "foto " + (n+1));
+      a.href = CDN + f;
+      a.target = "_blank";
+      a.rel = "noopener";
+      ph.appendChild(a);
+    });
+    frow.appendChild(ph);
+    frow.appendChild(botaoCopiar(function(){
+      return p.fotos.map(function(f){ return CDN + f; }).join("\n");
+    }, ph));
+    v.appendChild(frow);
+
+    card.appendChild(v);
+    return card;
+  }
+
+  var cards = document.getElementById("cards");
+  var bFull = document.getElementById("mode-full");
+  var bSimple = document.getElementById("mode-simple");
+
+  function desenhar(){
+    cards.textContent = "";
+    PRODUTOS.forEach(function(p, i){ cards.appendChild(ficha(p, i)); });
+    bFull.setAttribute("aria-pressed", modo === "full" ? "true" : "false");
+    bSimple.setAttribute("aria-pressed", modo === "simple" ? "true" : "false");
+  }
+
+  bFull.addEventListener("click", function(){ modo = "full"; desenhar(); });
+  bSimple.addEventListener("click", function(){ modo = "simple"; desenhar(); });
+
+  desenhar();
+})();
+</script>
