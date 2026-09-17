@@ -1,0 +1,261 @@
+<title>Planilha Amazon Corrigida</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,500&family=Outfit:wght@300;400;500;600;700;800&display=swap">
+
+<style>
+:root{
+  --paper:#f7f6f3;--surface:#fff;--surface-2:#efece6;
+  --ink:#14120f;--ink-2:#4b463f;--muted:#7d776d;
+  --line:#e3dfd7;--line-soft:#eeebe4;
+  --gold:#c9a24b;--gold-deep:#8a6d2e;
+  --track:#e6e1d6;
+  --ok:#3f6b4a;--ok-soft:#e7efe8;
+  --bad:#8a4a3f;--bad-soft:#f6e8e5;
+  --warn:#8a6d2e;--warn-soft:#f9f1de;
+  --shadow:0 1px 2px rgba(20,18,15,.05),0 10px 30px rgba(20,18,15,.07);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#131211;--surface:#1c1a18;--surface-2:#252220;
+  --ink:#f3f1ec;--ink-2:#cac5bc;--muted:#948d82;
+  --line:#332f2b;--line-soft:#2a2724;
+  --gold:#dcb668;--gold-deep:#e0c489;--track:#302c28;
+  --ok:#90c19d;--ok-soft:#1e2a21;--bad:#d79a8c;--bad-soft:#2c1e1b;
+  --warn:#e0c489;--warn-soft:#2c2415;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);
+}}
+:root[data-theme="dark"]{
+  --paper:#131211;--surface:#1c1a18;--surface-2:#252220;
+  --ink:#f3f1ec;--ink-2:#cac5bc;--muted:#948d82;
+  --line:#332f2b;--line-soft:#2a2724;
+  --gold:#dcb668;--gold-deep:#e0c489;--track:#302c28;
+  --ok:#90c19d;--ok-soft:#1e2a21;--bad:#d79a8c;--bad-soft:#2c1e1b;
+  --warn:#e0c489;--warn-soft:#2c2415;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:'Outfit',-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+.serif-it{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:500;}
+.wrap{max-width:1020px;margin:0 auto;padding:52px 22px 90px;}
+.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted);font-weight:600;margin:0 0 16px;}
+h1{font-size:clamp(32px,5.4vw,50px);line-height:1.04;margin:0 0 14px;font-weight:600;letter-spacing:-.025em;text-wrap:balance;}
+.lede{font-size:17.5px;color:var(--ink-2);max-width:64ch;margin:0;}
+.head{border-bottom:1px solid var(--line);padding-bottom:32px;margin-bottom:40px;}
+h2{font-size:13px;text-transform:uppercase;letter-spacing:.16em;font-weight:600;color:var(--muted);
+  margin:0 0 20px;display:flex;align-items:center;gap:14px;}
+h2::after{content:"";flex:1;height:1px;background:var(--line);}
+.block{margin-bottom:56px;}
+h3{font-size:18px;font-weight:600;margin:0 0 8px;letter-spacing:-.01em;}
+p{margin:0 0 14px;}
+.sub{font-size:14.5px;color:var(--ink-2);max-width:66ch;}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:26px;}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:5px;padding:16px 18px;box-shadow:var(--shadow);}
+.stat b{display:block;font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1;font-variant-numeric:tabular-nums;}
+.stat span{display:block;font-size:12.5px;color:var(--muted);margin-top:6px;line-height:1.35;}
+
+/* funil — barras proporcionais, uma série só */
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:24px;box-shadow:var(--shadow);}
+.fig__cap{font-size:12.5px;color:var(--muted);margin:0 0 20px;}
+.funnel{display:grid;gap:16px;}
+.fstep{display:grid;grid-template-columns:190px 1fr;gap:16px;align-items:center;}
+@media(max-width:640px){.fstep{grid-template-columns:1fr;gap:6px;}}
+.fstep__lbl{font-size:13.5px;color:var(--ink-2);line-height:1.3;}
+.fstep__bar{position:relative;height:34px;background:var(--track);border-radius:4px;overflow:hidden;}
+.fstep__fill{position:absolute;inset:0 auto 0 0;background:var(--gold-deep);border-radius:4px;}
+.fstep__val{position:absolute;top:0;bottom:0;left:12px;display:flex;align-items:center;gap:10px;
+  font-size:13.5px;font-weight:700;color:#fff;font-variant-numeric:tabular-nums;}
+.fstep__val small{font-weight:500;opacity:.82;font-size:12px;}
+.fstep--thin .fstep__val{left:auto;right:12px;color:var(--ink);}
+.drop{display:grid;grid-template-columns:190px 1fr;gap:16px;}
+@media(max-width:640px){.drop{grid-template-columns:1fr;}}
+.drop__txt{grid-column:2;font-size:12.5px;color:var(--bad);margin:-8px 0 0;font-weight:600;}
+@media(max-width:640px){.drop__txt{grid-column:1;}}
+
+/* comparativo */
+.cmp{display:grid;gap:14px;margin-top:6px;}
+.cmp__row{display:grid;grid-template-columns:110px 1fr;gap:14px;align-items:center;}
+.cmp__lbl{font-size:14px;font-weight:600;}
+.cmp__bar{position:relative;height:30px;background:var(--track);border-radius:4px;}
+.cmp__fill{position:absolute;inset:0 auto 0 0;background:var(--gold-deep);border-radius:4px;}
+.cmp__val{position:absolute;top:0;bottom:0;left:calc(100% + 12px);display:flex;align-items:center;
+  font-size:13.5px;font-weight:700;color:var(--ink);white-space:nowrap;font-variant-numeric:tabular-nums;}
+
+.item{background:var(--surface);border:1px solid var(--line);border-radius:5px;padding:18px 20px;
+  margin-bottom:12px;box-shadow:var(--shadow);border-left:3px solid var(--line);}
+.item--bad{border-left-color:var(--bad);}
+.item--warn{border-left-color:var(--gold);}
+.item--ok{border-left-color:var(--ok);}
+.item h3{font-size:16px;margin-bottom:5px;}
+.item p{font-size:14px;color:var(--ink-2);margin:0 0 8px;line-height:1.55;}
+.item p:last-child{margin-bottom:0;}
+.item code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;color:var(--muted);}
+.tag{display:inline-block;font-size:10px;text-transform:uppercase;letter-spacing:.12em;font-weight:700;
+  padding:4px 8px;border-radius:2px;margin-bottom:8px;}
+.tag--bad{background:var(--bad-soft);color:var(--bad);}
+.tag--warn{background:var(--warn-soft);color:var(--warn);}
+.tag--ok{background:var(--ok-soft);color:var(--ok);}
+
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:5px;background:var(--surface);}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:540px;}
+th,td{text-align:left;padding:12px 16px;border-bottom:1px solid var(--line-soft);vertical-align:top;}
+th{font-size:10.5px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:600;}
+tr:last-child td{border-bottom:none;}
+td:last-child,th:last-child{text-align:right;font-variant-numeric:tabular-nums;}
+.note{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--gold);
+  border-radius:4px;padding:18px 20px;font-size:14.5px;color:var(--ink-2);line-height:1.6;}
+.note b{color:var(--ink);}
+ol.prio{margin:0;padding:0;list-style:none;counter-reset:p;display:grid;gap:16px;}
+ol.prio li{counter-increment:p;display:grid;grid-template-columns:30px 1fr;gap:16px;align-items:start;}
+ol.prio li::before{content:counter(p);font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;
+  font-size:24px;color:var(--gold);line-height:1;}
+ol.prio b{display:block;font-size:15.5px;color:var(--ink);margin-bottom:3px;}
+ol.prio span{font-size:14px;color:var(--ink-2);line-height:1.55;}
+footer{margin-top:52px;padding-top:22px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted);}
+</style>
+<style>
+.fix{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--ok);
+  border-radius:5px;padding:20px 22px;margin-bottom:14px;box-shadow:var(--shadow);}
+.fix h3{font-size:16.5px;margin:0 0 4px;}
+.fix .campo{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;color:var(--muted);
+  display:block;margin-bottom:10px;letter-spacing:.02em;}
+.fix p{font-size:14.5px;color:var(--ink-2);margin:0 0 10px;line-height:1.6;}
+.fix p:last-child{margin-bottom:0;}
+.fix .antes{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center;margin:14px 0 0;
+  background:var(--surface-2);border-radius:4px;padding:12px 14px;font-size:13px;}
+@media(max-width:560px){.fix .antes{grid-template-columns:1fr;gap:6px;}
+  .fix .antes .seta{display:none;}}
+.fix .antes b{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.12em;
+  color:var(--muted);font-weight:600;margin-bottom:3px;}
+.fix .antes code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;color:var(--ink);}
+.fix .seta{color:var(--gold);font-size:18px;text-align:center;}
+.fix .qtd{float:right;font-size:12px;font-weight:700;color:var(--gold-deep);
+  font-variant-numeric:tabular-nums;background:var(--warn-soft);padding:3px 9px;border-radius:2px;}
+td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;}
+</style>
+<div class="wrap">
+  <header class="head">
+    <p class="eyebrow">contt.s fitness · planilha da amazon · relatório de processamento</p>
+    <h1>os 1.353 SKUs, <span class="serif-it">corrigidos</span></h1>
+    <p class="lede">A Amazon recusou o arquivo inteiro: nenhum SKU passou. Eram 21 tipos de erro, quase todos por causa de seis campos preenchidos fora do que o template aceita. Todos foram tratados — a planilha está pronta para reenviar.</p>
+    <div class="stats">
+      <div class="stat"><b>1.353</b><span>SKUs no arquivo</span></div>
+      <div class="stat"><b>0</b><span>aprovados no envio anterior</span></div>
+      <div class="stat"><b>21</b><span>tipos de erro, todos tratados</span></div>
+      <div class="stat"><b>12.544</b><span>células corrigidas</span></div>
+      <div class="stat"><b>29</b><span>avisos — não travam nada</span></div>
+    </div>
+  </header>
+
+  <section class="block">
+    <h2>1. o que estava travando</h2>
+    <p class="sub">Cada linha é um erro do relatório da Amazon, na ordem de quantos SKUs ele derrubava.</p>
+    <div class="tablewrap" style="margin-top:20px">
+      <table>
+        <thead><tr><th>campo</th><th>o que a Amazon reclamou</th><th>SKUs</th></tr></thead>
+        <tbody>
+          <tr><td>Tipo de Código de Situação Tributária</td><td>CSOSN não é valor aceito nesse campo</td><td class="n">1.353</td></tr>
+          <tr><td>Tamanho especial</td><td>obrigatório, e estava em branco</td><td class="n">1.109</td></tr>
+          <tr><td>Quantidade</td><td>não é permitida junto com “inventário sempre disponível”</td><td class="n">1.109</td></tr>
+          <tr><td>Preço sugerido</td><td>obrigatório, e estava em branco</td><td class="n">1.007</td></tr>
+          <tr><td>Tipo de corpo / de altura (calça)</td><td>obrigatórios quando o tamanho é BR/Alfa</td><td class="n">549 + 549</td></tr>
+          <tr><td>Conformidade — método de fixação</td><td>só vale com Envio Global = Sim</td><td class="n">549</td></tr>
+          <tr><td>Valor do tamanho da cintura</td><td>número não é aceito junto com tamanho por letra</td><td class="n">418</td></tr>
+          <tr><td>Conformidade — tipo de sutiã</td><td>só vale com Envio Global = Sim</td><td class="n">256</td></tr>
+          <tr><td>Classe de tamanho e tipo de aro (top)</td><td>obrigatórios, e estavam em branco</td><td class="n">192 + 192</td></tr>
+          <tr><td>Conformidade — pele animal / comprimento</td><td>só valem com Envio Global = Sim</td><td class="n">159 + 159</td></tr>
+          <tr><td>Grupo de tamanho no produto-pai</td><td>preenchido pela metade nas linhas de produto-pai</td><td class="n">122</td></tr>
+          <tr><td>Valor do tamanho</td><td>“Tamanho Único (38 a 42)” não existe na lista</td><td class="n">9</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>2. o que foi feito em cada um</h2>
+
+    <div class="fix">
+      <h3>Tributação <span class="qtd">1.353 SKUs</span></h3>
+      <span class="campo">colunas HR e HS · tax_treatment</span>
+      <p>O CSOSN estava no campo errado. A Amazon só aceita <b>ICMS</b> como “tipo”, e o código do Simples vai no campo seguinte, escrito por extenso como está no menu suspenso da planilha. O seu CSOSN <b>102</b> foi mantido — só mudou de lugar e de formato.</p>
+      <div class="antes">
+        <div><b>antes</b><code>tipo: CSOSN · código: 102</code></div>
+        <div class="seta">→</div>
+        <div><b>agora</b><code>tipo: ICMS · código: 102 — Tributada pelo Simples Nacional sem permissão de crédito</code></div>
+      </div>
+    </div>
+
+    <div class="fix">
+      <h3>Estoque <span class="qtd">1.109 SKUs</span></h3>
+      <span class="campo">colunas IO e IL · fulfillment_availability</span>
+      <p>“Inventário sempre disponível” e “Quantidade” não podem conviver — a própria planilha avisa isso na aba de definições. Como as suas quantidades são as certas, esvaziei o campo de inventário infinito e <b>mantive todas as quantidades como você cadastrou</b>.</p>
+      <p><b>Atenção:</b> 314 SKUs estão com quantidade 0 e vão entrar como esgotados. Se algum deles tem estoque, é só corrigir o número na coluna IL antes de subir.</p>
+    </div>
+
+    <div class="fix">
+      <h3>Preço sugerido <span class="qtd">1.007 SKUs</span></h3>
+      <span class="campo">coluna HC · list_price</span>
+      <p>Campo obrigatório que estava vazio. A instrução da própria Amazon, na aba “Definições de dados”, é: <i>“caso não o possua, digite 0”</i> — foi o que fiz. Não inventei um preço “de” mais alto: preço riscado que nunca existiu é propaganda enganosa. Os 60 SKUs que já tinham preço sugerido ficaram como estavam, e as 286 linhas em que o campo nem se aplica continuam em branco.</p>
+    </div>
+
+    <div class="fix">
+      <h3>Tamanho especial <span class="qtd">1.109 SKUs</span></h3>
+      <span class="campo">coluna BO · special_size_type</span>
+      <p>Obrigatório em toda linha que não é produto-pai. Preenchido com <b>Padrão</b>, que é o valor da lista para peças de tamanho convencional — vale para os cinco tipos de produto do seu arquivo.</p>
+    </div>
+
+    <div class="fix">
+      <h3>Campos de conformidade <span class="qtd">1.353 SKUs</span></h3>
+      <span class="campo">colunas MQ, LG, MU, MS · compliance_*</span>
+      <p>Esses quatro campos (método de fixação, tipo de sutiã, pele de animal, comprimento do short) só são aceitos quando <b>Envio Global = Sim</b>. O seu arquivo está como <b>Não</b>, então a Amazon recusava em uns SKUs e ignorava nos outros. Foram esvaziados — não fazem falta para vender no Brasil.</p>
+    </div>
+
+    <div class="fix">
+      <h3>Tamanhos das calças e shorts <span class="qtd">549 SKUs</span></h3>
+      <span class="campo">colunas FG a FN · bottoms_size</span>
+      <p>Três problemas no mesmo grupo. Nos <b>427 produtos-filho</b>: preenchi “tipo de corpo” e “tipo de altura” com <b>Regular</b> (obrigatórios quando o sistema é BR e o tamanho é por letra) e tirei a medida de cintura em número — a Amazon não aceita 38/40/42 junto com P/M/G.</p>
+      <p>Nas <b>122 linhas de produto-pai</b>, o grupo de tamanho estava pela metade: produto-pai não carrega tamanho, então limpei o grupo inteiro. E os <b>9 SKUs</b> com “Tamanho Único (38 a 42)” viraram <b>Único</b>, que é o valor da lista.</p>
+    </div>
+
+    <div class="fix">
+      <h3>Tamanhos dos tops <span class="qtd">192 SKUs</span></h3>
+      <span class="campo">colunas BB, BC, BD, BW · shapewear_size e underwire_type</span>
+      <p>Faltavam a classe de tamanho e o tipo de aro. Preenchi sistema <b>BR</b>, classe <b>Alfa</b> e o tamanho de cada um puxado da coluna “Tamanho” que você já tinha preenchido (P, M, G ou Único). O tipo de aro ficou <b>Sem aro</b> — é o que seus tops são.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>3. o que eu não mexi, e por quê</h2>
+
+    <div class="item item--warn">
+      <span class="tag tag--warn">não trava o envio</span>
+      <h3>Os 29 avisos</h3>
+      <p>São todos a mesma coisa: “você mandou um atributo que não se aplica a esse tipo de produto — estamos ignorando e processando assim mesmo”. Bolsos, opacidade, proteção UV, temporada, baterias. A Amazon descarta sozinha e publica o anúncio. Mexer neles apagaria dados que são válidos para os outros tipos de produto do arquivo.</p>
+    </div>
+
+    <div class="item item--warn">
+      <span class="tag tag--warn">confirmar</span>
+      <h3>O CSOSN 102</h3>
+      <p>Mantive o código que você já tinha escolhido, só no campo e no formato certos. Vale confirmar com a sua contabilidade que 102 é mesmo o seu enquadramento — esse campo sai na nota fiscal, e é a única coisa aqui que eu não tenho como conferir por fora.</p>
+    </div>
+
+    <div class="item item--ok">
+      <span class="tag tag--ok">preservado</span>
+      <h3>O resto do arquivo</h3>
+      <p>Editei só as 12.544 células com erro, direto dentro do arquivo original. SKUs, títulos, descrições, fotos, preços, NCM, abas de instruções, menus suspensos e as imagens de exemplo estão idênticos ao que você mandou.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>4. como reenviar</h2>
+    <ol class="prio">
+      <li><b>Confira as quantidades zeradas</b><span>314 SKUs estão com 0 na coluna IL (“Quantidade (BR)”). Quem tiver estoque, ajuste antes de subir.</span></li>
+      <li><b>Suba o arquivo no Seller Central</b><span>Catálogo → Adicionar produtos via upload → Enviar seu inventário. É o mesmo caminho do envio anterior.</span></li>
+      <li><b>Baixe o relatório de processamento de novo</b><span>Se sobrar algum erro, ele vem no mesmo formato — me manda que eu corrijo a próxima rodada.</span></li>
+    </ol>
+  </section>
+
+  <footer>CONTT.s FITNESS · correção feita sobre o relatório de processamento de 1.353 SKUs · setembro de 2026</footer>
+</div>
