@@ -67,6 +67,50 @@ def cor_amazon(nome):
     return 'Multicolorido'   # so sobra estampa; nunca chuta uma cor lisa errada
 
 
+
+# Estilo (AU): lista fechada e diferente por tipo. Nenhuma opcao descreve moda
+# fitness direito, entao vai a menos errada de cada lista.
+ESTILO = {
+    'PANTS': 'Moderna', 'SHORTS': 'Shorts híbridos', 'BRA': 'Moderno',
+    'APPAREL': 'Esportivo', 'ONE_PIECE_OUTFIT': 'Esportivo',
+}
+
+# Embalagem por tipo: comprimento x largura x altura em cm, e peso em gramas.
+# ESTIMATIVA de saco/envelope de moda fitness - o peso da Shopify nao serve
+# (520 variantes em 0,0 kg). Mexe no frete: conferir antes de confiar.
+EMBALAGEM = {
+    'PANTS':            (30, 22, 4, 220),
+    'SHORTS':           (26, 20, 3, 130),
+    'BRA':              (24, 18, 3, 110),
+    'ONE_PIECE_OUTFIT': (30, 22, 5, 260),
+    'APPAREL':          (32, 24, 6, 330),
+}
+
+MARCA = 'CONTT.s'
+
+
+def altura_cintura(titulo):
+    """Coluna FM, lista fechada. Sai do proprio titulo da peca."""
+    t = (titulo or '').lower()
+    if 'cintura m' in t:                      # media / média
+        return 'Cintura média'
+    if 'cintura baixa' in t:
+        return 'Cintura baixa'
+    return 'Cintura alta'   # o padrao da loja: quase tudo e cintura alta
+
+
+def tamanho_de_baixo(tam):
+    """
+    Coluna FF. Nos conjuntos o tamanho e combinado ("Legging M / Top G");
+    aqui interessa so a peca de baixo.
+    """
+    for parte in (tam or '').split(' / '):
+        baixo = parte.lower()
+        if baixo.startswith(('legging', 'short')):
+            return parte.split()[-1]
+    return tam
+
+
 # ---------------------------------------------------------------- texto
 
 def texto_limpo(bruto):
@@ -240,29 +284,47 @@ def monta(prods, listas):
         tams = sorted({tamanho_da(v) for v in vs if tamanho_da(v)})
         cores = sorted({cor_da(v) for v in vs if cor_da(v)})
         tops = topicos(desc, tams, cores, tecido)
-        marca = p.get('vendor') or 'CONTT.s FITNESS WEAR'
+        marca = MARCA   # a loja pediu a mesma marca em tudo
         cuidado = 'Lavagem na máquina' if tipo == 'BRA' else 'Lavagem à máquina'
         img = p['_imagens']
 
-        # tema de variacao: APPAREL so tem COR/TAMANHO; os outros tem TAMANHO/COR
-        tem_tam, tem_cor = bool(tams), bool(cores)
-        if tem_tam and tem_cor: tema = 'COR/TAMANHO' if tipo == 'APPAREL' else 'TAMANHO/COR'
-        elif tem_tam:           tema = 'TAMANHO'
-        elif tem_cor:           tema = 'COR'
-        else:                   tema = ''
+        # O tema so pode citar o que de fato varia entre os filhos. Quase todo
+        # produto da loja e de uma cor so com varios tamanhos: declarar
+        # "COR/TAMANHO" ali faz a Amazon procurar um diferenciador de cor que
+        # nao existe, e entao cobrar a cor peca por peca.
+        varia_tam, varia_cor = len(tams) > 1, len(cores) > 1
+        if varia_tam and varia_cor: tema = 'COR/TAMANHO' if tipo == 'APPAREL' else 'TAMANHO/COR'
+        elif varia_tam:             tema = 'TAMANHO'
+        elif varia_cor:             tema = 'COR'
+        else:                       tema = ''
+        # cor constante na familia e atributo do pai, nao eixo de variacao
+        cor_fixa = cores[0] if len(cores) == 1 else ''
 
+        comp, larg, alt, peso_g = EMBALAGEM[tipo]
         comum = {
             'B': tipo, 'C': ACAO, 'G': p['title'][:200], 'I': marca,
             'AM': desc[:2000],
             'AN': tops[0], 'AO': tops[1], 'AP': tops[2], 'AQ': tops[3], 'AR': tops[4],
             'AS': palavras_chave(p['title'], p.get('productType'), cores),
             'AV': 'feminino', 'AW': 'Feminino', 'AX': 'Adulto',
+            'AU': ESTILO[tipo],
+            'R': p['title'][:100],
             'BH': tecido, 'BU': cuidado,
+            'DI': 'Brasil',
             'GX': 'Novo', 'JG': 'Brasil',
             'JH': 'Não', 'JI': 'Não',
             'LV': 'Não aplicável',
             'HE': img[0],
+            # embalagem: estimada por tipo, ver EMBALAGEM
+            'IW': comp, 'IX': 'Centímetros',
+            'IY': larg, 'IZ': 'Centímetros',
+            'JA': alt,  'JB': 'Centímetros',
+            'JC': peso_g, 'JD': 'Gramas',
         }
+        if tipo in ('PANTS', 'SHORTS'):
+            comum['FM'] = altura_cintura(p['title'])   # altura da cintura
+            comum['FD'] = 'BR'                          # sistema de tamanho
+            comum['FE'] = 'Alfa'                        # classe (P/M/G, nao numerico)
         for i, u in enumerate(img[1:6], start=1):
             comum['HF HG HH HI HJ'.split()[i - 1]] = u
 
@@ -270,8 +332,12 @@ def monta(prods, listas):
         pai = None
         if not so_um:
             pai = sku_pai(p, usados)
-            linhas.append({**comum, 'A': pai, 'D': 'Produto Pai', 'F': tema,
-                           'J': 'Isento de GTIN'})
+            linha_pai = {**comum, 'A': pai, 'D': 'Produto Pai', 'F': tema,
+                         'J': 'Isento de GTIN'}
+            if cor_fixa:
+                linha_pai['BN'] = cor_fixa
+                linha_pai['BM'] = cor_amazon(cor_fixa)
+            linhas.append(linha_pai)
 
         for v in vs:
             ean = (v.get('barcode') or '').strip()
@@ -287,6 +353,7 @@ def monta(prods, listas):
                      'K': ean if len(ean) == 13 and ean.isdigit() else '',
                      'BM': cor_amazon(cor) if cor else '', 'BN': cor,
                      'DT': tam,
+                     'FF': tamanho_de_baixo(tam) if tipo in ('PANTS','SHORTS') else None,
                      'GZ': de if de and de > (preco or 0) else None,
                      'IH': 'Logística do vendedor (Padrão)',
                      'II': qtd, 'IL': 'Desativado',

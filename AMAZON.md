@@ -1,6 +1,6 @@
 # Planilha da Amazon — CONTT.s
 
-Arquivo: `amazon-contts.xlsm`, gerado em 16/09/2026 a partir do modelo
+Arquivo: `amazon-contts.xlsm`, gerado em 16/09/2026 e corrigido em 17/09/2026 a partir do modelo
 `PANTS_ONE_PIECE_OUTFIT_SHORTS_BRA_APPAREL` que você baixou do Seller Central,
 preenchido com o catálogo da Shopify.
 
@@ -91,6 +91,63 @@ O 16º é a **"Embalagem para presente"**, que não é peça de vestuário.
 
 Se quiser qualquer um deles na Amazon, é só publicar na Shopify (e pôr imagem) e
 eu rodo de novo.
+
+
+## Correção de 17/09/2026 — por que a Amazon pedia dado peça por peça
+
+A primeira versão declarava tema de variação **"COR/TAMANHO" em 235 das 244
+famílias onde a cor não varia**: um "Conjunto Aura Bronze" tem nove tamanhos e
+uma cor só. A Amazon procurava um diferenciador de cor que não existia, não
+achava, e passava a cobrar a cor item a item. Era erro meu, não campo faltando.
+
+Agora o tema cita só o que de fato varia entre os filhos:
+
+| tema | famílias |
+|---|---:|
+| `TAMANHO` | 235 |
+| `TAMANHO/COR` | 5 |
+| `COR/TAMANHO` | 2 |
+| `COR` | 2 |
+
+E quando a cor é constante na família, ela passou a ir **na linha do produto
+pai** também, que é onde a Amazon espera encontrá-la nesse caso.
+
+### Campos preenchidos nesta rodada
+
+- **Marca**: `CONTT.s` em todas as linhas (antes vinha do fornecedor da Shopify,
+  que trazia "CONTT.s FITNESS WEAR", "Allure®" e "J-winner" misturados).
+- **Estilo**: lista fechada e diferente por tipo. Nenhuma opção descreve moda
+  fitness direito, então foi a menos errada de cada uma: `Moderna` (calça),
+  `Shorts híbridos` (short), `Moderno` (top), `Esportivo` (conjunto e macacão).
+  Se preferir outra, é trocar uma linha do script.
+- **Altura da cintura** (calça e short): saiu do próprio título — "cintura
+  média" vira `Cintura média`, o resto fica `Cintura alta`, que é o padrão da loja.
+- **Sistema de tamanho** (calça e short): `BR`, classe `Alfa`, e o valor é o
+  tamanho da peça de baixo — nos conjuntos, o "M" de "Legging M / Top G".
+- **País do tamanho**: `Brasil`. **Nome do modelo**: o título da peça.
+
+### Embalagem: número meu, confira antes de confiar
+
+Peso e medidas estavam em branco porque o dado da Shopify não presta (520
+variantes em 0,0 kg). Como a Amazon cobra o campo, entrou uma estimativa por
+tipo de peça:
+
+| tipo | C × L × A | peso |
+|---|---|---|
+| Legging | 30 × 22 × 4 cm | 220 g |
+| Short | 26 × 20 × 3 cm | 130 g |
+| Top | 24 × 18 × 3 cm | 110 g |
+| Macacão | 30 × 22 × 5 cm | 260 g |
+| Conjunto, jaqueta, cropped | 32 × 24 × 6 cm | 330 g |
+
+**Isso mexe no frete.** Pesa um envelope de cada tipo na balança e me diz os
+valores reais — troco na tabela `EMBALAGEM` do script e regero em um minuto.
+
+### Ainda em branco de propósito
+
+**Modelo de Envio (BR)** é texto livre que precisa bater com o nome exato de um
+modelo de envio cadastrado no seu Seller Central. Não tenho como adivinhar esse
+nome; me diga qual é e eu preencho nas 1353 linhas.
 
 ## Refazer
 
