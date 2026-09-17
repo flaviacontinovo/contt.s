@@ -180,6 +180,15 @@ def manga_de(titulo):
     return ''
 
 
+def comprimento_manga(titulo):
+    """Coluna EQ, lista fechada e separada de ER (tipo de manga)."""
+    t = (titulo or '').lower()
+    if 'manga longa' in t: return 'Manga comprida'
+    if 'manga curta' in t: return 'Manga curta'
+    if 'regata' in t or 'nadador' in t or 'alças' in t or 'tiras' in t: return 'Sem mangas'
+    return ''
+
+
 def costas_de(titulo):
     t = (titulo or '').lower()
     if 'nadador' in t:   return 'Costas Nadador'
@@ -448,6 +457,33 @@ def monta(prods, listas):
             'DO': carac_res[0], 'DP': carac_res[1], 'DQ': carac_res[2],
             'DR': carac_res[3], 'DS': carac_res[4],
             'ER': escolhe('ER', tipo, manga_de(p['title'])),
+            'EQ': escolhe('EQ', tipo, comprimento_manga(p['title'])),
+            # verdadeiros para todo o catalogo
+            'X':  escolhe('X',  tipo, 'Mulheres'),
+            'AT': escolhe('AT', tipo, 'Casual'),
+            'BR': escolhe('BR', tipo, 'Equipado', 'Atlético'),
+            'DK': escolhe('DK', tipo, 'Veste de acordo com o tamanho'),
+            'GM': escolhe('GM', tipo, 'Esticável'),
+            'GU': escolhe('GU', tipo, 'Casual'),
+            'GO': escolhe('GO', tipo, 'Sim' if bolsos_de(p['title']) else 'Não'),
+            'GH': escolhe('GH', tipo, 'Esportes'),
+            'GI': escolhe('GI', tipo, 'Yoga'),
+            'GJ': escolhe('GJ', tipo, 'Caminhada'),
+            'CG': escolhe('CG', tipo, 'Ioga', 'Caminhada'),
+            'EA': escolhe('EA', tipo, 'Todas as estações do ano'),
+            'BQ': escolhe('BQ', tipo, 'Animais') if 'animal' in p['title'].lower()
+                  or 'onça' in p['title'].lower() or 'zebra' in p['title'].lower() else None,
+            'GE': escolhe('GE', tipo, 'Canelado') if 'canelad' in p['title'].lower() else None,
+            # respostas negativas que sao verdade, e por isso cabem
+            'MQ': escolhe('MQ', tipo, 'Não'),   # pele de animal presente
+            'MJ': escolhe('MJ', tipo, 'Não'),   # feito a mao
+            'JX': escolhe('JX', tipo, 'Não'),   # restricao de exportacao
+            'LC': escolhe('LC', tipo, 'Não'),   # envio global
+            'GW': escolhe('GW', tipo, 'Não'),   # ignorar oferta
+            'LF': escolhe('LF', tipo, 'women'),
+            'MR': escolhe('MR', tipo, 'nylon'),
+            'MP': escolhe('MP', tipo, 'elastic_band'),   # fecha por elastico
+            'HM': escolhe('HM', tipo, '0'),      # origem fiscal: 0 = nacional
             'CK': escolhe('CK', tipo, costas_de(p['title'])),
             'CP': escolhe('CP', tipo, gola_de(p['title'])),
             'FY': bolsos_de(p['title']),
@@ -482,9 +518,12 @@ def monta(prods, listas):
             comum['GN'] = escolhe('GN', tipo, 'Legging', 'Compressão')
         if tipo == 'SHORTS':
             comum['GA'] = escolhe('GA', tipo, 'Shorts de Compressão')
+            comum['MN'] = escolhe('MN', tipo, 'not_covering_the_knee')
         if tipo == 'BRA':
             comum['BO'] = escolhe('BO', tipo, APOIO_TOP)   # nivel de apoio
             comum['BS'] = escolhe('BS', tipo, 'Esportivo') # estilo do item
+            comum['DG'] = escolhe('DG', tipo, 'sports')    # funcao do sutia
+            comum['LD'] = escolhe('LD', tipo, 'other')     # nao e pos-mastectomia
         # o produto aceita 8 fotos extras; a oferta, 5
         for i, u in enumerate(img[1:9]):
             comum['AD AE AF AG AH AI AJ AK'.split()[i]] = u

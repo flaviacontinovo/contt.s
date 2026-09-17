@@ -228,6 +228,48 @@ peças têm compressão média, a característica `Compressão` entrou nas 390 l
 e os 159 shorts receberam `Shorts de Compressão` no campo de forma, que é o
 equivalente deles.
 
+
+## 116 colunas (terceira rodada de 17/09/2026)
+
+Varredura em todas as 356 colunas. Entrou tudo que tem valor verdadeiro para o
+catálogo:
+
+- **Público-alvo** `Mulheres`, **estilo de vida** `Casual`, **formalidade** `Casual`
+- **Tipo de ajuste** `Equipado`, **elasticidade** `Esticável`, **ajuste ao tamanho**
+  `Veste de acordo com o tamanho`
+- **Usos específicos** `Esportes`, `Yoga`, `Caminhada`
+- **Tem bolsos** `Sim`/`Não`, tirado do título
+- **Tema** `Animais` nas 16 de onça, zebra e animal print
+- **Tipo de trama** `Canelado` nas 74 caneladas
+- **Comprimento da manga** `Sem mangas` nas 102 regatas e nadador
+- **Função do sutiã** `sports` e tipo `other` nos 256 tops
+- **Comprimento do short** `not_covering_the_knee` nos 159 shorts
+- **Negativas que são verdade**: pele de animal `Não`, feito à mão `Não`,
+  restrição de exportação `Não`, envio global `Não`
+- **Origem fiscal** `0` (nacional), coerente com país de origem Brasil
+
+### O que sobra vazio, e por quê
+
+**Campos de produto usado ou recondicionado** (grau de renovado, condição
+cosmética, peças substituídas, tipo de fonte): só valem quando a condição não é
+"Novo". As suas são todas novas.
+
+**Campos de outra categoria**: dimensões de tela, década da moda, desgaste do
+tecido (lavagem ácida, bigodado), tipo de feriado, evento da vida, enfeite,
+forro de velo.
+
+**Campos que variam peça a peça e eu não vejo as fotos**: tipo de alça, formato
+e acolchoamento do bojo, estilo das costas e da gola onde o título não diz,
+descrição do bolso, orientação do fecho. Dá para fazer depois, produto a
+produto, se valer a pena.
+
+**Campos fiscais que dependem do contador**: Código EX da TIPI, indicador da
+origem do processo, atividade da empresa (fabricante, distribuidor ou
+importador).
+
+**Os 31 de bateria, lítio, GHS, shapewear, aro, time e atleta**: sem valor
+verdadeiro para roupa, como já explicado acima.
+
 ## Refazer
 
 ```
