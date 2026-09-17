@@ -1,6 +1,6 @@
 # Planilha da Amazon — CONTT.s
 
-Arquivo: `amazon-contts.xlsm`, gerado em 16/09/2026 e corrigido em 17/09/2026 a partir do modelo
+Arquivo: `amazon-contts.xlsm`, gerado em 16/09/2026, corrigido e ampliado em 17/09/2026 a partir do modelo
 `PANTS_ONE_PIECE_OUTFIT_SHORTS_BRA_APPAREL` que você baixou do Seller Central,
 preenchido com o catálogo da Shopify.
 
@@ -154,6 +154,50 @@ envio por você, não por Logística da Amazon.
 que *"a Amazon atribui um modelo padrão"*, então em branco significa usar o seu
 modelo padrão — que é o que você quer. Só vale preencher se você criar modelos
 adicionais e quiser escolher um deles peça por peça.
+
+
+## Atributos de produto (17/09/2026)
+
+**77 das 356 colunas preenchidas**, contra 56 na primeira versão. As respostas
+da Flavia entraram assim:
+
+| Ela respondeu | Onde foi |
+|---|---|
+| Poliamida + elastano | Material (`Mistura de nylon` + `Elastano`) e Tipo de tecido, que deixou de ser o genérico "Malha" |
+| Levantamento de bumbum, à prova de agachamento, absorção de suor, respirável | Características especiais |
+| Apoio alto | Nível de apoio dos 256 tops |
+| Opaco | Opacidade |
+
+**Compressão ficou de fora de propósito** — ela já tinha dito que os conjuntos
+de R$ 189 não são de alta compressão, e a característica não foi marcada.
+
+Derivado do catálogo, sem perguntar: estampa (poá → `Bolinhas`, onça → `Estampa
+animal`, tie dye → `Tie dye`), quantidade de peças (conjunto = 2), tecelagem
+(`knitted`), estilo e forma da perna, comprimento, temporada, tipo de esporte,
+número de bolsos, manga, costas e gola.
+
+Cada característica entra só onde faz sentido: "levantamento de bumbum" não vai
+em top, "à prova de agachamento" não vai em cropped.
+
+### As listas mudam de um tipo para outro
+
+Foi a armadilha desta rodada. SHORTS escreve `Estampa de animal` onde PANTS
+escreve `Estampa animal`; SHORTS não tem `Todas as estações`; MACACÃO não tem
+`Absorção de suor`, só `Respirável`. Escrever o valor do tipo errado faz a
+Amazon recusar a linha.
+
+`extrai-listas-amazon.py` tira as listas do próprio modelo (116 a 135 colunas
+por tipo) e o preenchedor resolve cada valor contra a lista certa, com
+sinônimos de reserva. Hoje: **zero valores fora da lista** nas 1353 linhas.
+
+### Os 31 que continuam vazios
+
+Bateria, lítio, GHS, materiais perigosos, tamanho de shapewear, aro de sutiã,
+nome de time e atleta. Não é teimosia: **o campo "Contém Bateria ou Célula" só
+oferece `battery` e `cell`** — não existe opção "não tem". E responder "Não" em
+*"A bateria é antiderramamento?"* afirma que existe uma bateria.
+
+Nenhum deles é obrigatório para roupa, e nenhum bloqueia o upload.
 
 ## Refazer
 

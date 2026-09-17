@@ -111,6 +111,124 @@ def tamanho_de_baixo(tam):
     return tam
 
 
+
+# ---------------------------------------------------------------- atributos da peca
+
+# Respostas da Flavia em 17/09/2026. Compressao ficou de fora de proposito:
+# ela ja tinha dito que os conjuntos de R$ 189 nao sao de alta compressao.
+MATERIAL = ('Mistura de nylon', 'Elastano')   # poliamida + elastano
+TECIDO_PADRAO = 'Poliamida com elastano'
+APOIO_TOP = 'Alto'
+OPACIDADE = 'Opaco'
+
+# Estampa (BV), lista fechada. So o que a estampa realmente e.
+ESTAMPAS = [
+    (('poá', 'poa'),                                   'Bolinhas'),
+    (('onça', 'onca', 'animal print', 'zebra'),        'Estampa animal'),
+    (('tie dye',),                                     'Tie dye'),
+    (('butterfly',),                                   'Insetos'),
+    (('oasis', 'tropical', 'reflorescer', 'green love'), 'Plantas'),
+    (('newspaper',),                                   'Impressão de letra'),
+    (('gibi',),                                        'Desenho animado'),
+    (('coração', 'coracao'),                           'Coração'),
+    (('abstract', 'expressive', 'grafiatto', 'colmeia'), 'Geométrico'),
+]
+
+
+def estampa_de(titulo, cores, ptipo):
+    t = (titulo or '').lower()
+    for chaves, valor in ESTAMPAS:
+        if any(k in t for k in chaves):
+            return valor
+    if 'ESTAMPADO' in (ptipo or '').upper() or {'Estampado', 'Tie Dye'} & set(cores):
+        return 'Gráfico'      # estampada, mas sem familia reconhecida
+    return 'Liso'
+
+
+def caracteristicas(titulo, tipo):
+    """
+    Colunas DO a DS (cinco vagas). Cada vaga devolve uma lista de sinonimos,
+    porque a mesma ideia tem nome diferente conforme o tipo: SHORTS diz
+    "Resistente ao suor" onde PANTS diz "Absorcao de suor", e MACACAO nao tem
+    nenhum dos dois. Quem resolve qual cabe e a funcao escolhe().
+
+    So entra o que vale para aquela peca: "levantamento de bumbum" nao faz
+    sentido num top, "a prova de agachamento" nao faz num cropped. E so o que a
+    loja confirmou - compressao ficou de fora a pedido dela, e "secagem rapida"
+    nao foi confirmada, entao a quinta vaga fica vazia.
+    """
+    t = (titulo or '').lower()
+    vagas = []
+    if 'empina bumbum' in t:
+        vagas.append(['Levantamento de Bumbum', 'Bumbum Apertado'])
+    if tipo in ('PANTS', 'SHORTS'):
+        vagas.append(['À prova de agachamento', 'Elasticidade'])
+    vagas.append(['Absorção de suor', 'Resistente ao suor'])
+    vagas.append(['Respirável'])
+    return (vagas + [[]] * 5)[:5]
+
+
+def manga_de(titulo):
+    t = (titulo or '').lower()
+    if 'manga longa' in t: return 'Manga longa'
+    if 'manga curta' in t: return 'Manga curta'
+    if 'regata' in t or 'nadador' in t or 'alças' in t or 'tiras' in t: return 'Sem manga'
+    return ''
+
+
+def costas_de(titulo):
+    t = (titulo or '').lower()
+    if 'nadador' in t:   return 'Costas Nadador'
+    if 'amarração' in t: return 'Costas com amarração'
+    if 'tiras' in t:     return 'Costas com tiras'
+    return ''
+
+
+def gola_de(titulo):
+    return 'Gola alta' if 'gola alta' in (titulo or '').lower() else ''
+
+
+def bolsos_de(titulo):
+    t = (titulo or '').lower()
+    return 1 if ('bolso' in t or 'bolsinho' in t) else 0
+
+
+
+# ---------------------------------------------------------------- listas fechadas
+
+# {tipo: {coluna: [opcoes]}}, extraido do proprio modelo por extrai-listas-amazon.py.
+# Carregado em main(); vazio significa "nao sei", e ai nada e escrito nas colunas
+# de lista, o que e melhor que escrever palpite.
+LISTAS = {}
+
+
+def escolhe(col, tipo, *candidatos):
+    """
+    Devolve o primeiro candidato que a lista daquele TIPO aceita.
+
+    As listas mudam entre tipos, e nao so no conteudo: SHORTS diz
+    "Estampa de animal" onde PANTS diz "Estampa animal", e SHORTS nao tem
+    "Todas as estacoes". Escrever o valor do tipo errado faz a Amazon recusar
+    a linha, entao aqui o valor e sempre conferido contra a lista certa.
+
+    Coluna de texto livre aceita o primeiro candidato. Se nenhum candidato
+    servir, devolve '' - campo vazio passa, campo invalido nao.
+    """
+    opcoes = LISTAS.get(tipo, {}).get(col)
+    candidatos = [c for c in candidatos if c]
+    if opcoes is None:                       # texto livre
+        return candidatos[0] if candidatos else ''
+    for c in candidatos:
+        if c in opcoes:
+            return c
+        # a mesma ideia escrita diferente entre tipos ("Estampa de animal")
+        alvo = c.lower().replace(' de ', ' ')
+        for o in opcoes:
+            if o.lower().replace(' de ', ' ') == alvo:
+                return o
+    return ''
+
+
 # ---------------------------------------------------------------- texto
 
 def texto_limpo(bruto):
@@ -144,7 +262,7 @@ def tecido_de(descricao):
                   r'(?:[^.;]{0,60}\d{1,3}\s*%[^.;]{0,40})?)', descricao, re.I)
     if m:
         return re.sub(r'\s+', ' ', m.group(1)).strip(' ,.;')[:200]
-    return 'Malha'   # verdadeiro para todas as pecas da loja; ver AMAZON.md
+    return TECIDO_PADRAO   # composicao confirmada pela loja; ver AMAZON.md
 
 
 def palavras_chave(titulo, ptipo, cores):
@@ -300,6 +418,11 @@ def monta(prods, listas):
         # cor constante na familia e atributo do pai, nao eixo de variacao
         cor_fixa = cores[0] if len(cores) == 1 else ''
 
+        # resolve cada vaga na lista do tipo e junta as que sobraram: sem isso a
+        # primeira coluna pode ficar vazia com a segunda preenchida, que e o que
+        # acontecia nos macacoes, cuja lista so aceita "Respiravel"
+        carac = [escolhe('DO', tipo, *vaga) for vaga in caracteristicas(p['title'], tipo)]
+        carac_res = ([c for c in carac if c] + [''] * 5)[:5]
         comp, larg, alt = CAIXA
         peso_g = PESO[tipo]
         comum = {
@@ -308,9 +431,24 @@ def monta(prods, listas):
             'AN': tops[0], 'AO': tops[1], 'AP': tops[2], 'AQ': tops[3], 'AR': tops[4],
             'AS': palavras_chave(p['title'], p.get('productType'), cores),
             'AV': 'feminino', 'AW': 'Feminino', 'AX': 'Adulto',
-            'AU': ESTILO[tipo],
+            'AU': escolhe('AU', tipo, ESTILO[tipo]),
+            'BE': escolhe('BE', tipo, MATERIAL[0], 'Nylon'),
+            'BF': escolhe('BF', tipo, MATERIAL[1]),
+            'BV': escolhe('BV', tipo, estampa_de(p['title'], cores, p.get('productType')),
+                          'Geométrico', 'Liso'),
+            'BI': 2 if tipo == 'APPAREL' and p['title'].lower().startswith('conjunto') else 1,
+            'BZ': escolhe('BZ', tipo, OPACIDADE),
+            'CU': escolhe('CU', tipo, 'Todas as estações', 'Verão'),
+            'CF': escolhe('CF', tipo, 'Multi-esporte', 'Ioga', 'Caminhada'),
+            'ML': escolhe('ML', tipo, 'knitted'),      # tudo na loja e malha
+            'DO': carac_res[0], 'DP': carac_res[1], 'DQ': carac_res[2],
+            'DR': carac_res[3], 'DS': carac_res[4],
+            'ER': escolhe('ER', tipo, manga_de(p['title'])),
+            'CK': escolhe('CK', tipo, costas_de(p['title'])),
+            'CP': escolhe('CP', tipo, gola_de(p['title'])),
+            'FY': bolsos_de(p['title']),
             'R': p['title'][:100],
-            'BH': tecido, 'BU': cuidado,
+            'BH': tecido, 'BU': escolhe('BU', tipo, cuidado),
             'DI': 'Brasil',
             'GX': 'Novo', 'JG': 'Brasil',
             'JH': 'Não', 'JI': 'Não',
@@ -326,6 +464,17 @@ def monta(prods, listas):
             comum['FM'] = altura_cintura(p['title'])   # altura da cintura
             comum['FD'] = 'BR'                          # sistema de tamanho
             comum['FE'] = 'Alfa'                        # classe (P/M/G, nao numerico)
+            comum['DU'] = escolhe('DU', tipo,
+                                  'Comprimento longo' if tipo == 'PANTS' else 'Comprimento curto',
+                                  'Comprimento padrão')
+        else:
+            comum['DU'] = escolhe('DU', tipo, 'Comprimento padrão', 'Comprimento do tornozelo')
+        if tipo == 'PANTS':
+            comum['GD'] = escolhe('GD', tipo, 'Skinny')    # estilo da perna
+            comum['GN'] = escolhe('GN', tipo, 'Legging')   # forma da calca
+        if tipo == 'BRA':
+            comum['BO'] = escolhe('BO', tipo, APOIO_TOP)   # nivel de apoio
+            comum['BS'] = escolhe('BS', tipo, 'Esportivo') # estilo do item
         for i, u in enumerate(img[1:6], start=1):
             comum['HF HG HH HI HJ'.split()[i - 1]] = u
 
@@ -396,6 +545,14 @@ def grava(origem, destino, linhas):
 
 
 def main(jsonl, xlsm_origem, xlsm_destino):
+    global LISTAS
+    import os
+    caminho = os.path.join(os.path.dirname(os.path.abspath(jsonl)), 'listas-completas.json')
+    if os.path.exists(caminho):
+        LISTAS = json.load(open(caminho, encoding='utf-8'))
+        print(f'listas fechadas carregadas: {len(LISTAS)} tipos')
+    else:
+        print('AVISO: listas-completas.json nao encontrado - colunas de lista ficarao vazias')
     prods = carrega_shopify(jsonl)
     listas = json.load(open('listas.json', encoding='utf-8')) if __import__('os').path.exists('listas.json') else {}
     linhas, pulados = monta(prods, listas)
