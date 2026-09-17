@@ -126,28 +126,34 @@ pai** também, que é onde a Amazon espera encontrá-la nesse caso.
   tamanho da peça de baixo — nos conjuntos, o "M" de "Legging M / Top G".
 - **País do tamanho**: `Brasil`. **Nome do modelo**: o título da peça.
 
-### Embalagem: número meu, confira antes de confiar
+### Embalagem
 
-Peso e medidas estavam em branco porque o dado da Shopify não presta (520
-variantes em 0,0 kg). Como a Amazon cobra o campo, entrou uma estimativa por
-tipo de peça:
+Caixa padrão da loja, a mesma para toda peça: **20 × 20 × 5 cm** (comprimento ×
+largura × altura), em centímetros.
 
-| tipo | C × L × A | peso |
-|---|---|---|
-| Legging | 30 × 22 × 4 cm | 220 g |
-| Short | 26 × 20 × 3 cm | 130 g |
-| Top | 24 × 18 × 3 cm | 110 g |
-| Macacão | 30 × 22 × 5 cm | 260 g |
-| Conjunto, jaqueta, cropped | 32 × 24 × 6 cm | 330 g |
+O **peso** continua estimativa minha, por tipo de peça, porque o da Shopify não
+serve — 520 variantes estão com 0,0 kg:
 
-**Isso mexe no frete.** Pesa um envelope de cada tipo na balança e me diz os
-valores reais — troco na tabela `EMBALAGEM` do script e regero em um minuto.
+| tipo | peso |
+|---|---|
+| Legging | 220 g |
+| Short | 130 g |
+| Top | 110 g |
+| Macacão | 260 g |
+| Conjunto, jaqueta, cropped | 330 g |
 
-### Ainda em branco de propósito
+Peso mexe no frete. Se quiser exato, pesa uma peça de cada tipo e me diz — troco
+na tabela `PESO` do script.
 
-**Modelo de Envio (BR)** é texto livre que precisa bater com o nome exato de um
-modelo de envio cadastrado no seu Seller Central. Não tenho como adivinhar esse
-nome; me diga qual é e eu preencho nas 1353 linhas.
+### Envio
+
+**Canal de processamento**: `Logística do vendedor (Padrão)` nas 1109 ofertas —
+envio por você, não por Logística da Amazon.
+
+**Modelo de Envio**: em branco de propósito. A definição do próprio modelo diz
+que *"a Amazon atribui um modelo padrão"*, então em branco significa usar o seu
+modelo padrão — que é o que você quer. Só vale preencher se você criar modelos
+adicionais e quiser escolher um deles peça por peça.
 
 ## Refazer
 

@@ -75,15 +75,15 @@ ESTILO = {
     'APPAREL': 'Esportivo', 'ONE_PIECE_OUTFIT': 'Esportivo',
 }
 
-# Embalagem por tipo: comprimento x largura x altura em cm, e peso em gramas.
-# ESTIMATIVA de saco/envelope de moda fitness - o peso da Shopify nao serve
-# (520 variantes em 0,0 kg). Mexe no frete: conferir antes de confiar.
-EMBALAGEM = {
-    'PANTS':            (30, 22, 4, 220),
-    'SHORTS':           (26, 20, 3, 130),
-    'BRA':              (24, 18, 3, 110),
-    'ONE_PIECE_OUTFIT': (30, 22, 5, 260),
-    'APPAREL':          (32, 24, 6, 330),
+# Embalagem padrao da loja: 5 x 20 x 20 cm, a mesma para toda peca (informada
+# pela Flavia em 17/09/2026). Vai como comprimento 20, largura 20, altura 5.
+CAIXA = (20, 20, 5)
+
+# O peso continua por tipo e continua ESTIMADO: o da Shopify nao serve (520
+# variantes em 0,0 kg) e ela passou so as medidas da caixa. Em gramas.
+PESO = {
+    'PANTS': 220, 'SHORTS': 130, 'BRA': 110,
+    'ONE_PIECE_OUTFIT': 260, 'APPAREL': 330,
 }
 
 MARCA = 'CONTT.s'
@@ -300,7 +300,8 @@ def monta(prods, listas):
         # cor constante na familia e atributo do pai, nao eixo de variacao
         cor_fixa = cores[0] if len(cores) == 1 else ''
 
-        comp, larg, alt, peso_g = EMBALAGEM[tipo]
+        comp, larg, alt = CAIXA
+        peso_g = PESO[tipo]
         comum = {
             'B': tipo, 'C': ACAO, 'G': p['title'][:200], 'I': marca,
             'AM': desc[:2000],
