@@ -1,0 +1,225 @@
+<title>Amazon — 2ª Rodada</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,500&family=Outfit:wght@300;400;500;600;700;800&display=swap">
+
+<style>
+:root{
+  --paper:#f7f6f3;--surface:#fff;--surface-2:#efece6;
+  --ink:#14120f;--ink-2:#4b463f;--muted:#7d776d;
+  --line:#e3dfd7;--line-soft:#eeebe4;
+  --gold:#c9a24b;--gold-deep:#8a6d2e;
+  --track:#e6e1d6;
+  --ok:#3f6b4a;--ok-soft:#e7efe8;
+  --bad:#8a4a3f;--bad-soft:#f6e8e5;
+  --warn:#8a6d2e;--warn-soft:#f9f1de;
+  --shadow:0 1px 2px rgba(20,18,15,.05),0 10px 30px rgba(20,18,15,.07);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#131211;--surface:#1c1a18;--surface-2:#252220;
+  --ink:#f3f1ec;--ink-2:#cac5bc;--muted:#948d82;
+  --line:#332f2b;--line-soft:#2a2724;
+  --gold:#dcb668;--gold-deep:#e0c489;--track:#302c28;
+  --ok:#90c19d;--ok-soft:#1e2a21;--bad:#d79a8c;--bad-soft:#2c1e1b;
+  --warn:#e0c489;--warn-soft:#2c2415;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);
+}}
+:root[data-theme="dark"]{
+  --paper:#131211;--surface:#1c1a18;--surface-2:#252220;
+  --ink:#f3f1ec;--ink-2:#cac5bc;--muted:#948d82;
+  --line:#332f2b;--line-soft:#2a2724;
+  --gold:#dcb668;--gold-deep:#e0c489;--track:#302c28;
+  --ok:#90c19d;--ok-soft:#1e2a21;--bad:#d79a8c;--bad-soft:#2c1e1b;
+  --warn:#e0c489;--warn-soft:#2c2415;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:'Outfit',-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+.serif-it{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:500;}
+.wrap{max-width:1020px;margin:0 auto;padding:52px 22px 90px;}
+.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted);font-weight:600;margin:0 0 16px;}
+h1{font-size:clamp(32px,5.4vw,50px);line-height:1.04;margin:0 0 14px;font-weight:600;letter-spacing:-.025em;text-wrap:balance;}
+.lede{font-size:17.5px;color:var(--ink-2);max-width:64ch;margin:0;}
+.head{border-bottom:1px solid var(--line);padding-bottom:32px;margin-bottom:40px;}
+h2{font-size:13px;text-transform:uppercase;letter-spacing:.16em;font-weight:600;color:var(--muted);
+  margin:0 0 20px;display:flex;align-items:center;gap:14px;}
+h2::after{content:"";flex:1;height:1px;background:var(--line);}
+.block{margin-bottom:56px;}
+h3{font-size:18px;font-weight:600;margin:0 0 8px;letter-spacing:-.01em;}
+p{margin:0 0 14px;}
+.sub{font-size:14.5px;color:var(--ink-2);max-width:66ch;}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:26px;}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:5px;padding:16px 18px;box-shadow:var(--shadow);}
+.stat b{display:block;font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1;font-variant-numeric:tabular-nums;}
+.stat span{display:block;font-size:12.5px;color:var(--muted);margin-top:6px;line-height:1.35;}
+
+/* funil — barras proporcionais, uma série só */
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:24px;box-shadow:var(--shadow);}
+.fig__cap{font-size:12.5px;color:var(--muted);margin:0 0 20px;}
+.funnel{display:grid;gap:16px;}
+.fstep{display:grid;grid-template-columns:190px 1fr;gap:16px;align-items:center;}
+@media(max-width:640px){.fstep{grid-template-columns:1fr;gap:6px;}}
+.fstep__lbl{font-size:13.5px;color:var(--ink-2);line-height:1.3;}
+.fstep__bar{position:relative;height:34px;background:var(--track);border-radius:4px;overflow:hidden;}
+.fstep__fill{position:absolute;inset:0 auto 0 0;background:var(--gold-deep);border-radius:4px;}
+.fstep__val{position:absolute;top:0;bottom:0;left:12px;display:flex;align-items:center;gap:10px;
+  font-size:13.5px;font-weight:700;color:#fff;font-variant-numeric:tabular-nums;}
+.fstep__val small{font-weight:500;opacity:.82;font-size:12px;}
+.fstep--thin .fstep__val{left:auto;right:12px;color:var(--ink);}
+.drop{display:grid;grid-template-columns:190px 1fr;gap:16px;}
+@media(max-width:640px){.drop{grid-template-columns:1fr;}}
+.drop__txt{grid-column:2;font-size:12.5px;color:var(--bad);margin:-8px 0 0;font-weight:600;}
+@media(max-width:640px){.drop__txt{grid-column:1;}}
+
+/* comparativo */
+.cmp{display:grid;gap:14px;margin-top:6px;}
+.cmp__row{display:grid;grid-template-columns:110px 1fr;gap:14px;align-items:center;}
+.cmp__lbl{font-size:14px;font-weight:600;}
+.cmp__bar{position:relative;height:30px;background:var(--track);border-radius:4px;}
+.cmp__fill{position:absolute;inset:0 auto 0 0;background:var(--gold-deep);border-radius:4px;}
+.cmp__val{position:absolute;top:0;bottom:0;left:calc(100% + 12px);display:flex;align-items:center;
+  font-size:13.5px;font-weight:700;color:var(--ink);white-space:nowrap;font-variant-numeric:tabular-nums;}
+
+.item{background:var(--surface);border:1px solid var(--line);border-radius:5px;padding:18px 20px;
+  margin-bottom:12px;box-shadow:var(--shadow);border-left:3px solid var(--line);}
+.item--bad{border-left-color:var(--bad);}
+.item--warn{border-left-color:var(--gold);}
+.item--ok{border-left-color:var(--ok);}
+.item h3{font-size:16px;margin-bottom:5px;}
+.item p{font-size:14px;color:var(--ink-2);margin:0 0 8px;line-height:1.55;}
+.item p:last-child{margin-bottom:0;}
+.item code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;color:var(--muted);}
+.tag{display:inline-block;font-size:10px;text-transform:uppercase;letter-spacing:.12em;font-weight:700;
+  padding:4px 8px;border-radius:2px;margin-bottom:8px;}
+.tag--bad{background:var(--bad-soft);color:var(--bad);}
+.tag--warn{background:var(--warn-soft);color:var(--warn);}
+.tag--ok{background:var(--ok-soft);color:var(--ok);}
+
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:5px;background:var(--surface);}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:540px;}
+th,td{text-align:left;padding:12px 16px;border-bottom:1px solid var(--line-soft);vertical-align:top;}
+th{font-size:10.5px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:600;}
+tr:last-child td{border-bottom:none;}
+td:last-child,th:last-child{text-align:right;font-variant-numeric:tabular-nums;}
+.note{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--gold);
+  border-radius:4px;padding:18px 20px;font-size:14.5px;color:var(--ink-2);line-height:1.6;}
+.note b{color:var(--ink);}
+ol.prio{margin:0;padding:0;list-style:none;counter-reset:p;display:grid;gap:16px;}
+ol.prio li{counter-increment:p;display:grid;grid-template-columns:30px 1fr;gap:16px;align-items:start;}
+ol.prio li::before{content:counter(p);font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;
+  font-size:24px;color:var(--gold);line-height:1;}
+ol.prio b{display:block;font-size:15.5px;color:var(--ink);margin-bottom:3px;}
+ol.prio span{font-size:14px;color:var(--ink-2);line-height:1.55;}
+footer{margin-top:52px;padding-top:22px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted);}
+</style>
+<style>
+.fix{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--ok);
+  border-radius:5px;padding:20px 22px;margin-bottom:14px;box-shadow:var(--shadow);}
+.fix--bad{border-left-color:var(--bad);}
+.fix--warn{border-left-color:var(--gold);}
+.fix h3{font-size:16.5px;margin:0 0 4px;}
+.fix .campo{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;color:var(--muted);
+  display:block;margin-bottom:10px;letter-spacing:.02em;}
+.fix p{font-size:14.5px;color:var(--ink-2);margin:0 0 10px;line-height:1.6;}
+.fix p:last-child{margin-bottom:0;}
+.fix .qtd{float:right;font-size:12px;font-weight:700;color:var(--gold-deep);
+  font-variant-numeric:tabular-nums;background:var(--warn-soft);padding:3px 9px;border-radius:2px;}
+.fix--bad .qtd{color:var(--bad);background:var(--bad-soft);}
+.fix--ok .qtd{color:var(--ok);background:var(--ok-soft);}
+.bars{display:grid;gap:11px;margin-top:8px;}
+.bar{display:grid;grid-template-columns:230px 1fr;gap:14px;align-items:center;}
+@media(max-width:620px){.bar{grid-template-columns:1fr;gap:5px;}}
+.bar__lbl{font-size:13.5px;color:var(--ink-2);line-height:1.3;}
+.bar__track{position:relative;height:30px;background:var(--track);border-radius:4px;}
+.bar__fill{position:absolute;inset:0 auto 0 0;border-radius:4px;background:var(--gold-deep);}
+.bar__fill--ok{background:var(--ok);}
+.bar__fill--bad{background:var(--bad);}
+.bar__val{position:absolute;top:0;bottom:0;display:flex;align-items:center;font-size:13px;font-weight:700;
+  color:var(--ink);font-variant-numeric:tabular-nums;}
+</style>
+<div class="wrap">
+  <header class="head">
+    <p class="eyebrow">contt.s fitness · amazon · 2ª rodada de processamento</p>
+    <h1>saiu do <span class="serif-it">zero</span> — e agora dá pra ver o que falta</h1>
+    <p class="lede">Os 21 erros de formato acabaram: nenhum deles voltou. A Amazon conseguiu ler os 1.353 SKUs e processar de verdade — e aí apareceu o que estava escondido atrás deles. Só um dos problemas que sobraram é da planilha, e já está corrigido.</p>
+    <div class="stats">
+      <div class="stat"><b>0 → 1.161</b><span>SKUs que a Amazon aceitou</span></div>
+      <div class="stat"><b>120</b><span>totalmente limpos</span></div>
+      <div class="stat"><b>192</b><span>falharam — corrigidos agora</span></div>
+      <div class="stat"><b>836</b><span>presos no código de barras</span></div>
+      <div class="stat"><b>143</b><span>presos na foto principal</span></div>
+    </div>
+  </header>
+
+  <section class="block">
+    <h2>1. onde estão os 1.353 SKUs</h2>
+    <div class="fig">
+      <p class="fig__cap">Cada SKU classificado pela causa raiz, não pela quantidade de mensagens de erro.</p>
+      <div class="bars">
+        <div class="bar"><span class="bar__lbl">limpos, sem nenhuma pendência</span>
+          <div class="bar__track"><span class="bar__fill bar__fill--ok" style="width:8.9%"></span><span class="bar__val" style="left:calc(8.9% + 12px)">120</span></div></div>
+        <div class="bar"><span class="bar__lbl">isento de GTIN, sem isenção aprovada</span>
+          <div class="bar__track"><span class="bar__fill" style="width:33.1%"></span><span class="bar__val" style="left:calc(33.1% + 12px)">448</span></div></div>
+        <div class="bar"><span class="bar__lbl">código de barras é de outro produto</span>
+          <div class="bar__track"><span class="bar__fill" style="width:28.7%"></span><span class="bar__val" style="left:calc(28.7% + 12px)">388</span></div></div>
+        <div class="bar"><span class="bar__lbl">erro da planilha — corrigido nesta versão</span>
+          <div class="bar__track"><span class="bar__fill bar__fill--ok" style="width:14.2%"></span><span class="bar__val" style="left:calc(14.2% + 12px)">192</span></div></div>
+        <div class="bar"><span class="bar__lbl">foto principal fora das regras</span>
+          <div class="bar__track"><span class="bar__fill" style="width:10.6%"></span><span class="bar__val" style="left:calc(10.6% + 12px)">143</span></div></div>
+        <div class="bar"><span class="bar__lbl">divergência com um ASIN já existente</span>
+          <div class="bar__track"><span class="bar__fill" style="width:4.6%"></span><span class="bar__val" style="left:calc(4.6% + 12px)">62</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>2. o que eu corrigi</h2>
+    <div class="fix fix--ok">
+      <h3>Tipo de corpo do shapewear <span class="qtd">192 SKUs</span></h3>
+      <span class="campo">coluna BG · shapewear_size#1.body_type</span>
+      <p>Esse foi erro meu. Na rodada passada preenchi sistema, classe e valor de tamanho dos tops — e isso fez a Amazon passar a exigir também o “tipo de corpo”, que antes ela nem olhava. Preenchido com <b>Regular</b>, que é o valor da lista para tamanho BR por letra em adulto feminino.</p>
+      <p>São exatamente os 192 que a Amazon marcou como “falha” — os únicos que não entraram por causa da planilha.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>3. o que não se resolve na planilha</h2>
+    <p class="sub">Esses três aqui não são campo preenchido errado. São coisas do cadastro da sua marca na Amazon e das suas fotos — eu não consigo mexer daqui.</p>
+
+    <div class="fix fix--bad" style="margin-top:22px">
+      <span class="tag tag--bad">maior bloqueio</span>
+      <h3>O código de barras <span class="qtd">836 SKUs</span></h3>
+      <p><b>388 SKUs</b> foram enviados com EAN, e a Amazon respondeu que cada um desses códigos <b>já pertence a outro produto</b>. Ela chega a dizer qual: “o código 07890000001885 já está vinculado ao produto B00593E8WY”. Todos começam com <code>7890000…</code>, que é uma faixa genérica — não são códigos emitidos para a CONTT.s.</p>
+      <p><b>448 SKUs</b> foram como “Isento de GTIN”, mas a isenção não está aprovada na sua conta. Sem ela, a Amazon não tem como criar o produto no catálogo: <i>“os detalhes não estão completos o suficiente para encontrar um ASIN ou criar um novo”</i>.</p>
+      <p>Os dois caminhos: pedir a <b>isenção de GTIN para a marca CONTT.s</b> no Seller Central (é gratuito, e resolveria os 836 de uma vez), ou comprar códigos EAN próprios na <b>GS1 Brasil</b>. A isenção é o caminho mais curto — e o único que não custa.</p>
+    </div>
+
+    <div class="fix fix--bad">
+      <span class="tag tag--bad">visual</span>
+      <h3>A foto principal <span class="qtd">143 SKUs</span></h3>
+      <p><b>136</b> foram recusados porque a imagem principal precisa ter <b>fundo branco puro</b> — as suas são fotos de ensaio, com cenário. <b>39</b> por produto cortado na foto, e <b>14</b> porque a modelo precisa estar de pé na imagem principal.</p>
+      <p>A regra vale só para a <b>primeira</b> imagem. As fotos de ensaio podem continuar como imagens secundárias — e é o que faz o anúncio vender. O que precisa é de uma foto de cada peça recortada em fundo branco para a posição 1.</p>
+    </div>
+
+    <div class="fix fix--warn">
+      <span class="tag tag--warn">consequência</span>
+      <h3>Divergência com ASIN existente <span class="qtd">62 SKUs</span></h3>
+      <p>“Os dados da oferta são diferentes dos do catálogo da Amazon”, “falta [size] para vincular ao ASIN pai”, “a imagem mostra um produto diferente do ASIN”. São todos efeito do mesmo código de barras errado: ele apontou para o produto de outra pessoa, e aí tudo o que você mandou conflita com o que já está lá. Resolvendo o código de barras, esses caem junto.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>4. o que fazer, nesta ordem</h2>
+    <ol class="prio">
+      <li><b>Peça a isenção de GTIN para a marca CONTT.s</b><span>Seller Central → Catálogo → Adicionar produtos → “Não tenho um ID de produto”. Pede foto do produto com a marca visível e do rótulo/etiqueta. É o que destrava 836 dos 1.353 — de longe o item mais importante daqui.</span></li>
+      <li><b>Suba a planilha desta rodada</b><span>Ela já resolve os 192 que falharam. Pode subir agora, sem esperar a isenção: são coisas independentes.</span></li>
+      <li><b>Separe uma foto em fundo branco por peça</b><span>Só para a posição 1 de cada anúncio. As de ensaio ficam da 2ª em diante.</span></li>
+      <li><b>Reenvie depois da isenção aprovada</b><span>Aí sim trocando os 388 EANs por “Isento de GTIN” — me manda que eu faço a troca na planilha.</span></li>
+    </ol>
+  </section>
+
+  <footer>CONTT.s FITNESS · 2ª rodada sobre 1.353 SKUs · setembro de 2026</footer>
+</div>
