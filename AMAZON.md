@@ -199,6 +199,35 @@ oferece `battery` e `cell`** — não existe opção "não tem". E responder "N�
 
 Nenhum deles é obrigatório para roupa, e nenhum bloqueia o upload.
 
+
+## Fotos e compressão (17/09/2026, segunda rodada)
+
+**89 colunas preenchidas.**
+
+### As fotos estavam no lugar errado
+
+O modelo tem duas famílias de coluna de imagem, e eu só tinha usado uma:
+
+| colunas | o que são | antes | agora |
+|---|---|---|---|
+| `AC`–`AL` | imagens do **produto** — as que a Amazon mostra na página | 0 | 1353 |
+| `HE`–`HJ` | imagens da **oferta** | 1353 | 1353 |
+
+As do produto aceitam **8 fotos extras**, contra 5 da oferta, então produtos com
+muitas fotos na Shopify agora aproveitam todas: 49 linhas subiram com 9 fotos.
+
+`AL` é a imagem de amostra de cor, e só entra nas 106 linhas onde a variante tem
+foto própria **e** a cor é o que varia na família — fora disso não é amostra de
+nada.
+
+### Compressão
+
+A Amazon **não tem nível de compressão**: a característica é "tem" ou "não tem".
+"Média compressão" não existe no vocabulário dela. Como a loja confirmou que as
+peças têm compressão média, a característica `Compressão` entrou nas 390 leggings,
+e os 159 shorts receberam `Shorts de Compressão` no campo de forma, que é o
+equivalente deles.
+
 ## Refazer
 
 ```

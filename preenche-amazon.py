@@ -163,6 +163,10 @@ def caracteristicas(titulo, tipo):
         vagas.append(['Levantamento de Bumbum', 'Bumbum Apertado'])
     if tipo in ('PANTS', 'SHORTS'):
         vagas.append(['À prova de agachamento', 'Elasticidade'])
+    if tipo in ('PANTS', 'SHORTS'):
+        # A Amazon nao tem nivel de compressao: ou a peca tem, ou nao tem.
+        # A loja confirmou media compressao, entao a caracteristica entra.
+        vagas.append(['Compressão'])
     vagas.append(['Absorção de suor', 'Resistente ao suor'])
     vagas.append(['Respirável'])
     return (vagas + [[]] * 5)[:5]
@@ -453,6 +457,10 @@ def monta(prods, listas):
             'GX': 'Novo', 'JG': 'Brasil',
             'JH': 'Não', 'JI': 'Não',
             'LV': 'Não aplicável',
+            # duas familias de foto no modelo: AC..AL sao as do PRODUTO, que
+            # aparecem na pagina, e HE..HJ sao as da OFERTA. Antes so as da
+            # oferta iam preenchidas, e a pagina ficava sem foto.
+            'AC': img[0],
             'HE': img[0],
             # embalagem: estimada por tipo, ver EMBALAGEM
             'IW': comp, 'IX': 'Centímetros',
@@ -471,12 +479,17 @@ def monta(prods, listas):
             comum['DU'] = escolhe('DU', tipo, 'Comprimento padrão', 'Comprimento do tornozelo')
         if tipo == 'PANTS':
             comum['GD'] = escolhe('GD', tipo, 'Skinny')    # estilo da perna
-            comum['GN'] = escolhe('GN', tipo, 'Legging')   # forma da calca
+            comum['GN'] = escolhe('GN', tipo, 'Legging', 'Compressão')
+        if tipo == 'SHORTS':
+            comum['GA'] = escolhe('GA', tipo, 'Shorts de Compressão')
         if tipo == 'BRA':
             comum['BO'] = escolhe('BO', tipo, APOIO_TOP)   # nivel de apoio
             comum['BS'] = escolhe('BS', tipo, 'Esportivo') # estilo do item
-        for i, u in enumerate(img[1:6], start=1):
-            comum['HF HG HH HI HJ'.split()[i - 1]] = u
+        # o produto aceita 8 fotos extras; a oferta, 5
+        for i, u in enumerate(img[1:9]):
+            comum['AD AE AF AG AH AI AJ AK'.split()[i]] = u
+        for i, u in enumerate(img[1:6]):
+            comum['HF HG HH HI HJ'.split()[i]] = u
 
         so_um = len(vs) == 1
         pai = None
@@ -498,7 +511,10 @@ def monta(prods, listas):
             qtd = max(0, int(v.get('inventoryQuantity') or 0))
             imgv = ((v.get('image') or {}).get('url')) or img[0]
 
-            linha = {**comum, 'A': v['sku'][:40], 'HE': imgv,
+            linha = {**comum, 'A': v['sku'][:40], 'AC': imgv, 'HE': imgv,
+                     # amostra de cor: so faz sentido quando a variante tem
+                     # foto propria e a cor e o que varia na familia
+                     'AL': imgv if (v.get('image') or {}).get('url') and len(cores) > 1 else None,
                      'J': 'EAN' if len(ean) == 13 and ean.isdigit() else 'Isento de GTIN',
                      'K': ean if len(ean) == 13 and ean.isdigit() else '',
                      'BM': cor_amazon(cor) if cor else '', 'BN': cor,
