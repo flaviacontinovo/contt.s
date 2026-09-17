@@ -89,6 +89,15 @@ PESO = {
 MARCA = 'CONTT.s'
 EMAIL_CONTATO = 'flaviacarolineconti@gmail.com'
 
+# Numeracao brasileira padrao correspondente a cada letra. Nao e medida do corpo
+# em centimetros - e a equivalencia de tamanho, e ela sai do proprio catalogo,
+# que ja rotula o tamanho unico como "38 a 42" cobrindo de P a G.
+NUMERO_BR = {'PP': '36', 'P': '38', 'M': '40', 'G': '42', 'GG': '44'}
+
+
+def numero_do_tamanho(tam):
+    return NUMERO_BR.get((tam or '').strip().upper(), '')
+
 
 def altura_cintura(titulo):
     """Coluna FM, lista fechada. Sai do proprio titulo da peca."""
@@ -489,6 +498,11 @@ def monta(prods, listas):
             'HM': escolhe('HM', tipo, '0'),      # origem fiscal: 0 = nacional
             'W':  MARCA,                         # fabricante
             'GC': 1,                             # quantidade de pacotes do item
+            # a loja confirmou que e tudo novo, entao os campos de produto
+            # usado ou recondicionado nao se aplicam - e "Nao Aplicavel" e uma
+            # opcao valida deles, diferente de deixar vazio
+            'HV': escolhe('HV', tipo, 'Não Aplicável'),
+            'IE': escolhe('IE', tipo, 'Não Aplicável'),
             # fiscal, confirmado pela loja: Simples Nacional, mesmo codigo que
             # ja usamos na planilha do Mercado Livre. CEST ela nao usa.
             'HO': 'CSOSN',
@@ -591,6 +605,8 @@ def monta(prods, listas):
                      'BM': cor_amazon(cor) if cor else '', 'BN': cor,
                      'DT': tam,
                      'FF': tamanho_de_baixo(tam) if tipo in ('PANTS','SHORTS') else None,
+                     'FH': (numero_do_tamanho(tamanho_de_baixo(tam))
+                            if tipo in ('PANTS', 'SHORTS') else None),
                      'GZ': de if de and de > (preco or 0) else None,
                      'IH': 'Logística do vendedor (Padrão)',
                      'II': qtd, 'IJ': 1, 'IL': 'Desativado',

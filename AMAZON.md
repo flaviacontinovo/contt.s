@@ -301,6 +301,37 @@ lugar só e as duas coisas acompanham.
 - **NCM 6104.23.00 dos conjuntos** e a dúvida do top ser sutiã (6212.10.00),
   ambos com o contador — ver NCM.md.
 
+
+## 139 colunas — numeração e condição
+
+**Conjuntos:** o NCM `6104.23.00` já estava nas 486 linhas desde que o
+preenchedor passou a ler o campo da Shopify. A loja confirmou a classificação,
+então deixa de ser pendência do contador para os conjuntos. O **top como sutiã
+(6212.10.00)** continua em aberto — é onde a substituição tributária pega.
+
+**Todos os produtos são novos**, confirmado pela loja. Isso não muda só a
+condição (que já estava `Novo`): libera preencher acessórios e embalagem com
+`Não Aplicável`, que é uma opção válida dessas listas e diferente de deixar
+vazio. Os demais campos de produto recondicionado seguem vazios porque só
+existem quando a condição não é nova.
+
+**Numeração de tamanho**, nas calças e shorts:
+
+| letra | número |
+|---|---|
+| PP | 36 |
+| P | 38 |
+| M | 40 |
+| G | 42 |
+| GG | 44 |
+
+Sai da tabela `NUMERO_BR` no script. **Não é medida do corpo em centímetros** —
+é a equivalência de tamanho, e ela vem do próprio catálogo, que já rotula o
+tamanho único como "38 a 42" cobrindo de P a G.
+
+Se você quiser as medidas reais (cintura, quadril, comprimento em cm), isso
+ainda depende da sua tabela de medidas — não dá para inventar número de corpo.
+
 ## Refazer
 
 ```
