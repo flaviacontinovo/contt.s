@@ -87,6 +87,7 @@ PESO = {
 }
 
 MARCA = 'CONTT.s'
+EMAIL_CONTATO = 'flaviacarolineconti@gmail.com'
 
 
 def altura_cintura(titulo):
@@ -169,6 +170,7 @@ def caracteristicas(titulo, tipo):
         vagas.append(['Compressão'])
     vagas.append(['Absorção de suor', 'Resistente ao suor'])
     vagas.append(['Respirável'])
+    vagas.append(['Proteção solar'])   # FPU 50+ confirmado pela loja
     return (vagas + [[]] * 5)[:5]
 
 
@@ -234,7 +236,8 @@ def escolhe(col, tipo, *candidatos):
     for c in candidatos:
         if c in opcoes:
             return c
-        # a mesma ideia escrita diferente entre tipos ("Estampa de animal")
+        # a mesma ideia escrita diferente entre tipos: "Estampa de animal"
+        # contra "Estampa animal", "Pull On" contra "Pull on"
         alvo = c.lower().replace(' de ', ' ')
         for o in opcoes:
             if o.lower().replace(' de ', ' ') == alvo:
@@ -484,6 +487,20 @@ def monta(prods, listas):
             'MR': escolhe('MR', tipo, 'nylon'),
             'MP': escolhe('MP', tipo, 'elastic_band'),   # fecha por elastico
             'HM': escolhe('HM', tipo, '0'),      # origem fiscal: 0 = nacional
+            'W':  MARCA,                         # fabricante
+            'GC': 1,                             # quantidade de pacotes do item
+            # fiscal, confirmado pela loja: Simples Nacional, mesmo codigo que
+            # ja usamos na planilha do Mercado Livre. CEST ela nao usa.
+            'HO': 'CSOSN',
+            'HP': '102',
+            'JZ': EMAIL_CONTATO,
+            'LA': EMAIL_CONTATO,
+            'HN': escolhe('HN', tipo, 'Fabricante'),
+            'FZ': escolhe('FZ', tipo, 'FPU 50+'),
+            # so elastico, sem cordao nem ziper - confirmado pela loja
+            'DB': escolhe('DB', tipo, 'Fechamento Elástico', 'Sem fechamento', 'Pull on'),
+            'HC': escolhe('HC', tipo, 'Sim'),   # pode ir como presente
+            'HD': escolhe('HD', tipo, 'Sim'),   # embalagem de presente disponivel
             'CK': escolhe('CK', tipo, costas_de(p['title'])),
             'CP': escolhe('CP', tipo, gola_de(p['title'])),
             'FY': bolsos_de(p['title']),
@@ -524,6 +541,12 @@ def monta(prods, listas):
             comum['BS'] = escolhe('BS', tipo, 'Esportivo') # estilo do item
             comum['DG'] = escolhe('DG', tipo, 'sports')    # funcao do sutia
             comum['LD'] = escolhe('LD', tipo, 'other')     # nao e pos-mastectomia
+            comum['DF'] = escolhe('DF', tipo, 'sports')    # formato
+            comum['BJ'] = escolhe('BJ', tipo, 'Não ajustável')
+            # bojo removivel, confirmado pela loja
+            comum['DA'] = escolhe('DA', tipo, 'Média')          # acolchoamento
+            comum['DD'] = escolhe('DD', tipo, 'Cobertura total')# cobertura da copa
+            comum['CA'] = escolhe('CA', tipo, 'Almofada')       # componente incluido
         # o produto aceita 8 fotos extras; a oferta, 5
         for i, u in enumerate(img[1:9]):
             comum['AD AE AF AG AH AI AJ AK'.split()[i]] = u
@@ -534,8 +557,12 @@ def monta(prods, listas):
         pai = None
         if not so_um:
             pai = sku_pai(p, usados)
+            ncm_fam = {((x.get('inventoryItem') or {}).get('harmonizedSystemCode') or '')
+                       for x in vs}
+            ncm_fam.discard('')
             linha_pai = {**comum, 'A': pai, 'D': 'Produto Pai', 'F': tema,
-                         'J': 'Isento de GTIN'}
+                         'J': 'Isento de GTIN', 'Q': pai, 'BP': pai,
+                         'HK': ncm_fam.pop() if len(ncm_fam) == 1 else ''}
             if cor_fixa:
                 linha_pai['BN'] = cor_fixa
                 linha_pai['BM'] = cor_amazon(cor_fixa)
@@ -550,7 +577,12 @@ def monta(prods, listas):
             qtd = max(0, int(v.get('inventoryQuantity') or 0))
             imgv = ((v.get('image') or {}).get('url')) or img[0]
 
+            # o NCM ja esta gravado na Shopify (campo harmonizedSystemCode),
+            # entao vem de la em vez de ser redigitado aqui
+            ncm = ((v.get('inventoryItem') or {}).get('harmonizedSystemCode') or '')
             linha = {**comum, 'A': v['sku'][:40], 'AC': imgv, 'HE': imgv,
+                     'HK': ncm,
+                     'Q': v['sku'][:40], 'BP': v['sku'][:40],   # modelo e peca
                      # amostra de cor: so faz sentido quando a variante tem
                      # foto propria e a cor e o que varia na familia
                      'AL': imgv if (v.get('image') or {}).get('url') and len(cores) > 1 else None,
@@ -561,7 +593,7 @@ def monta(prods, listas):
                      'FF': tamanho_de_baixo(tam) if tipo in ('PANTS','SHORTS') else None,
                      'GZ': de if de and de > (preco or 0) else None,
                      'IH': 'Logística do vendedor (Padrão)',
-                     'II': qtd, 'IL': 'Desativado',
+                     'II': qtd, 'IJ': 1, 'IL': 'Desativado',
                      'IM': preco}
             if not so_um:
                 linha.update({'D': 'Produto Filho', 'E': pai, 'F': tema})

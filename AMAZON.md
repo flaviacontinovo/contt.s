@@ -270,6 +270,37 @@ importador).
 **Os 31 de bateria, lítio, GHS, shapewear, aro, time e atleta**: sem valor
 verdadeiro para roupa, como já explicado acima.
 
+
+## 136 colunas — rodada de perguntas
+
+O que a Flavia respondeu, e onde entrou:
+
+| Resposta | Campos |
+|---|---|
+| Bojo removível | Acolchoamento `Média`, cobertura `Cobertura total`, componente `Almofada` (256 tops) |
+| Alça não ajustável | Tipo de alça |
+| Fabricante | Atividade da empresa, e o campo Fabricante com `CONTT.s` |
+| FPU 50+ | Fator de proteção UV e a característica `Proteção solar` |
+| Só elástico, sem fecho | Tipo de fecho: `Fechamento Elástico` na legging, `Pull on` no short, `Sem fechamento` no top |
+| Embalagem de presente sim | Pode ir como presente e embalagem disponível |
+| 1 dia útil | Tempo de processamento nas 1109 ofertas |
+| CSOSN 102, sem CEST | Situação tributária |
+| flaviacarolineconti@gmail.com | Contato de conformidade |
+
+### O NCM veio de graça
+
+A planilha tem coluna de **Código NCM**, e o NCM das 1189 variantes já estava
+gravado na Shopify desde 15/09. O preenchedor lê de lá em vez de redigitar — as
+1353 linhas saem com o NCM, e se o contador mudar a classificação, muda num
+lugar só e as duas coisas acompanham.
+
+### Ainda esperando
+
+- **Tabela de medidas** (cintura, comprimento da perna, abertura da barra): ela
+  tem e vai passar. São campos de refinamento, não bloqueiam.
+- **NCM 6104.23.00 dos conjuntos** e a dúvida do top ser sutiã (6212.10.00),
+  ambos com o contador — ver NCM.md.
+
 ## Refazer
 
 ```
