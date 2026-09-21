@@ -345,3 +345,32 @@ opções e imagem.
 O script confere antes de gravar: nenhum valor fora das listas fechadas, nenhuma
 SKU repetida, nenhum título acima de 200 caracteres, nenhum filho sem pai. Se
 algo não bate, ele para em vez de gerar arquivo quebrado.
+
+## Sem codigo de barras: isencao de GTIN em tudo
+
+A Amazon recusou o envio dizendo que os codigos de barras ja estavam em outros
+produtos. A causa apareceu no padrao: **os 660 EANs da loja tem todos o mesmo
+prefixo `7890000`** e comecam em `7890000000017`, o primeiro codigo valido
+dessa faixa, seguindo em sequencia. Isso e assinatura de gerador automatico,
+nao de bloco comprado. A loja confirmou em 21/09/2026 que **nunca comprou
+prefixo na GS1 Brasil**.
+
+Ou seja, esses codigos nao sao da CONTT.s. Sao de outras empresas, e por isso a
+Amazon acusa que ja estao em uso. Tambem explica as 4 duplicatas internas
+(Lime Green x verde militar, macacao lime green x preto): gerador rodado duas
+vezes repete.
+
+Insistir nisso nao da so erro de envio - usar GTIN de terceiro e motivo de
+suspensao de anuncio.
+
+**Decisao:** toda oferta vai como isenta de GTIN. Coluna J = `Isento de GTIN`
+nas 1353 linhas, coluna K vazia. Antes eram 693 isentas e 660 com codigo.
+
+O `preenche-amazon.py` tambem mudou: nao le mais o `barcode` da Shopify. Quando
+a CONTT.s tiver prefixo proprio da GS1, e ali que o EAN volta.
+
+Os codigos continuam gravados na Shopify. Nao mexi neles porque podem estar em
+uso na etiquetagem ou em outro canal - isso e decisao da loja.
+
+**A isencao precisa estar aprovada para a marca CONTT.s antes do envio.** Sem
+ela, as 1353 linhas caem, nao so as 449 de antes.

@@ -583,7 +583,14 @@ def monta(prods, listas):
             linhas.append(linha_pai)
 
         for v in vs:
-            ean = (v.get('barcode') or '').strip()
+            # Os codigos de barras da Shopify NAO sao da CONTT.s: os 660 tem o
+            # mesmo prefixo 7890000 e comecam em 7890000000017, o primeiro
+            # codigo valido da faixa - assinatura de gerador automatico. A loja
+            # confirmou em 21/09/2026 que nunca comprou prefixo na GS1. Usar
+            # codigo de outra empresa na Amazon derruba o anuncio (foi o erro
+            # de "codigo ja inserido") e pode suspender a conta, entao toda
+            # oferta vai como isenta de GTIN. Quando a CONTT.s tiver prefixo
+            # proprio, e aqui que o EAN volta.
             tam, cor = tamanho_da(v), cor_da(v)
             if tam.lower() in ('default title', ''): tam = ''
             preco = float(v['price']) if v.get('price') else None
@@ -600,8 +607,8 @@ def monta(prods, listas):
                      # amostra de cor: so faz sentido quando a variante tem
                      # foto propria e a cor e o que varia na familia
                      'AL': imgv if (v.get('image') or {}).get('url') and len(cores) > 1 else None,
-                     'J': 'EAN' if len(ean) == 13 and ean.isdigit() else 'Isento de GTIN',
-                     'K': ean if len(ean) == 13 and ean.isdigit() else '',
+                     'J': 'Isento de GTIN',
+                     'K': '',
                      'BM': cor_amazon(cor) if cor else '', 'BN': cor,
                      'DT': tam,
                      'FF': tamanho_de_baixo(tam) if tipo in ('PANTS','SHORTS') else None,
