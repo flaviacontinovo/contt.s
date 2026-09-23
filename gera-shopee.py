@@ -9,12 +9,17 @@ a loja ja usa nas notas do Mercado Livre (arquivo Dados_Fiscais, linhas que ela
 mesma preencheu). O NCM vem da Shopify. Tipo de operacao e CFOP vem da resposta
 da loja em 23/09/2026: fabricante.
 
+As fotos vao no formato 1:1 (1200x1200, recorte pelo centro), que e o que a
+Shopee pede. As originais sao 1365x2048, entao o corte tira um terco da
+altura - conferir na loja se o enquadramento ficou bom.
+
 Cirurgia direta no XML: o openpyxl nem abre este arquivo (a Shopee gera um
 sheetView com atributo invalido), e a aba Modelo tem 5005 validacoes de dados.
 """
 import json, io, re, html, zipfile, os
+from um_por_um import um_por_um
 
-MODELO  = 'shopee.xlsx'
+MODELO  = 'shopee2.xlsx'
 DESTINO = 'shopee-contts.xlsx'
 ABA     = 'xl/worksheets/sheet2.xml'
 LINHA_1 = 7
@@ -88,7 +93,9 @@ linhas = []
 for handle in CONJUNTOS + MACAQUINHOS:
     p = por_handle[handle]
     ehconj = handle in CONJUNTOS
-    imgs = [m['image']['url'] for m in midia.get(p['id'], []) if m.get('image')][:9]
+    # a Shopee pede foto quadrada; a propria Shopify gera o recorte 1:1 na URL
+    imgs = [um_por_um(m['image']['url'])
+            for m in midia.get(p['id'], []) if m.get('image')][:9]
     vs = vars_.get(p['id'], [])
     assert imgs and vs, 'produto sem foto ou sem variante: %s' % handle
     pai = sku_pai([v['sku'] for v in vs])
