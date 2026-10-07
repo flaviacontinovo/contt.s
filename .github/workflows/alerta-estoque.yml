@@ -1,0 +1,32 @@
+name: Alerta de estoque (Conjuntos R$ 189)
+
+on:
+  schedule:
+    - cron: "17 * * * *" # a cada hora
+  workflow_dispatch:
+
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Guarda quais variantes já foram avisadas, para não repetir a mensagem toda hora.
+      - uses: actions/cache/restore@v4
+        with:
+          path: estado-estoque.json
+          key: estado-estoque-${{ github.run_id }}
+          restore-keys: estado-estoque-
+
+      - run: python3 scripts/alerta_estoque.py
+        env:
+          SHOPIFY_TOKEN: ${{ secrets.SHOPIFY_TOKEN }}
+          WHATSAPP_NUMERO: ${{ secrets.WHATSAPP_NUMERO }}
+          WHATSAPP_APIKEY: ${{ secrets.WHATSAPP_APIKEY }}
+          LIMITE_ESTOQUE: ${{ vars.LIMITE_ESTOQUE || '0' }}
+
+      - uses: actions/cache/save@v4
+        if: always()
+        with:
+          path: estado-estoque.json
+          key: estado-estoque-${{ github.run_id }}
